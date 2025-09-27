@@ -319,12 +319,13 @@ ul {
 
 .arrow-btn {
   position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
+  top: 0;
+  bottom: 0;
+  margin: auto;
   font-size: 1.5em;
-  color: #007bff;
-  background-color: rgba(255, 255, 255, 0.7);
-  border: none;
+  color: rgba(0, 123, 255, 0.3);
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(0, 123, 255, 0.3);
   cursor: pointer;
   border-radius: 50%;
   width: 40px;
@@ -332,12 +333,15 @@ ul {
   display: flex;
   justify-content: center;
   align-items: center;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transition: all 0.3s ease;
+  z-index: 100;
 }
 
 .arrow-btn:hover {
-  background-color: #007bff;
+  background-color: rgba(0, 123, 255, 0.9);
   color: #fff;
+  border-color: #007bff;
+  transform: scale(1.1);
 }
 
 .arrow-left {
@@ -351,9 +355,9 @@ ul {
 .card-container {
   position: relative;
   width:400px;
-  height:150px;
+  height:200px;
   display: flex;
-  flex-direction: row; 
+  flex-direction: row;
   justify-content: center;
   align-items: center;
   overflow: hidden;

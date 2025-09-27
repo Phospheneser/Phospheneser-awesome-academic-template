@@ -258,42 +258,6 @@
 
 </body>
 
-<!-- character card -->
-<script>
-  const cards = document.querySelectorAll('.card');
-  const prevBtn = document.getElementById('prev-btn');
-  const nextBtn = document.getElementById('next-btn');
-  let currentIndex = Math.floor(Math.random() * cards.length);
-  showCard(currentIndex);
-
-  // Function to show the current card
-  function showCard(index) {
-    cards.forEach((card, i) => {
-      card.classList.remove('active');
-      if (i === index) {
-        card.classList.add('active');
-      }
-    });
-  }
-
-  // Handle Previous Button
-  prevBtn.addEventListener('click', () => {
-    currentIndex = (currentIndex - 1 + cards.length) % cards.length;
-    showCard(currentIndex);
-  });
-
-  // Handle Next Button
-  nextBtn.addEventListener('click', () => {
-    currentIndex = (currentIndex + 1) % cards.length;
-    showCard(currentIndex);
-  });
-
-  // Optionally: Auto switch cards every 5 seconds
-  setInterval(() => {
-    currentIndex = (currentIndex + 1) % cards.length;
-    showCard(currentIndex);
-  }, 5000);
-</script>
 <script>
 let currentLang = localStorage.getItem('lang') || 'en';
 let availableLanguages = ['en', 'zh', 'jp']; // 直接定义可用语言列表
@@ -377,12 +341,8 @@ async function loadContent(lang = currentLang) {
   // 动态生成卡片
   generateCards(cardsList);
 
-  // 更新卡片切换功能的cards变量
-  setTimeout(() => {
-    cards = document.querySelectorAll('.card');
-    currentIndex = Math.floor(Math.random() * cards.length);
-    showCard(currentIndex);
-  }, 100);
+  // 初始化卡片切换功能
+  initializeCardSlider();
 
   // 动态生成词云
   generateWordCloud(wordcloudList);
@@ -613,8 +573,9 @@ function generateCards(cardsList) {
     return;
   }
 
-  // 清空现有卡片
-  cardContainer.innerHTML = '';
+  // 只删除现有的卡片元素，保留按钮
+  const existingCards = cardContainer.querySelectorAll('.card');
+  existingCards.forEach(card => card.remove());
 
   if (cardsList.length === 0) {
     console.log('No cards data available');
@@ -695,6 +656,51 @@ function generateWordCloud(wordcloudList) {
 function switchLanguage(lang) {
   localStorage.setItem('lang', lang);
   loadContent(lang);
+}
+
+// 初始化卡片切换功能
+function initializeCardSlider() {
+  const cards = document.querySelectorAll('.card');
+  const prevBtn = document.getElementById('prev-btn');
+  const nextBtn = document.getElementById('next-btn');
+  let currentIndex = Math.floor(Math.random() * cards.length);
+
+  // Function to show the current card
+  function showCard(index) {
+    cards.forEach((card, i) => {
+      card.classList.remove('active');
+      if (i === index) {
+        card.classList.add('active');
+      }
+    });
+  }
+
+  // Handle Previous Button
+  if (prevBtn) {
+    prevBtn.addEventListener('click', () => {
+      currentIndex = (currentIndex - 1 + cards.length) % cards.length;
+      showCard(currentIndex);
+    });
+  }
+
+  // Handle Next Button
+  if (nextBtn) {
+    nextBtn.addEventListener('click', () => {
+      currentIndex = (currentIndex + 1) % cards.length;
+      showCard(currentIndex);
+    });
+  }
+
+  // Optionally: Auto switch cards every 5 seconds
+  setInterval(() => {
+    currentIndex = (currentIndex + 1) % cards.length;
+    showCard(currentIndex);
+  }, 5000);
+
+  // 显示第一张卡片
+  if (cards.length > 0) {
+    showCard(currentIndex);
+  }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
