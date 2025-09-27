@@ -281,17 +281,11 @@
 
 <section class="section">
   <div class="container is-max-desktop">
-    <div>
+    <div id="academic-service">
       <h1 class="title is-3" style="margin-bottom: 1em;" id="academic-service-title">Academic Service</h1>
-    </div>
-    <div style="display: flex;justify-content: flex-start; align-items: center; margin-bottom: 15px;">
-      <span style="font-weight: bold;margin-right: 83px;">Academic Talk</span>
-      <span>Give a talk at MSRA, Beijing.</span>
-      <span></span>
-    </div>
-    <div style="display: flex;justify-content: flex-start; align-items: center; margin-bottom: 15px;">
-      <span style="font-weight: bold;margin-right: 50px;">Teaching Assistant</span>
-      <span>Pattern Recognition and Machine Learning (COMP130137.01 & AIE410001.01)</span>
+      <div>
+        <!-- 学术服务内容将动态生成 -->
+      </div>
     </div>
   </div>
 </section>
@@ -367,12 +361,13 @@ let availableLanguages = ['en', 'zh', 'jp']; // 直接定义可用语言列表
 async function loadContent(lang = currentLang) {
 
   // 加载所有数据文件
-  const [webContentRes, projectsRes, publicationsRes, newsRes, blogsRes] = await Promise.all([
+  const [webContentRes, projectsRes, publicationsRes, newsRes, blogsRes, academicServiceRes] = await Promise.all([
     fetch(`data/${lang}/web_content.json`),
     fetch(`data/${lang}/projects.json`),
     fetch(`data/${lang}/publications.json`),
     fetch(`data/${lang}/news.json`),
-    fetch(`data/${lang}/blogs.json`)
+    fetch(`data/${lang}/blogs.json`),
+    fetch(`data/${lang}/academic_service.json`)
   ]);
 
   const webContent = await webContentRes.json();
@@ -380,11 +375,13 @@ async function loadContent(lang = currentLang) {
   const publications = await publicationsRes.json();
   const news = await newsRes.json();
   const blogs = await blogsRes.json();
+  const academicService = await academicServiceRes.json();
 
   const projectsList = projects.projects || [];
   const publicationsList = publications.publications || [];
   const newsList = news.news || [];
   const blogsList = blogs.blogs || [];
+  const academicServiceList = academicService.academic_services || [];
 
   // 更新导航栏
   updateElement('#navbar-about', webContent.navbar_about);
@@ -425,6 +422,9 @@ async function loadContent(lang = currentLang) {
   // 动态生成项目
   generateProjects(projectsList);
 
+  // 动态生成学术服务
+  generateAcademicService(academicServiceList);
+
   // 动态生成博客
   generateBlogs(blogsList);
 }
@@ -462,7 +462,9 @@ function generateNews(newsList) {
     console.error('News container not found');
     return;
   }
-  const newsDiv = newsContainer.querySelector('div:last-child');
+
+  // 直接选择 #news 的第二个子元素（内容容器）
+  const newsDiv = newsContainer.children[1];
   if (!newsDiv) {
     console.error('News content div not found');
     console.log('News container children:', newsContainer.children);
@@ -483,16 +485,22 @@ function generateNews(newsList) {
 }
 
 function generatePublications(publicationsList) {
+  console.log('Generating publications with data:', publicationsList);
   const publicationsSection = document.querySelector('#publications');
   if (!publicationsSection) {
     console.error('Publications section not found');
     return;
   }
-  const contentDiv = publicationsSection.querySelector('div:last-child');
+
+  // 直接选择 #publications 的第二个子元素（内容容器）
+  const contentDiv = publicationsSection.children[1];
   if (!contentDiv) {
     console.error('Publications content div not found');
+    console.log('Publications container children:', publicationsSection.children);
     return;
   }
+  console.log('Found publications div:', contentDiv);
+
   // 移除现有 paper-container
   const existingContainers = contentDiv.querySelectorAll('.paper-container');
   existingContainers.forEach(c => c.remove());
@@ -514,19 +522,26 @@ function generatePublications(publicationsList) {
     `;
     contentDiv.appendChild(paperContainer);
   });
+  console.log('Publications generation completed');
 }
 
 function generateProjects(projectsList) {
+  console.log('Generating projects with data:', projectsList);
   const projectsSection = document.querySelector('#projects');
   if (!projectsSection) {
     console.error('Projects section not found');
     return;
   }
-  const contentDiv = projectsSection.querySelector('div:last-child');
+
+  // 直接选择 #projects 的第二个子元素（内容容器）
+  const contentDiv = projectsSection.children[1];
   if (!contentDiv) {
     console.error('Projects content div not found');
+    console.log('Projects container children:', projectsSection.children);
     return;
   }
+  console.log('Found projects div:', contentDiv);
+
   // 移除现有 paper-container
   const existingContainers = contentDiv.querySelectorAll('.paper-container');
   existingContainers.forEach(c => c.remove());
@@ -549,19 +564,26 @@ function generateProjects(projectsList) {
     `;
     contentDiv.appendChild(paperContainer);
   });
+  console.log('Projects generation completed');
 }
 
 function generateBlogs(blogsList) {
+  console.log('Generating blogs with data:', blogsList);
   const blogsSection = document.querySelector('#blogs');
   if (!blogsSection) {
     console.error('Blogs section not found');
     return;
   }
-  const contentDiv = blogsSection.querySelector('div:last-child');
+
+  // 直接选择 #blogs 的第二个子元素（内容容器）
+  const contentDiv = blogsSection.children[1];
   if (!contentDiv) {
     console.error('Blogs content div not found');
+    console.log('Blogs container children:', blogsSection.children);
     return;
   }
+  console.log('Found blogs div:', contentDiv);
+
   // 清空现有内容
   contentDiv.innerHTML = '';
 
@@ -580,6 +602,43 @@ function generateBlogs(blogsList) {
       contentDiv.appendChild(blogDiv);
     });
   }
+  console.log('Blogs generation completed');
+}
+
+function generateAcademicService(academicServiceList) {
+  console.log('Generating academic service with data:', academicServiceList);
+  const academicServiceSection = document.querySelector('#academic-service');
+  if (!academicServiceSection) {
+    console.error('Academic service section not found');
+    return;
+  }
+
+  // 直接选择 #academic-service 的第二个子元素（内容容器）
+  const contentDiv = academicServiceSection.children[1];
+  if (!contentDiv) {
+    console.error('Academic service content div not found');
+    console.log('Academic service container children:', academicServiceSection.children);
+    return;
+  }
+  console.log('Found academic service div:', contentDiv);
+
+  // 清空现有内容
+  contentDiv.innerHTML = '';
+
+  if (academicServiceList.length === 0) {
+    contentDiv.innerHTML = '<p>No academic service records yet.</p>';
+  } else {
+    academicServiceList.forEach(service => {
+      const serviceDiv = document.createElement('div');
+      serviceDiv.style.cssText = 'display: flex; justify-content: flex-start; align-items: center; margin-bottom: 15px;';
+      serviceDiv.innerHTML = `
+        <span style="font-weight: bold; margin-right: 50px;">${service.type}</span>
+        <span>${service.description}</span>
+      `;
+      contentDiv.appendChild(serviceDiv);
+    });
+  }
+  console.log('Academic service generation completed');
 }
 
 function switchLanguage(lang) {

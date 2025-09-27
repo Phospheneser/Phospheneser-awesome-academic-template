@@ -1,0 +1,12 @@
+{
+  "academic_services": [
+    {
+      "type": "学術講演",
+      "description": "北京の MSRA で講演を行う。"
+    },
+    {
+      "type": "ティーチングアシスタント",
+      "description": "パターン認識と機械学習 (COMP130137.01 & AIE410001.01)"
+    }
+  ]
+}
