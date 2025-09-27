@@ -1,13 +1,44 @@
 {
   "projects": [
     {
+      "title": "RM全系列自瞄代码",
+      "date": "2024.10-2024.12",
+      "authors": "<strong>徐哲</strong>, 石青云, 苏城",
+      "description": "复旦大学RM战队EGA全系列自瞄代码，包括自瞄、预测、弹道补偿等，基于<a href=\"https://github.com/HHgzs/TJURM-2024\">TJURM-2024</a>框架开发,最终战队在当年上海站荣获1v1冠军，并在3v3八强血战交龙获得3v3对抗赛非甲级队伍一等奖",
+      "image": "./media/ega.jpg",
+      "links": [
+        {"type": "哔哩哔哩", "url": "https://www.bilibili.com/video/BV12nZqYTERh/?spm_id_from=333.337.search-card.all.click"}
+      ]
+    },
+    {
+      "title": "LaCSR5：基于CSR5的高效SpMV优化",
+      "date": "2023.3-2023.9",
+      "authors": "<strong>徐哲</strong>, 项强, 钱逸云",
+      "description": "在全国大学生计算机系统能力大赛操作系统赛-操作系统功能挑战赛中，团队以复旦大学“这是一支队”参赛，提出并实现了LaCSR5-SpMV算法，针对龙芯3A5000架构优化CSR5格式的稀疏矩阵向量乘法，充分利用SIMD指令和多核特性，在23个稀疏矩阵上取得最高2.78倍性能提升。荣获二等奖。",
+      "image": "./media/lacsr5.png",
+      "links": [
+        {"type": "项目文档", "url": "./media/TEAM.pdf"}
+      ]
+    },
+    {
+      "title": "基于ESP32和Arduino的游戏机开发",
+      "date": "2022.2-2022.3",
+      "authors": "黎林, <strong>徐哲</strong>",
+      "description": "一个基于ESP32和Arduino的游戏机，使用ESP32和Arduino开发，使用C语言编写。参与设备与主板的焊接和亚克力外壳的设计，编写板内游戏程序并完成烧录，成功完成8键简易游戏机的制作，并参与开发过程说明编写，成为青志团队的简易教学项目",
+      "image": "./media/ESP32.png",
+      "links": [
+        {"type": "嘉立创", "url": "https://oshwhub.com/leannn/D0IV1JosLJSk4pbjqsTowlDQUOFQPWPc"},
+        {"type": "代码", "url": "https://github.com/Fudan-EGA/DisPlay/tree/dev?tab=readme-ov-file"}
+      ]
+    },
+    {
       "title": "遗忘之诗：RPG独立探险游戏",
       "date": "2021.10-2021.12",
       "authors": "红豆, <strong>徐哲</strong>, かかかさん Kari.ah, 1nk, Jones",
       "description": "一个RPG独立探险闯关游戏，使用Unity引擎开发，使用C#语言编写。创意关卡设计",
       "image": "./media/ywzs.jpg",
       "links": [
-        {"type": "bilibili", "url": "https://www.bilibili.com/video/BV1j44y1J784/?spm_id_from=333.337.search-card.all.click&vd_source=f1bbb79261d269b6cf918fcc7970de4c"},
+        {"type": "哔哩哔哩", "url": "https://www.bilibili.com/video/BV1j44y1J784/?spm_id_from=333.337.search-card.all.click&vd_source=f1bbb79261d269b6cf918fcc7970de4c"},
         {"type": "下载地址", "url": "https://pan.baidu.com/s/1mxoXLqZGeKSduD5YUDr2-Q "}
       ]
     }
