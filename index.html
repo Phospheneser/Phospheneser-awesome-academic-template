@@ -117,28 +117,28 @@
 
     <div id="top-navbar" class="navbar-menu">
         <div class="navbar-end">
-            <a class="navbar-item" href="#about">
+            <a class="navbar-item" href="#about" id="navbar-about">
                 About Me
             </a>
-            <a class="navbar-item" href="#news">
+            <a class="navbar-item" href="#news" id="navbar-news">
                 News
             </a>
-            <a class="navbar-item" href="#publications">
+            <a class="navbar-item" href="#publications" id="navbar-publications">
                 Publications
             </a>
-            <a class="navbar-item" href="#projects">
+            <a class="navbar-item" href="#projects" id="navbar-projects">
                 Projects
             </a>
-            <a class="navbar-item" href="#blogs">
+            <a class="navbar-item" href="#blogs" id="navbar-blogs">
                 Blogs
             </a>
             <div class="navbar-item has-dropdown is-hoverable">
-              <a class="navbar-link">
+              <a class="navbar-link" id="navbar-language">
                 Language
               </a>
               <div class="navbar-dropdown">
-                <a class="navbar-item" onclick="switchLanguage('en')">English</a>
-                <a class="navbar-item" onclick="switchLanguage('zh')">中文</a>
+                <a class="navbar-item" id="lang-en" onclick="switchLanguage('en')">English</a>
+                <a class="navbar-item" id="lang-zh" onclick="switchLanguage('zh')">中文</a>
               </div>
             </div>
         </div>
@@ -210,10 +210,10 @@
         </div>
       </div>
     </div>
-    <h1 class="title is-size-3-tablet is-size-4-mobile" style="font-family: Futura;">
+    <h1 class="title is-size-3-tablet is-size-4-mobile" style="font-family: Futura;" id="main-title">
       Dream Big, Work Hard, Stay Humble.
     </h1>
-    <p class="subtitle is-size-4-tablet is-size-5-mobile" style="font-family: Brush Script MT;">
+    <p class="subtitle is-size-4-tablet is-size-5-mobile" style="font-family: Brush Script MT;" id="main-subtitle">
       ——Be Versatile, Be Great.
     </p>
     <div class="icon-box">
@@ -237,18 +237,11 @@
 <section class="section" name="sec-intro">
   <div class="container is-max-desktop">
     <div id="about">
-      <h1 class="title is-3">🎄 About Me</h1>
+      <h1 class="title is-3" id="about-title">🎄 About Me</h1>
     </div>
     <div>
-      <p class="text-homepage-1">
-        Hi there! Here is Zhe Xu, you can call me Joshua as well. I am a second-year master’s student in School of Computer Science at Fudan University, advised by <a href="https://xpqiu.github.io/en.html">Prof.Xipeng Qiu</a>.
-        My research interests focus on embodied AI, particularly exploring the <b>intersection of foundation models and robotics</b>. 
-        Previously, I obtained my Bachelor’s degree from Tongji University, and spent an unforgettable year and a half as a research assistant intern at <a href="https://group.iiis.tsinghua.edu.cn/~marslab/#/">MARS Lab</a>, <a href="https://iiis.tsinghua.edu.cn/en/">Tsinghua IIIS</a> and <a href="https://sqz.ac.cn/">Shanghai QiZhi Institute</a> during my undergraduate studies, advised by <a href="https://hangzhaomit.github.io/">Prof.Hang Zhao</a>.
-      </p>
-      <p class="text-homepage-1">
-        <br>Personally, I am dedicated to addressing <span style="font-weight: bold;color: #ee1212;">truly meaningful research problems</span>, 
-        and I tend to focus on work that aligns with <strong>first principles</strong>. The most fundamental issues I currently believe in are <span style="font-weight: bold;color: #ee1212;">Scaling</span> and <span style="font-weight: bold;color: #ee1212;">Search</span>. Feel free to contact me anytime if you share the same passion for these problems.
-      </p>
+      <p class="text-homepage-1" id="about-text1"></p>
+      <p class="text-homepage-1" id="about-text2"></p>
     </div>
   </div>
   
@@ -257,7 +250,7 @@
 <section class="section" name="sec-news">
   <div class="container is-max-desktop">
     <div id="news">
-      <h1 class="title is-3" style="margin-bottom: 1ex;">🔥 News</h1>
+      <h1 class="title is-3" style="margin-bottom: 1ex;" id="news-title">🔥 News</h1>
     </div>
     <div>
       <!-- <div style="display: flex;justify-content: flex-start; align-items: center; margin-bottom: 15px;">
@@ -275,7 +268,7 @@
 <section class="section" name="sec-publications">
   <div class="container is-max-desktop">
     <div id="publications">
-      <h1 class="title is-3" style="margin-bottom: 1ex;">📑 Publications</h1>
+      <h1 class="title is-3" style="margin-bottom: 1ex;" id="publications-title">📑 Publications</h1>
     </div>
     <div class="paper-container">
       <img src="./media/main_page.jpg" alt="Overview" class="paper-image">
@@ -339,7 +332,7 @@
 <section class="section" name="sec-projects">
   <div class="container is-max-desktop">
     <div id="projects">
-      <h1 class="title is-3">⚙️ Projects</h1>
+      <h1 class="title is-3" id="projects-title">⚙️ Projects</h1>
     </div>
     <div class="paper-container">
       <img src="./media/pandai_gif.gif" alt="Overview" class="paper-image">
@@ -431,7 +424,7 @@
 <section class="section">
   <div class="container is-max-desktop">
     <div>
-      <h1 class="title is-3" style="margin-bottom: 1em;">Academic Service</h1>
+      <h1 class="title is-3" style="margin-bottom: 1em;" id="academic-service-title">Academic Service</h1>
     </div>
     <div style="display: flex;justify-content: flex-start; align-items: center; margin-bottom: 15px;">
       <span style="font-weight: bold;margin-right: 83px;">Academic Talk</span>
@@ -448,7 +441,7 @@
 <section class="blogs">
   <div class="container is-max-desktop">
     <div id="blogs">
-      <h1 class="title is-3" style="margin-bottom: 1ex;">Blogs</h1>
+      <h1 class="title is-3" style="margin-bottom: 1ex;" id="blogs-title">Blogs</h1>
     </div>
   </div>
 </section>
@@ -459,7 +452,7 @@
     <div class="columns is-centered">
       <div class="column">
         <div class="content has-text-centered">
-          <p>
+          <p id="footer-text">
             Edit by Joshua@2025.9.27
           </p>
         </div>
