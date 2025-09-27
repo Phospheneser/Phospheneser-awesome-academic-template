@@ -132,6 +132,15 @@
             <a class="navbar-item" href="#blogs">
                 Blogs
             </a>
+            <div class="navbar-item has-dropdown is-hoverable">
+              <a class="navbar-link">
+                Language
+              </a>
+              <div class="navbar-dropdown">
+                <a class="navbar-item" onclick="switchLanguage('en')">English</a>
+                <a class="navbar-item" onclick="switchLanguage('zh')">中文</a>
+              </div>
+            </div>
         </div>
     </div>
   </nav>
@@ -496,5 +505,50 @@
     currentIndex = (currentIndex + 1) % cards.length;
     showCard(currentIndex);
   }, 5000);
+</script>
+<script>
+let currentLang = localStorage.getItem('lang') || 'en';
+
+async function loadContent(lang = currentLang) {
+  const response = await fetch('languages.json');
+  const dict = await response.json();
+  const content = dict[lang];
+
+  // 更新导航栏
+  document.querySelector('#navbar-about').innerHTML = content.navbar_about;
+  document.querySelector('#navbar-news').innerHTML = content.navbar_news;
+  document.querySelector('#navbar-publications').innerHTML = content.navbar_publications;
+  document.querySelector('#navbar-projects').innerHTML = content.navbar_projects;
+  document.querySelector('#navbar-blogs').innerHTML = content.navbar_blogs;
+  document.querySelector('#navbar-language').innerHTML = content.language;
+  document.querySelector('#lang-en').innerHTML = content.english;
+  document.querySelector('#lang-zh').innerHTML = content.chinese;
+
+  // 更新标题和副标题
+  document.querySelector('#main-title').innerHTML = content.title;
+  document.querySelector('#main-subtitle').innerHTML = content.subtitle;
+
+  // 更新 About 部分
+  document.querySelector('#about-title').innerHTML = content.about_title;
+  document.querySelector('#about-text1').innerHTML = content.about_text1;
+  document.querySelector('#about-text2').innerHTML = content.about_text2;
+
+  // 更新其他部分标题
+  document.querySelector('#news-title').innerHTML = content.news_title;
+  document.querySelector('#publications-title').innerHTML = content.publications_title;
+  document.querySelector('#projects-title').innerHTML = content.projects_title;
+  document.querySelector('#academic-service-title').innerHTML = content.academic_service_title;
+  document.querySelector('#blogs-title').innerHTML = content.blogs_title;
+
+  // 更新页脚
+  document.querySelector('#footer-text').innerHTML = content.footer;
+}
+
+function switchLanguage(lang) {
+  localStorage.setItem('lang', lang);
+  loadContent(lang);
+}
+
+loadContent();
 </script>
 </html>
