@@ -516,11 +516,22 @@ html {
   }
 }
 
+/* 平板设备适配 */
+@media (min-width: 769px) and (max-width: 1023px) {
+  .back-to-top {
+    bottom: 20px;
+    right: 20px;
+    width: 48px;
+    height: 48px;
+    font-size: 17px;
+  }
+}
+
 /* 移动端适配 */
 @media (max-width: 768px) {
   .back-to-top {
     bottom: 15px;
-    right: 200px;
+    right: 15px;
     width: 45px;
     height: 45px;
     font-size: 16px;
@@ -1009,6 +1020,18 @@ html {
   pre, code {
     font-size: 0.9rem !important;
     word-break: break-word !important;
+  }
+}
+
+/* 超小屏幕优化 */
+@media (max-width: 480px) {
+  /* 超小屏幕上的back to top按钮优化 */
+  .back-to-top {
+    bottom: 12px !important;
+    right: 12px !important;
+    width: 42px !important;
+    height: 42px !important;
+    font-size: 15px !important;
   }
 }
 
