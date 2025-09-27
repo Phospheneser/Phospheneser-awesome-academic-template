@@ -1,5 +1,10 @@
+html {
+  scroll-padding-top: 60px; /* 为锚点导航留出空间 */
+}
+
 body {
   font-family: 'Noto Sans', sans-serif;
+   padding-top: 52px; /* 为固定导航栏留出空间 */
 }
 
 
@@ -207,6 +212,12 @@ body {
   background-color: #111211 !important;
   color: #ffffff !important;
   opacity: 0.7;
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  z-index: 1000 !important;
+  width: 100% !important;
 }
 
 .text-homepage-1{
