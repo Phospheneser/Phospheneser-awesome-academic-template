@@ -315,7 +315,7 @@ html {
 @media (max-width: 768px) {
   .back-to-top {
     bottom: 15px;
-    right: 50px;
+    right: 200px;
     width: 45px;
     height: 45px;
     font-size: 16px;
@@ -357,6 +357,16 @@ html {
     padding: 0.5rem;
     background-color: #111211 !important;
     opacity: 0.95;
+  }
+
+  /* 确保桌面版导航菜单正常显示 */
+  @media (min-width: 1024px) {
+    .navbar-menu {
+      display: flex !important;
+      position: static !important;
+      background-color: transparent !important;
+      box-shadow: none !important;
+    }
   }
 
   .navbar-item {
@@ -401,15 +411,23 @@ html {
   /* 确保导航栏在小屏幕上正确显示 */
   @media (max-width: 1023px) {
     .navbar-menu {
-      display: none;
+      display: none !important;
       position: absolute;
       top: 100%;
       left: 0;
       right: 0;
       z-index: 1000;
+      background-color: #111211 !important;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      width: 100%;
     }
 
     .navbar-menu.is-active {
+      display: block !important;
+    }
+
+    /* 确保移动端汉堡菜单按钮正常显示 */
+    .navbar-burger {
       display: block !important;
     }
   }
