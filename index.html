@@ -58,32 +58,7 @@
     }
   </script>
 
-  <!-- load 3d hobby word cloud -->
-  <script>
-      window.onload = function () {
-      try {
-        TagCanvas.Start('word-cloud', 'tags', {
-          textColour: '#FFFFFF',
-          outlineColour: 'rgba(255, 255, 255, 0.5)',
-          reverse: true,
-          depth: 0.8,
-          maxSpeed: 0.01,
-          textFont: 'Papyrus, Arial, sans-serif',
-          textHeight: 20,
-          shuffleTags: true,
-          initial: [0.3, 0.3],
-          decel: 0.98,
-          dragControl: true,
-          weight: true,
-          shape: 'spiral',
-          tooltip: true
-
-        });
-      } catch (e) {
-        console.error('Canvas initialization error:', e);
-      }
-    };
-  </script>
+  <!-- 3D word cloud will be initialized dynamically -->
 
   <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
         rel="stylesheet">
@@ -402,8 +377,20 @@ async function loadContent(lang = currentLang) {
   // 动态生成卡片
   generateCards(cardsList);
 
+  // 更新卡片切换功能的cards变量
+  setTimeout(() => {
+    cards = document.querySelectorAll('.card');
+    currentIndex = Math.floor(Math.random() * cards.length);
+    showCard(currentIndex);
+  }, 100);
+
   // 动态生成词云
   generateWordCloud(wordcloudList);
+
+  // 确保词云正确初始化（首次加载或语言切换）
+  setTimeout(() => {
+    generateWordCloud(wordcloudList);
+  }, 100);
 }
 
 function updateElement(selector, html) {
@@ -677,6 +664,30 @@ function generateWordCloud(wordcloudList) {
     li.appendChild(a);
     tagsContainer.appendChild(li);
   });
+
+  // 重新初始化TagCanvas词云
+  try {
+    if (typeof TagCanvas !== 'undefined') {
+      TagCanvas.Start('word-cloud', 'tags', {
+        textColour: '#FFFFFF',
+        outlineColour: 'rgba(255, 255, 255, 0.5)',
+        reverse: true,
+        depth: 0.8,
+        maxSpeed: 0.01,
+        textFont: 'Papyrus, Arial, sans-serif',
+        textHeight: 20,
+        shuffleTags: true,
+        initial: [0.3, 0.3],
+        decel: 0.98,
+        dragControl: true,
+        weight: true,
+        shape: 'spiral',
+        tooltip: true
+      });
+    }
+  } catch (e) {
+    console.error('TagCanvas re-initialization error:', e);
+  }
 
   console.log('Word cloud generation completed');
 }
