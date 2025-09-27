@@ -147,27 +147,7 @@
     <div style="display: flex; justify-content: space-between; align-items: center; height: 300px;">
       <div style="flex: 1;display: flex; justify-content: center; align-items: center;">
         <div class="card-container">
-          <!-- Dynamic Cards -->
-          <div class="card">
-            <div class="card-title">A Good Leader</div>
-            <div class="card-description">A person who inspires and motivates others to achieve their goals.</div>
-          </div>
-          <div class="card">
-            <div class="card-title">An Experienced Instructor</div>
-            <div class="card-description">A person who inspires and motivates others to achieve their goals.</div>
-          </div>
-          <div class="card">
-            <div class="card-title">Cognitive Level Far Above Peers</div>
-            <div class="card-description">Possesses exceptional cognitive abilities that stand out among peers.</div>
-          </div>
-          <div class="card">
-            <div class="card-title">Only Conduct Impactful Research</div>
-            <div class="card-description">Focuses solely on research that makes a significant difference.</div>
-          </div>
-          <div class="card">
-            <div class="card-title">Resilience and Tolerance</div>
-            <div class="card-description">Trains oneself to handle challenges and tolerate frustrations effectively.</div>
-          </div>
+          <!-- 卡片内容将动态生成 -->
       
           <!-- Arrow Buttons -->
           <button class="arrow-btn arrow-left" id="prev-btn">
@@ -189,22 +169,7 @@
         <div id="canvas-container">
           <canvas id="word-cloud" width="400" height="300"></canvas>
           <ul id="tags">
-            <li><a href="#" title="A good team leader">Leader</a></li>
-            <li><a href="#">Instructor</a></li>
-            <li><a href="#">Connector</a></li>
-            <li><a href="#">Smart</a></li>
-            <li><a href="#">Mature</a></li>
-            <li><a href="#">Impact-Driven</a></li>
-            <li><a href="#">Resilience</a></li>
-            <li><a href="#">Passionate</a></li>
-            <li><a href="#">Faithful</a></li>
-            <li><a href="#">Confident</a></li>
-            <li><a href="#">Innovative</a></li>
-            <li><a href="#">Questioner</a></li>
-            <li><a href="#">Insightful</a></li>
-            <li><a href="#">Visionary</a></li>
-            <li><a href="#">Emotionally Stable</a></li>
-            <li><a href="#">Bold Endeavor</a></li>
+            <!-- 词云标签将动态生成 -->
           </ul>
         </div>
       </div>
@@ -361,13 +326,15 @@ let availableLanguages = ['en', 'zh', 'jp']; // 直接定义可用语言列表
 async function loadContent(lang = currentLang) {
 
   // 加载所有数据文件
-  const [webContentRes, projectsRes, publicationsRes, newsRes, blogsRes, academicServiceRes] = await Promise.all([
+  const [webContentRes, projectsRes, publicationsRes, newsRes, blogsRes, academicServiceRes, cardsRes, wordcloudRes] = await Promise.all([
     fetch(`data/${lang}/web_content.json`),
     fetch(`data/${lang}/projects.json`),
     fetch(`data/${lang}/publications.json`),
     fetch(`data/${lang}/news.json`),
     fetch(`data/${lang}/blogs.json`),
-    fetch(`data/${lang}/academic_service.json`)
+    fetch(`data/${lang}/academic_service.json`),
+    fetch(`data/${lang}/cards.json`),
+    fetch(`data/${lang}/wordcloud.json`)
   ]);
 
   const webContent = await webContentRes.json();
@@ -376,12 +343,16 @@ async function loadContent(lang = currentLang) {
   const news = await newsRes.json();
   const blogs = await blogsRes.json();
   const academicService = await academicServiceRes.json();
+  const cards = await cardsRes.json();
+  const wordcloud = await wordcloudRes.json();
 
   const projectsList = projects.projects || [];
   const publicationsList = publications.publications || [];
   const newsList = news.news || [];
   const blogsList = blogs.blogs || [];
   const academicServiceList = academicService.academic_services || [];
+  const cardsList = cards.cards || [];
+  const wordcloudList = wordcloud.wordcloud || [];
 
   // 更新导航栏
   updateElement('#navbar-about', webContent.navbar_about);
@@ -427,6 +398,12 @@ async function loadContent(lang = currentLang) {
 
   // 动态生成博客
   generateBlogs(blogsList);
+
+  // 动态生成卡片
+  generateCards(cardsList);
+
+  // 动态生成词云
+  generateWordCloud(wordcloudList);
 }
 
 function updateElement(selector, html) {
@@ -639,6 +616,69 @@ function generateAcademicService(academicServiceList) {
     });
   }
   console.log('Academic service generation completed');
+}
+
+function generateCards(cardsList) {
+  console.log('Generating cards with data:', cardsList);
+  const cardContainer = document.querySelector('.card-container');
+  if (!cardContainer) {
+    console.error('Card container not found');
+    return;
+  }
+
+  // 清空现有卡片
+  cardContainer.innerHTML = '';
+
+  if (cardsList.length === 0) {
+    console.log('No cards data available');
+    return;
+  }
+
+  // 只显示前5张卡片（如果有的话）
+  const displayCards = cardsList.slice(0, 5);
+
+  displayCards.forEach(card => {
+    const cardDiv = document.createElement('div');
+    cardDiv.className = 'card';
+    cardDiv.innerHTML = `
+      <div class="card-title">${card.title}</div>
+      <div class="card-description">${card.description}</div>
+    `;
+    cardContainer.appendChild(cardDiv);
+  });
+
+  console.log('Cards generation completed');
+}
+
+function generateWordCloud(wordcloudList) {
+  console.log('Generating word cloud with data:', wordcloudList);
+  const tagsContainer = document.querySelector('#tags');
+  if (!tagsContainer) {
+    console.error('Word cloud tags container not found');
+    return;
+  }
+
+  // 清空现有标签
+  tagsContainer.innerHTML = '';
+
+  if (wordcloudList.length === 0) {
+    console.log('No word cloud data available');
+    return;
+  }
+
+  wordcloudList.forEach(item => {
+    const li = document.createElement('li');
+    const a = document.createElement('a');
+    a.href = '#';
+    if (item.title) {
+      a.title = item.title;
+    }
+    a.textContent = item.text;
+    li.appendChild(a);
+    tagsContainer.appendChild(li);
+  });
+
+  console.log('Word cloud generation completed');
 }
 
 function switchLanguage(lang) {

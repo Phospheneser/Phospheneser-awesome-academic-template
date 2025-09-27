@@ -1,0 +1,20 @@
+{
+  "wordcloud": [
+    {"text": "リーダー", "weight": 30, "title": "優れたチームリーダー"},
+    {"text": "指導者", "weight": 15},
+    {"text": "コネクター", "weight": 25},
+    {"text": "賢い", "weight": 15},
+    {"text": "成熟", "weight": 20},
+    {"text": "影響力主導", "weight": 40},
+    {"text": "回復力", "weight": 30},
+    {"text": "情熱的", "weight": 20},
+    {"text": "忠実", "weight": 30},
+    {"text": "自信", "weight": 20},
+    {"text": "革新的", "weight": 15},
+    {"text": "質問者", "weight": 30},
+    {"text": "洞察力", "weight": 40},
+    {"text": "先見者", "weight": 20},
+    {"text": "感情的に安定", "weight": 25},
+    {"text": "大胆な挑戦", "weight": 30}
+  ]
+}

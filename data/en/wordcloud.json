@@ -1,0 +1,20 @@
+{
+  "wordcloud": [
+    {"text": "Leader", "weight": 30, "title": "A good team leader"},
+    {"text": "Instructor", "weight": 15},
+    {"text": "Connector", "weight": 25},
+    {"text": "Smart", "weight": 15},
+    {"text": "Mature", "weight": 20},
+    {"text": "Impact-Driven", "weight": 40},
+    {"text": "Resilience", "weight": 30},
+    {"text": "Passionate", "weight": 20},
+    {"text": "Faithful", "weight": 30},
+    {"text": "Confident", "weight": 20},
+    {"text": "Innovative", "weight": 15},
+    {"text": "Questioner", "weight": 30},
+    {"text": "Insightful", "weight": 40},
+    {"text": "Visionary", "weight": 20},
+    {"text": "Emotionally Stable", "weight": 25},
+    {"text": "Bold Endeavor", "weight": 30}
+  ]
+}

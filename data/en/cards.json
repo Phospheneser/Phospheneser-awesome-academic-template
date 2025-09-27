@@ -1,0 +1,24 @@
+{
+  "cards": [
+    {
+      "title": "A Good Leader",
+      "description": "A person who inspires and motivates others to achieve their goals."
+    },
+    {
+      "title": "An Experienced Instructor",
+      "description": "A person who inspires and motivates others to achieve their goals."
+    },
+    {
+      "title": "Cognitive Level Far Above Peers",
+      "description": "Possesses exceptional cognitive abilities that stand out among peers."
+    },
+    {
+      "title": "Only Conduct Impactful Research",
+      "description": "Focuses solely on research that makes a significant difference."
+    },
+    {
+      "title": "Resilience and Tolerance",
+      "description": "Trains oneself to handle challenges and tolerate frustrations effectively."
+    }
+  ]
+}
