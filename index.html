@@ -140,11 +140,11 @@
       <div style="flex: 1;display: flex; justify-content: center; align-items: center;">
         <div class="card-container">
           <!-- Dynamic Cards -->
-          <div class="card active">
+          <div class="card">
             <div class="card-title">A Good Leader</div>
             <div class="card-description">A person who inspires and motivates others to achieve their goals.</div>
           </div>
-          <div class="card active">
+          <div class="card">
             <div class="card-title">An Experienced Instructor</div>
             <div class="card-description">A person who inspires and motivates others to achieve their goals.</div>
           </div>
@@ -466,7 +466,8 @@
   const cards = document.querySelectorAll('.card');
   const prevBtn = document.getElementById('prev-btn');
   const nextBtn = document.getElementById('next-btn');
-  let currentIndex = 0;
+  let currentIndex = Math.floor(Math.random() * cards.length);
+  showCard(currentIndex);
 
   // Function to show the current card
   function showCard(index) {
