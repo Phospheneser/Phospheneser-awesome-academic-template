@@ -107,7 +107,14 @@
                         <a class="navbar-item" href="#about">👤 关于</a>
                         <a class="navbar-item" href="#services">⚙️ 服务</a>
                         <a class="navbar-item" href="#portfolio">💼 作品</a>
-                        <a class="navbar-item" href="#contact">📧 联系</a>
+                        <div class="navbar-item has-dropdown" id="demo-language-dropdown">
+                            <a class="navbar-link" id="demo-navbar-language">🌐 Language</a>
+                            <div class="navbar-dropdown" id="demo-language-dropdown-menu">
+                                <a class="navbar-item" href="#" onclick="switchDemoLanguage('en')">English</a>
+                                <a class="navbar-item" href="#" onclick="switchDemoLanguage('zh')">中文</a>
+                                <a class="navbar-item" href="#" onclick="switchDemoLanguage('jp')">日本語</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </nav>
@@ -206,6 +213,22 @@
             console.log('🍔 汉堡菜单元素：', $('.navbar-burger').length);
             console.log('📋 导航菜单元素：', $('.navbar-menu').length);
         });
+
+        // 演示页面语言切换功能
+        function switchDemoLanguage(lang) {
+            console.log('切换演示语言到：', lang);
+            const langNames = {
+                'en': '🌐 Language',
+                'zh': '🌐 语言',
+                'jp': '🌐 言語'
+            };
+            document.getElementById('demo-navbar-language').textContent = langNames[lang];
+
+            // 关闭dropdown
+            document.getElementById('demo-language-dropdown').classList.remove('is-active');
+
+            return false;
+        }
     </script>
 </body>
 </html>

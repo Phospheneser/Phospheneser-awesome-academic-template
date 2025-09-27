@@ -114,11 +114,11 @@
             <a class="navbar-item" href="#blogs" id="navbar-blogs">
                 Blogs
             </a>
-            <div class="navbar-item has-dropdown is-hoverable">
+            <div class="navbar-item has-dropdown" id="language-dropdown">
               <a class="navbar-link" id="navbar-language">
                 Language
               </a>
-              <div class="navbar-dropdown">
+              <div class="navbar-dropdown" id="language-dropdown-menu">
                 <!-- 语言按钮将动态生成 -->
               </div>
             </div>
@@ -372,8 +372,8 @@ function updateElement(selector, html) {
 }
 
 function generateLanguageButtons(webContent) {
-  const langDropdown = document.querySelector('#navbar-language').parentElement;
-  const dropdown = langDropdown.querySelector('.navbar-dropdown');
+  const langDropdown = document.querySelector('#language-dropdown');
+  const dropdown = document.querySelector('#language-dropdown-menu');
   dropdown.innerHTML = '';
   availableLanguages.forEach(lang => {
     // 从当前语言的 webContent 中获取语言名称
@@ -386,7 +386,10 @@ function generateLanguageButtons(webContent) {
     const langName = webContent[langKey] || lang;
     const button = document.createElement('a');
     button.className = 'navbar-item';
-    button.onclick = () => switchLanguage(lang);
+    button.onclick = (e) => {
+      e.stopPropagation(); // 阻止事件冒泡
+      switchLanguage(lang);
+    };
     button.innerHTML = langName;
     dropdown.appendChild(button);
   });
@@ -845,6 +848,48 @@ function startWordCloudRotation() {
 function switchLanguage(lang) {
   localStorage.setItem('lang', lang);
   loadContent(lang);
+  // 语言切换后保持dropdown显示（如果在移动端汉堡菜单中）
+  setTimeout(() => {
+    const dropdown = document.querySelector('#language-dropdown');
+    if (dropdown && window.innerWidth <= 1023) {
+      dropdown.classList.add('is-active');
+    }
+  }, 100);
+}
+
+// 初始化语言dropdown功能
+function initializeLanguageDropdown() {
+  const languageLink = document.querySelector('#navbar-language');
+  const languageDropdown = document.querySelector('#language-dropdown');
+
+  if (languageLink && languageDropdown) {
+    languageLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+
+      // 切换dropdown的激活状态
+      languageDropdown.classList.toggle('is-active');
+
+      // 如果在移动端汉堡菜单中，同步激活状态
+      if (window.innerWidth <= 1023) {
+        const mobileMenu = document.querySelector('.navbar-menu.is-active');
+        if (mobileMenu) {
+          // 在移动端菜单中也激活对应的dropdown
+          const mobileDropdown = mobileMenu.querySelector('#language-dropdown');
+          if (mobileDropdown) {
+            mobileDropdown.classList.toggle('is-active');
+          }
+        }
+      }
+    });
+
+    // 点击外部关闭dropdown
+    document.addEventListener('click', (e) => {
+      if (!languageDropdown.contains(e.target)) {
+        languageDropdown.classList.remove('is-active');
+      }
+    });
+  }
 }
 
 // 初始化卡片切换功能
@@ -894,6 +939,9 @@ function initializeCardSlider() {
 
 document.addEventListener('DOMContentLoaded', () => {
   loadContent();
+
+  // 初始化语言dropdown功能
+  initializeLanguageDropdown();
 
   // 汉堡菜单功能已由jQuery处理
 

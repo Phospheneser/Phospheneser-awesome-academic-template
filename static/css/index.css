@@ -504,6 +504,28 @@ html {
       backdrop-filter: blur(8px) !important;
     }
 
+    /* 语言dropdown在移动端菜单中的样式 */
+    .navbar-menu.is-active .has-dropdown.is-active .navbar-dropdown {
+      position: static !important;
+      display: block !important;
+      background: rgba(255, 255, 255, 0.05) !important;
+      border: none !important;
+      box-shadow: none !important;
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+
+    .navbar-menu.is-active .has-dropdown.is-active .navbar-link {
+      background: linear-gradient(135deg, rgba(52, 152, 219, 0.2) 0%, rgba(155, 89, 182, 0.15) 100%) !important;
+      border-left: 3px solid #3498db !important;
+    }
+
+    .navbar-menu.is-active .navbar-dropdown .navbar-item {
+      padding-left: 2rem !important;
+      background: rgba(255, 255, 255, 0.03) !important;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+    }
+
     .navbar-menu.is-active .navbar-item:hover {
       background: linear-gradient(135deg, rgba(52, 152, 219, 0.25) 0%, rgba(155, 89, 182, 0.2) 100%) !important;
       transform: translateX(-4px) !important;
