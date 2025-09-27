@@ -293,7 +293,13 @@ html {
   padding: 5px;
   /* background-color: rgba(18, 216, 160, 0.6); */
   border-radius: 5px;
-  
+
+}
+
+.paper-description.blog-description {
+  font-style: normal;
+  font-family: inherit;
+  line-height: 1.6;
 }
 
 .paper-conf{

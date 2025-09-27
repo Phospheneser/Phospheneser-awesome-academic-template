@@ -509,8 +509,9 @@ function generateBlogs(blogsList) {
   }
   console.log('Found blogs div:', contentDiv);
 
-  // 清空现有内容
-  contentDiv.innerHTML = '';
+  // 移除现有 paper-container
+  const existingContainers = contentDiv.querySelectorAll('.paper-container');
+  existingContainers.forEach(c => c.remove());
 
   // 可以在这里生成博客内容，如果有的话
   // 目前 blogs.json 是空的
@@ -518,13 +519,34 @@ function generateBlogs(blogsList) {
     contentDiv.innerHTML = '<p>No blog posts yet.</p>';
   } else {
     blogsList.forEach(blog => {
-      const blogDiv = document.createElement('div');
-      blogDiv.innerHTML = `
-        <h3>${blog.title}</h3>
-        <p>${blog.date}</p>
-        <p>${blog.content}</p>
+      const blogContainer = document.createElement('div');
+      blogContainer.className = 'paper-container';
+
+      let linksHtml = '';
+      if (blog.links && blog.links.length > 0) {
+        linksHtml = blog.links.map(link => `
+          <a href="${link.url}" target="_blank" rel="noopener noreferrer" class="paper-link" style="margin-right: 10px;">
+            ${link.type}
+          </a>
+        `).join('');
+      }
+
+      const imageHtml = blog.image
+        ? `<img src="${blog.image}" alt="${blog.title}" class="paper-image">`
+        : `<div class="paper-image" style="background: #f0f0f0; display: flex; align-items: center; justify-content: center; height: 150px; color: #666;">No Image</div>`;
+
+      blogContainer.innerHTML = `
+        ${imageHtml}
+        <div class="paper-content">
+          <h2 class="paper-title" style="display: flex; justify-content: space-between; align-items: center;">
+            ${blog.title}
+            <span style="margin-left: auto; font-size: 16px; color: #666;">${blog.date}</span>
+          </h2>
+          <p class="paper-description blog-description">${blog.content}</p>
+          <div>${linksHtml}</div>
+        </div>
       `;
-      contentDiv.appendChild(blogDiv);
+      contentDiv.appendChild(blogContainer);
     });
   }
   console.log('Blogs generation completed');
@@ -762,6 +784,7 @@ function startWordCloudRotation() {
     const canvas = document.getElementById('word-cloud');
     if (canvas) {
       // 尝试重新开始TagCanvas动画
+      console.log(canvas.tc)
       if (canvas.tc) {
         // 重新设置动画状态
         canvas.tc.animating = true;

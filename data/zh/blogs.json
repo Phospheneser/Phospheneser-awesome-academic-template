@@ -1,3 +1,16 @@
 {
-  "blogs": []
+  "blogs": [
+    {
+      "title": "SpeechGPT 2.0-预览版",
+      "date": "2025-01-01",
+      "content": "SpeechGPT 2.0-preview 是我们在迈向情景智能推出的第一个拟人化实时交互系统。作为在百万小时级语音数据上训练的端到端语音大模型，它具有拟人口语化表达与百毫秒级低延迟响应，支持自然流畅的实时打断交互。",
+      "links": [
+        {
+          "type": "[原文]",
+          "url": "https://www.open-moss.com/cn/speechgpt2-preview/"
+        }
+      ],
+      "image": "./media/sgpt2p.png"
+    }
+  ]
 }

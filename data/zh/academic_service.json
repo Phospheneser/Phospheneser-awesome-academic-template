@@ -1,12 +1,4 @@
 {
   "academic_services": [
-    {
-      "type": "学术演讲",
-      "description": "在北京微软研究院进行演讲。"
-    },
-    {
-      "type": "助教",
-      "description": "模式识别与机器学习 (COMP130137.01 & AIE410001.01)"
-    }
   ]
 }
