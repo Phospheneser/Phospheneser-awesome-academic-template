@@ -542,7 +542,7 @@ function generateBlogs(blogsList) {
       if (blog.links && blog.links.length > 0) {
         linksHtml = blog.links.map(link => `
           <a href="${link.url}" target="_blank" rel="noopener noreferrer" class="paper-link" style="margin-right: 10px;">
-            ${link.type}
+            [${link.type}]
           </a>
         `).join('');
       }
