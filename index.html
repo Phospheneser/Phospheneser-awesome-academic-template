@@ -137,8 +137,7 @@
                 Language
               </a>
               <div class="navbar-dropdown">
-                <a class="navbar-item" id="lang-en" onclick="switchLanguage('en')">English</a>
-                <a class="navbar-item" id="lang-zh" onclick="switchLanguage('zh')">中文</a>
+                <!-- 语言按钮将动态生成 -->
               </div>
             </div>
         </div>
@@ -253,14 +252,7 @@
       <h1 class="title is-3" style="margin-bottom: 1ex;" id="news-title">🔥 News</h1>
     </div>
     <div>
-      <!-- <div style="display: flex;justify-content: flex-start; align-items: center; margin-bottom: 15px;">
-        <span style="font-weight: bold;margin-right: 67px;">2025.1.3</span>
-        <span>Talk at MSRA, Beijing.</span>
-      </div> -->
-      <div style="display: flex;justify-content: flex-start; align-items: center; margin-bottom: 15px;">
-        <span style="font-weight: bold;margin-right: 50px;">2024.12.25</span>
-        <span style="font-family: Georgia">VLABench Preview Version was released!</span>
-      </div>
+      <!-- 新闻内容将动态生成 -->
     </div>
   </div>
 </section>
@@ -270,63 +262,8 @@
     <div id="publications">
       <h1 class="title is-3" style="margin-bottom: 1ex;" id="publications-title">📑 Publications</h1>
     </div>
-    <div class="paper-container">
-      <img src="./media/main_page.jpg" alt="Overview" class="paper-image">
-      <div class="paper-content">
-        <h2 class="paper-title">VLABench: A Large-Scale Benchmark for Language-Conditioned Robotics Manipulation with Long-Horizon Reasoning Tasks</h2>
-        <p class="paper-conf">CVPR'25 (But 1 of 19)</p>
-        <p class="paper-authors">
-          <strong>Shiduo Zhang</strong>, Zhe Xu, Peiju Liu, Xiaopeng Yu, Yuan Li, Qinghui Gao, Zhaoye Fei, Zhangyue Yin, Zuxuan Wu, Yu-Gang Jiang & Xipeng Qiu
-        </p>
-        <p class="paper-description">
-         "First benchmark for VLA. Not only for evaluation, definition matters most."
-        </p>
-        <p>
-          <a href="https://arxiv.org/abs/2412.18194" target="_blank" class="paper-link">[Paper]</a>
-          <a href="https://vlabench.github.io/" target="_blank" class="paper-link">[Project Page]</a>
-          <a href="https://github.com/OpenMOSS/VLABench" target="_blank" class="paper-link">[Code]</a>
-        </p>
-      </div>
-    </div>
-
-    <div class="paper-container">
-      <img src="./media/pipeline.gif" alt="Overview" class="paper-image">
-      <div class="paper-content">
-        <h2 class="paper-title">Large Trajectory Models are Scalable Motion Predictors and Planners</h2>
-        <p class="paper-authors">
-          Qiao Sun<sup>*</sup>, <strong>Shiduo Zhang<sup>*</sup></strong> , Danjiao Ma, Jingzhe Shi, Derun Li, Simian Luo, Yu Wang, Ningyi Xu, Guangzhi Cao & Hang Zhao
-        </p>
-        <p class="paper-description">
-         "First work to scale casual transformer in Autonomous Driving. Previous SOTA at NuPlan."
-        </p>
-        <p>
-          <a href="https://arxiv.org/abs/2310.19620" target="_blank" class="paper-link">[Paper]</a>
-          <a href="https://github.com/Tsinghua-MARS-Lab/StateTransformer" target="_blank" class="paper-link">[Code]</a>
-        </p>
-      </div>
-    </div>
-
-    <div class="paper-container">
-      <img src="./media/example_moss_search.gif" alt="Overview" class="paper-image">
-      <div class="paper-content">
-        <h2 class="paper-title">MOSS: An Open Conversational Large Language Model</h2>
-        <p class="paper-conf">Machine Intelligence Research</p>
-        <p class="paper-authors">
-          Tianxiang Sun, Xiaotian Zhang, Zhengfu He, Peng Li, Qinyuan Cheng, Xiangyang Liu, Hang Yan, Yunfan Shao, Qiong Tang, <strong>Shiduo Zhang</strong>, Xingjian Zhao, Ke Chen, Yining Zheng, Zhejian Zhou, Ruixiao Li, Jun Zhan, Yunhua Zhou, Linyang Li, Xiaogui Yang, Lingling Wu, Zhangyue Yin, Xuanjing Huang, Yu-Gang Jiang & Xipeng Qiu
-        </p>
-        <p class="paper-description">
-         "First open source large language model after ChatGPT moment. Github star 12k+."
-        </p>
-        <p>
-          <a href="https://link.springer.com/article/10.1007/s11633-024-1502-8" target="_blank" class="paper-link">[Paper]</a>
-          <a href="https://huggingface.co/datasets/fnlp/moss-003-sft-data" target="_blank" class="paper-link">[Hugging Face]</a>
-          <a href="https://github.com/OpenMOSS/MOSS" target="_blank" class="paper-link">[Code]</a>
-        </p>
-      </div>
-    </div>
+    <!-- 出版物内容将动态生成 -->
   </div>
-  </div>
-
 </section>
 
 <section class="section" name="sec-projects">
@@ -334,90 +271,7 @@
     <div id="projects">
       <h1 class="title is-3" id="projects-title">⚙️ Projects</h1>
     </div>
-    <div class="paper-container">
-      <img src="./media/pandai_gif.gif" alt="Overview" class="paper-image">
-      <div class="paper-content">
-        <h2 class="paper-title"> </span></h2>
-        <h2 class="paper-title" style="display: flex; justify-content: space-between; align-items: center;">
-          AgentSim2: A Large-Scale Agent Town Driven by Large Language Models
-          <span style="margin-left: auto;font-size: 16px;">2024.2-2024.5</span>
-        </h2>
-        <p class="paper-authors">
-          Jiaju Lin<sup>*</sup>, <strong>Shiduo Zhang</strong><sup>*</sup>
-        </p>
-        <p class="paper-description">
-         "The second version of <a href="https://github.com/py499372727/AgentSims">AgentSim</a>. A much larger ai town than <a href="https://arxiv.org/pdf/2304.03442">Stanford one</a>."
-        </p>
-        <!-- <p>
-          <a href="https://arxiv.org/abs/2412.18194" target="_blank" class="paper-link">[Paper]</a>
-          <a href="https://vlabench.github.io/" target="_blank" class="paper-link">[Project Page]</a>
-          <a href="https://github.com/OpenMOSS/VLABench" target="_blank" class="paper-link">[Code]</a>
-        </p> -->
-      </div>
-    </div>
-
-    <div class="paper-container">
-      <img src="./media/architexture.png" alt="Overview" class="paper-image">
-      <div class="paper-content">
-        <h2 class="paper-title" style="display: flex; justify-content: space-between; align-items: center;">
-          Generalizing Motion Planners with Mixture of Experts for Autonomous Driving
-          <span style="margin-left: auto;font-size: 16px;">2023.12-2024.2</span>
-        </h2>
-        <p class="paper-authors">
-          Main idea provided by <strong>Shiduo Zhang</strong>.
-        </p>
-        <p class="paper-description">
-         "Introduce MoE to autonomous driving, proposed by me. Due to time constraints, I only contributed to the idea and baseline in early discussions."
-        </p>
-        <p>
-          <a href="https://arxiv.org/abs/2410.15774" target="_blank" class="paper-link">[Paper]</a>
-          <a href="https://tsinghua-mars-lab.github.io/StateTransformer/" target="_blank" class="paper-link">[Project Page]</a>
-          <a href="https://github.com/Tsinghua-MARS-Lab/StateTransformer" target="_blank" class="paper-link">[Code]</a>
-        </p>
-      </div>
-    </div>
-
-    <div class="paper-container">
-      <img src="./media/rpa.gif" alt="Overview" class="paper-image">
-      <div class="paper-content">
-        <h2 class="paper-title" style="display: flex; justify-content: space-between; align-items: center;">
-          General Intelligent Agent for Computer Usage: A Method to Robotics Process Automation AI.
-          <span style="margin-left: auto;font-size: 16px;">2022.5-2022.11</span>
-        </h2>
-        <p class="paper-authors">
-          <strong>Shiduo Zhang</strong>, Ziwen Zhuang & Hang Zhao
-        </p>
-        <p class="paper-description">
-         "A <span style="font-weight: bold;color: #ee1212;">highly forward-thinking and insightful idea!</span>. Using mouse control for general-purpose RPA tasks. Just like Claude’s work in October 2024. However, our practice began two years earlier, in a time before GPT."
-        </p>
-        <!-- <p>
-          <a href="https://arxiv.org/abs/2412.18194" target="_blank" class="paper-link">[Paper]</a>
-          <a href="https://vlabench.github.io/" target="_blank" class="paper-link">[Project Page]</a>
-          <a href="https://github.com/OpenMOSS/VLABench" target="_blank" class="paper-link">[Code]</a>
-        </p> -->
-      </div>
-    </div>
-
-    <div class="paper-container">
-      <img src="./media/quad_avoid.gif" alt="Overview" class="paper-image">
-      <div class="paper-content">
-        <h2 class="paper-title" style="display: flex; justify-content: space-between; align-items: center;">
-          Vision-Guided Quadrupedal Agile Locomotion with Multi-Modal Information Fusion
-          <span style="margin-left: auto;font-size: 16px;">2021.12-2022.8</span>
-        </h2>
-        <p class="paper-authors">
-          <strong>Shiduo Zhang</strong>, Ziwen Zhuang & Hang Zhao
-        </p>
-        <p class="paper-description">
-         "One of the earliest projects on locomotion. Concurrent work of Legged Gym."
-        </p>
-        <!-- <p>
-          <a href="https://arxiv.org/abs/2412.18194" target="_blank" class="paper-link">[Paper]</a>
-          <a href="https://vlabench.github.io/" target="_blank" class="paper-link">[Project Page]</a>
-          <a href="https://github.com/OpenMOSS/VLABench" target="_blank" class="paper-link">[Code]</a>
-        </p> -->
-      </div>
-    </div>
+    <!-- 项目内容将动态生成 -->
   </div>
 </section>
 
@@ -501,40 +355,189 @@
 </script>
 <script>
 let currentLang = localStorage.getItem('lang') || 'en';
+let availableLanguages = [];
+
+async function loadLanguages() {
+  try {
+    // 获取语言列表（data/ 下面的文件夹）
+    const response = await fetch('data/');
+    const text = await response.text();
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(text, 'text/html');
+    const links = Array.from(doc.querySelectorAll('a')).filter(a => a.href.includes('data/') && a.href.endsWith('/'));
+    availableLanguages = links.map(a => a.href.split('/').slice(-2, -1)[0]).filter(lang => lang !== 'data');
+    console.log('Available languages:', availableLanguages);
+  } catch (error) {
+    console.error('Error loading languages:', error);
+    availableLanguages = ['en', 'zh', 'jp']; // 默认语言
+  }
+}
 
 async function loadContent(lang = currentLang) {
-  const response = await fetch('languages.json');
-  const dict = await response.json();
-  const content = dict[lang];
+  if (availableLanguages.length === 0) {
+    await loadLanguages();
+  }
+
+  // 加载所有数据文件
+  const [webContentRes, projectsRes, publicationsRes, newsRes, blogsRes] = await Promise.all([
+    fetch(`data/${lang}/web_content.json`),
+    fetch(`data/${lang}/projects.json`),
+    fetch(`data/${lang}/publications.json`),
+    fetch(`data/${lang}/news.json`),
+    fetch(`data/${lang}/blogs.json`)
+  ]);
+
+  const webContent = await webContentRes.json();
+  const projects = await projectsRes.json();
+  const publications = await publicationsRes.json();
+  const news = await newsRes.json();
+  const blogs = await blogsRes.json();
+
+  const content = webContent;
+  const projectsList = projects.projects || [];
+  const publicationsList = publications.publications || [];
+  const newsList = news.news || [];
+  const blogsList = blogs.blogs || [];
 
   // 更新导航栏
-  document.querySelector('#navbar-about').innerHTML = content.navbar_about;
-  document.querySelector('#navbar-news').innerHTML = content.navbar_news;
-  document.querySelector('#navbar-publications').innerHTML = content.navbar_publications;
-  document.querySelector('#navbar-projects').innerHTML = content.navbar_projects;
-  document.querySelector('#navbar-blogs').innerHTML = content.navbar_blogs;
-  document.querySelector('#navbar-language').innerHTML = content.language;
-  document.querySelector('#lang-en').innerHTML = content.english;
-  document.querySelector('#lang-zh').innerHTML = content.chinese;
+  updateElement('#navbar-about', content.navbar_about);
+  updateElement('#navbar-news', content.navbar_news);
+  updateElement('#navbar-publications', content.navbar_publications);
+  updateElement('#navbar-projects', content.navbar_projects);
+  updateElement('#navbar-blogs', content.navbar_blogs);
+  updateElement('#navbar-language', content.language);
+
+  // 动态生成语言切换按钮
+  generateLanguageButtons();
 
   // 更新标题和副标题
-  document.querySelector('#main-title').innerHTML = content.title;
-  document.querySelector('#main-subtitle').innerHTML = content.subtitle;
+  updateElement('#main-title', content.title);
+  updateElement('#main-subtitle', content.subtitle);
 
   // 更新 About 部分
-  document.querySelector('#about-title').innerHTML = content.about_title;
-  document.querySelector('#about-text1').innerHTML = content.about_text1;
-  document.querySelector('#about-text2').innerHTML = content.about_text2;
+  updateElement('#about-title', content.about_title);
+  updateElement('#about-text1', content.about_text1);
+  updateElement('#about-text2', content.about_text2);
 
   // 更新其他部分标题
-  document.querySelector('#news-title').innerHTML = content.news_title;
-  document.querySelector('#publications-title').innerHTML = content.publications_title;
-  document.querySelector('#projects-title').innerHTML = content.projects_title;
-  document.querySelector('#academic-service-title').innerHTML = content.academic_service_title;
-  document.querySelector('#blogs-title').innerHTML = content.blogs_title;
+  updateElement('#news-title', content.news_title);
+  updateElement('#publications-title', content.publications_title);
+  updateElement('#projects-title', content.projects_title);
+  updateElement('#academic-service-title', content.academic_service_title);
+  updateElement('#blogs-title', content.blogs_title);
 
   // 更新页脚
-  document.querySelector('#footer-text').innerHTML = content.footer;
+  updateElement('#footer-text', content.footer);
+
+  // 动态生成新闻
+  generateNews(newsList);
+
+  // 动态生成出版物
+  generatePublications(publicationsList);
+
+  // 动态生成项目
+  generateProjects(projectsList);
+
+  // 动态生成博客
+  generateBlogs(blogsList);
+}
+
+function updateElement(selector, html) {
+  const element = document.querySelector(selector);
+  if (element) element.innerHTML = html;
+}
+
+function generateLanguageButtons() {
+  const langDropdown = document.querySelector('#navbar-language').parentElement;
+  const dropdown = langDropdown.querySelector('.navbar-dropdown');
+  dropdown.innerHTML = '';
+  availableLanguages.forEach(lang => {
+    const langData = {
+      'en': 'English',
+      'zh': '中文',
+      'jp': '日本語'
+    };
+    const button = document.createElement('a');
+    button.className = 'navbar-item';
+    button.onclick = () => switchLanguage(lang);
+    button.innerHTML = langData[lang] || lang;
+    dropdown.appendChild(button);
+  });
+}
+
+function generateNews(newsList) {
+  const newsContainer = document.querySelector('#news .container');
+  const newsDiv = newsContainer.querySelector('div:last-child');
+  newsDiv.innerHTML = '';
+  newsList.forEach(item => {
+    const div = document.createElement('div');
+    div.style.cssText = 'display: flex; justify-content: flex-start; align-items: center; margin-bottom: 15px;';
+    div.innerHTML = `
+      <span style="font-weight: bold; margin-right: 50px;">${item.date}</span>
+      <span style="font-family: Georgia">${item.content}</span>
+    `;
+    newsDiv.appendChild(div);
+  });
+}
+
+function generatePublications(publicationsList) {
+  const publicationsSection = document.querySelector('#publications');
+  const container = publicationsSection.querySelector('.container');
+  // 移除现有 paper-container
+  const existingContainers = container.querySelectorAll('.paper-container');
+  existingContainers.forEach(c => c.remove());
+
+  publicationsList.forEach(pub => {
+    const paperContainer = document.createElement('div');
+    paperContainer.className = 'paper-container';
+    paperContainer.innerHTML = `
+      <img src="${pub.image}" alt="Overview" class="paper-image">
+      <div class="paper-content">
+        <h2 class="paper-title">${pub.title}</h2>
+        ${pub.conference ? `<p class="paper-conf">${pub.conference}</p>` : ''}
+        <p class="paper-authors">${pub.authors}</p>
+        <p class="paper-description">${pub.description}</p>
+        <p>
+          ${pub.links ? pub.links.map(link => `<a href="${link.url}" target="_blank" class="paper-link">[${link.type}]</a>`).join(' ') : ''}
+        </p>
+      </div>
+    `;
+    container.appendChild(paperContainer);
+  });
+}
+
+function generateProjects(projectsList) {
+  const projectsSection = document.querySelector('#projects');
+  const container = projectsSection.querySelector('.container');
+  // 移除现有 paper-container
+  const existingContainers = container.querySelectorAll('.paper-container');
+  existingContainers.forEach(c => c.remove());
+
+  projectsList.forEach(proj => {
+    const paperContainer = document.createElement('div');
+    paperContainer.className = 'paper-container';
+    const imageHtml = proj.image ? `<img src="${proj.image}" alt="Overview" class="paper-image">` : '<div class="paper-image" style="background: #f0f0f0; display: flex; align-items: center; justify-content: center; height: 150px;">No Image</div>';
+    paperContainer.innerHTML = `
+      ${imageHtml}
+      <div class="paper-content">
+        <h2 class="paper-title" style="display: flex; justify-content: space-between; align-items: center;">
+          ${proj.title}
+          <span style="margin-left: auto; font-size: 16px;">${proj.date}</span>
+        </h2>
+        <p class="paper-authors">${proj.authors}</p>
+        <p class="paper-description">${proj.description}</p>
+        ${proj.links ? `<p>${proj.links.map(link => `<a href="${link.url}" target="_blank" class="paper-link">[${link.type}]</a>`).join(' ')}</p>` : ''}
+      </div>
+    `;
+    container.appendChild(paperContainer);
+  });
+}
+
+function generateBlogs(blogsList) {
+  const blogsSection = document.querySelector('#blogs');
+  const container = blogsSection.querySelector('.container');
+  // 可以在这里生成博客内容，如果有的话
+  // 目前 blogs.json 是空的
 }
 
 function switchLanguage(lang) {
@@ -542,6 +545,8 @@ function switchLanguage(lang) {
   loadContent(lang);
 }
 
-loadContent();
+document.addEventListener('DOMContentLoaded', () => {
+  loadLanguages().then(() => loadContent());
+});
 </script>
 </html>

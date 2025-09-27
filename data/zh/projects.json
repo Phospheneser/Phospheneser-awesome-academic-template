@@ -1,0 +1,33 @@
+{
+  "projects": [
+    {
+      "title": "AgentSim2：一个由大型语言模型驱动的大规模代理城镇",
+      "date": "2024.2-2024.5",
+      "authors": "Jiaju Lin*, Shiduo Zhang*",
+      "description": "<a href=\"https://github.com/py499372727/AgentSims\">AgentSim</a> 的第二个版本。一个比 <a href=\"https://arxiv.org/pdf/2304.03442\">斯坦福大学</a> 更大的 AI 城镇。"
+    },
+    {
+      "title": "使用混合专家泛化运动规划器用于自动驾驶",
+      "date": "2023.12-2024.2",
+      "authors": "主要想法由 Shiduo Zhang 提供。",
+      "description": "将 MoE 引入自动驾驶，由我提出。由于时间限制，我仅在早期讨论中贡献了想法和基线。",
+      "links": [
+        {"type": "论文", "url": "https://arxiv.org/abs/2410.15774"},
+        {"type": "项目页面", "url": "https://tsinghua-mars-lab.github.io/StateTransformer/"},
+        {"type": "代码", "url": "https://github.com/Tsinghua-MARS-Lab/StateTransformer"}
+      ]
+    },
+    {
+      "title": "计算机使用通用智能代理：机器人过程自动化 AI 的方法。",
+      "date": "2022.5-2022.11",
+      "authors": "Shiduo Zhang, Ziwen Zhuang & Hang Zhao",
+      "description": "一个 <span style=\"font-weight: bold;color: #ee1212;\">高度前瞻性和洞察力的想法！</span>。使用鼠标控制进行通用 RPA 任务。就像 Claude 在 2024 年 10 月的工作一样。然而，我们的实践早在两年前就开始了，在 GPT 之前。"
+    },
+    {
+      "title": "多模态信息融合的视觉引导四足敏捷运动",
+      "date": "2021.12-2022.8",
+      "authors": "Shiduo Zhang, Ziwen Zhuang & Hang Zhao",
+      "description": "运动学上最早的项目之一。与 Legged Gym 同时进行的工作。"
+    }
+  ]
+}

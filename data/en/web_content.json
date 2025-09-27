@@ -1,0 +1,22 @@
+{
+  "navbar_about": "About Me",
+  "navbar_news": "News",
+  "navbar_publications": "Publications",
+  "navbar_projects": "Projects",
+  "navbar_blogs": "Blogs",
+  "language": "Language",
+  "english": "English",
+  "chinese": "中文",
+  "japanese": "日本語",
+  "title": "Dream Big, Work Hard, Stay Humble.",
+  "subtitle": "——Be Versatile, Be Great.",
+  "about_title": "🎄 About Me",
+  "about_text1": "Hi there! Here is Zhe Xu, you can call me Joshua as well. I am a second-year master’s student in School of Computer Science at Fudan University, advised by <a href=\"https://xpqiu.github.io/en.html\">Prof.Xipeng Qiu</a>. My research interests focus on embodied AI, particularly exploring the <b>intersection of foundation models and robotics</b>. Previously, I obtained my Bachelor’s degree from Tongji University, and spent an unforgettable year and a half as a research assistant intern at <a href=\"https://group.iiis.tsinghua.edu.cn/~marslab/#/\">MARS Lab</a>, <a href=\"https://iiis.tsinghua.edu.cn/en/\">Tsinghua IIIS</a> and <a href=\"https://sqz.ac.cn/\">Shanghai QiZhi Institute</a> during my undergraduate studies, advised by <a href=\"https://hangzhaomit.github.io/\">Prof.Hang Zhao</a>.",
+  "about_text2": "<br>Personally, I am dedicated to addressing <span style=\"font-weight: bold;color: #ee1212;\">truly meaningful research problems</span>, and I tend to focus on work that aligns with <strong>first principles</strong>. The most fundamental issues I currently believe in are <span style=\"font-weight: bold;color: #ee1212;\">Scaling</span> and <span style=\"font-weight: bold;color: #ee1212;\">Search</span>. Feel free to contact me anytime if you share the same passion for these problems.",
+  "news_title": "🔥 News",
+  "publications_title": "📑 Publications",
+  "projects_title": "⚙️ Projects",
+  "academic_service_title": "Academic Service",
+  "blogs_title": "Blogs",
+  "footer": "Edit by Joshua@2025.9.27"
+}
