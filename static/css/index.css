@@ -327,13 +327,41 @@ html {
     padding: 0.5rem 1rem;
   }
 
+  /* 汉堡菜单按钮样式 */
+  .navbar-burger {
+    color: #ffffff !important;
+    background-color: transparent !important;
+    border: none !important;
+    padding: 0.5rem !important;
+    margin-right: 0.5rem !important;
+  }
+
+  .navbar-burger:hover {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+  }
+
+  .navbar-burger span {
+    background-color: #ffffff !important;
+    height: 2px !important;
+    width: 20px !important;
+    margin: 3px 0 !important;
+  }
+
   .navbar-menu {
     padding: 0.5rem;
+    background-color: #111211 !important;
+    opacity: 0.95;
   }
 
   .navbar-item {
     font-size: 0.9rem;
     padding: 0.75rem 1rem;
+    color: #ffffff !important;
+  }
+
+  .navbar-item:hover {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+    color: #ffffff !important;
   }
 
   .navbar-dropdown .navbar-item {
@@ -341,9 +369,43 @@ html {
     padding: 0.5rem 0.75rem;
   }
 
+  .navbar-link {
+    color: #ffffff !important;
+  }
+
+  .navbar-link:hover {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+    color: #ffffff !important;
+  }
+
   /* 导航栏在移动端添加底部边框 */
   #top-navbar {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  /* 汉堡菜单激活状态 */
+  .navbar-burger.is-active {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+  }
+
+  .navbar-menu.is-active {
+    display: block !important;
+  }
+
+  /* 确保导航栏在小屏幕上正确显示 */
+  @media (max-width: 1023px) {
+    .navbar-menu {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+    }
+
+    .navbar-menu.is-active {
+      display: block !important;
+    }
   }
 
   /* 主内容区域移动端适配 */
@@ -369,16 +431,19 @@ html {
 
   /* 词云容器移动端适配 */
   #canvas-container {
-    width: 250px !important;
-    height: 200px !important;
-    margin: 0 auto;
+    width: 280px !important;
+    height: 180px !important;
+    margin: 0 auto !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
   }
 
   /* 卡片容器移动端适配 */
   .card-container {
     width: 300px !important;
     height: 150px !important;
-    margin: 0 auto;
+    margin: 0 auto !important;
   }
 
   /* 标题和副标题移动端适配 */
@@ -418,6 +483,24 @@ html {
   /* Section内容移动端适配 */
   .section .container {
     padding: 1rem !important;
+    max-width: 100% !important;
+    width: 100% !important;
+  }
+
+  /* 确保所有容器在移动端不超出屏幕宽度 */
+  .container {
+    max-width: 100% !important;
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+
+  /* 背景容器移动端适配 */
+  body > div:first-child {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    width: 100% !important;
   }
 
   /* About section移动端适配 */

@@ -88,6 +88,13 @@
         <a class="navbar-item" href="/">
             <strong id="navbar-title">Hey! Joshua!</strong>
         </a>
+
+        <!-- 汉堡菜单按钮 -->
+        <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="top-navbar">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
     </div>
 
     <div id="top-navbar" class="navbar-menu">
@@ -887,6 +894,17 @@ function initializeCardSlider() {
 
 document.addEventListener('DOMContentLoaded', () => {
   loadContent();
+
+  // 汉堡菜单功能
+  const burger = document.querySelector('.navbar-burger');
+  const menu = document.querySelector('.navbar-menu');
+
+  if (burger && menu) {
+    burger.addEventListener('click', () => {
+      burger.classList.toggle('is-active');
+      menu.classList.toggle('is-active');
+    });
+  }
 
   // 返回顶部按钮功能
   const backToTopButton = document.getElementById('back-to-top');
