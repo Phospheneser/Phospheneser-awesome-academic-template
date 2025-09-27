@@ -2,8 +2,8 @@
   "publications": [
     {
       "title": "VLABench：一个用于语言条件机器人操纵的长程推理任务的大规模基准",
-      "conference": "CVPR'25 (But 1 of 19)",
-      "authors": "<strong>Shiduo Zhang</strong>, Zhe Xu, Peiju Liu, Xiaopeng Yu, Yuan Li, Qinghui Gao, Zhaoye Fei, Zhangyue Yin, Zuxuan Wu, Yu-Gang Jiang & Xipeng Qiu",
+      "conference": "CVPR'25 (But 1 of 19),ICCV'25",
+      "authors": "Shiduo Zhang, <strong>Zhe Xu</strong>, Peiju Liu, Xiaopeng Yu, Yuan Li, Qinghui Gao, Zhaoye Fei, Zhangyue Yin, Zuxuan Wu, Yu-Gang Jiang & Xipeng Qiu",
       "description": "\"VLA 的第一个基准。不仅用于评估，定义最重要。\"",
       "links": [
         {"type": "论文", "url": "https://arxiv.org/abs/2412.18194"},
@@ -13,26 +13,27 @@
       "image": "./media/main_page.jpg"
     },
     {
-      "title": "大型轨迹模型是可扩展的运动预测器和规划器",
-      "authors": "Qiao Sun*, <strong>Shiduo Zhang*</strong>, Danjiao Ma, Jingzhe Shi, Derun Li, Simian Luo, Yu Wang, Ningyi Xu, Guangzhi Cao & Hang Zhao",
-      "description": "\"在自动驾驶中扩展因果变换器的第一个工作。之前的 SOTA 在 NuPlan。\"",
+      "title": "LongSafetyBench: 长上下文大语言模型安全问题严重",
+      "authors": "Mianqiu Huang, Xiaoran Liu, Shaojun Zhou, Mozhi Zhang, Chenkun Tan, Pengyu Wang, Qipeng Guo, <strong>Zhe Xu</strong>, Linyang Li, Zhikai Lei, Linlin Li, Qun Liu, Yaqian Zhou, Xipeng Qiu, Xuanjing Huang",
+      "description": "一个专门用于长上下文安全对齐的数据集（8 个任务，约 17K 样本，平均 40.9K 令牌）和对应的评测基准 LongSafetyBench，实验证明在长上下文中进行安全微调可提升模型的安全性而不损失其通用能力。",
       "links": [
-        {"type": "论文", "url": "https://arxiv.org/abs/2310.19620"},
-        {"type": "代码", "url": "https://github.com/Tsinghua-MARS-Lab/StateTransformer"}
+        {"type": "论文", "url": "https://arxiv.org/abs/2411.06899v1"},
+        {"type": "Hugging Face", "url": "https://huggingface.co/datasets/LutherXD/LongSafetyBench"},
+        {"type": "代码", "url": "https://github.com/OpenMOSS/LongSafety"}
       ],
-      "image": "./media/pipeline.gif"
+      "image": "./media/LSB.png"
     },
     {
-      "title": "MOSS：一个开放的对话式大型语言模型",
-      "conference": "Machine Intelligence Research",
-      "authors": "Tianxiang Sun, Xiaotian Zhang, Zhengfu He, Peng Li, Qinyuan Cheng, Xiangyang Liu, Hang Yan, Yunfan Shao, Qiong Tang, <strong>Shiduo Zhang</strong>, Xingjian Zhao, Ke Chen, Yining Zheng, Zhejian Zhou, Ruixiao Li, Jun Zhan, Yunhua Zhou, Linyang Li, Xiaogui Yang, Lingling Wu, Zhangyue Yin, Xuanjing Huang, Yu-Gang Jiang & Xipeng Qiu",
-      "description": "\"ChatGPT 时刻后第一个开源大型语言模型。Github 星标 12k+。\"",
+      "title": "DetectiveQA: 在侦探小说中进行长上下文推理的评估基准",
+      "conference": "ICLR2025",
+      "authors": "<strong>Zhe Xu</strong>, Jiasheng Ye, Xiaoran Liu, Xiangyang Liu, Tianxiang Sun, Zhigeng Liu, Qipeng Guo, Linlin Li, Qun Liu, Xuanjing Huang, Xipeng Qiu",
+      "description": "这篇论文提出 <strong>DetectiveQA</strong> —— 一个以侦探小说为背景的长上下文叙述推理基准（平均上下文长度超 100K 令牌，含 1200 个中英问题与推理步骤标注），用于评估 LLM 在理解长篇文本、提取证据和按证据推理中表现出的能力，并发现现有模型在真正依赖长上下文的推理任务上仍有显著不足。",
       "links": [
-        {"type": "论文", "url": "https://link.springer.com/article/10.1007/s11633-024-1502-8"},
-        {"type": "Hugging Face", "url": "https://huggingface.co/datasets/fnlp/moss-003-sft-data"},
-        {"type": "代码", "url": "https://github.com/OpenMOSS/MOSS"}
+        {"type": "论文", "url": "https://arxiv.org/abs/2409.02465"},
+        {"type": "代码", "url": "https://github.com/Phospheneser/DetectiveQA"},
+        {"type": "Hugging Face", "url": "https://huggingface.co/datasets/Phospheneser/DetectiveQA"}
       ],
-      "image": "./media/example_moss_search.gif"
+      "image": "./media/detectiveqa.png"
     }
   ]
 }

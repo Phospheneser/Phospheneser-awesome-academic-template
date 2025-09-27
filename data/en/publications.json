@@ -13,26 +13,27 @@
       "image": "./media/main_page.jpg"
     },
     {
-      "title": "Large Trajectory Models are Scalable Motion Predictors and Planners",
-      "authors": "Qiao Sun*, <strong>Shiduo Zhang*</strong>, Danjiao Ma, Jingzhe Shi, Derun Li, Simian Luo, Yu Wang, Ningyi Xu, Guangzhi Cao & Hang Zhao",
-      "description": "\"First work to scale casual transformer in Autonomous Driving. Previous SOTA at NuPlan.\"",
+      "title": "LongSafety: Enhance Safety for Long-Context LLMs",
+      "authors": "Mianqiu Huang, Xiaoran Liu, Shaojun Zhou, Mozhi Zhang, Chenkun Tan, Pengyu Wang, Qipeng Guo, <strong>Zhe Xu</strong>, Linyang Li, Zhikai Lei, Linlin Li, Qun Liu, Yaqian Zhou, Xipeng Qiu, Xuanjing Huang",
+      "description": "This paper introduces LongSafety, a specialized safety alignment dataset for long-context LLMs (spanning 8 tasks, ~17K samples, ~40.9K tokens average) along with a benchmark LongSafetyBench, and shows that fine-tuning on it improves safety in long contexts without degrading general capabilities.",
       "links": [
-        {"type": "Paper", "url": "https://arxiv.org/abs/2310.19620"},
-        {"type": "Code", "url": "https://github.com/Tsinghua-MARS-Lab/StateTransformer"}
+        {"type": "Paper", "url": "https://arxiv.org/abs/2411.06899v1"},
+        {"type": "Hugging Face", "url": "https://huggingface.co/datasets/LutherXD/LongSafetyBench"},
+        {"type": "Code", "url": "https://github.com/OpenMOSS/LongSafety"}
       ],
-      "image": "./media/pipeline.gif"
+      "image": "./media/LSB.png"
     },
     {
-      "title": "MOSS: An Open Conversational Large Language Model",
-      "conference": "Machine Intelligence Research",
-      "authors": "Tianxiang Sun, Xiaotian Zhang, Zhengfu He, Peng Li, Qinyuan Cheng, Xiangyang Liu, Hang Yan, Yunfan Shao, Qiong Tang, <strong>Shiduo Zhang</strong>, Xingjian Zhao, Ke Chen, Yining Zheng, Zhejian Zhou, Ruixiao Li, Jun Zhan, Yunhua Zhou, Linyang Li, Xiaogui Yang, Lingling Wu, Zhangyue Yin, Xuanjing Huang, Yu-Gang Jiang & Xipeng Qiu",
-      "description": "\"First open source large language model after ChatGPT moment. Github star 12k+.\"",
+      "title": "DetectiveQA: Evaluating Long-Context Reasoning on Detective Novels",
+      "conference": "ICLR2025",
+      "authors": "<strong>Zhe Xu</strong>, Jiasheng Ye, Xiaoran Liu, Xiangyang Liu, Tianxiang Sun, Zhigeng Liu, Qipeng Guo, Linlin Li, Qun Liu, Xuanjing Huang, Xipeng Qiu",
+      "description": "DetectiveQA is a narrative reasoning benchmark based on detective novels with very long contexts (on average over 100,000 tokens), offering 1,200 Chinese-English question-answer pairs with detailed reasoning chains, designed to test LLMs’ abilities in long-text comprehension, evidence retrieval, and reasoning, and demonstrating that current long-context LLMs still struggle significantly with dependency questions that truly require full context.",
       "links": [
-        {"type": "Paper", "url": "https://link.springer.com/article/10.1007/s11633-024-1502-8"},
-        {"type": "Hugging Face", "url": "https://huggingface.co/datasets/fnlp/moss-003-sft-data"},
-        {"type": "Code", "url": "https://github.com/OpenMOSS/MOSS"}
+        {"type": "Paper", "url": "https://arxiv.org/abs/2409.02465"},
+        {"type": "Code", "url": "https://github.com/Phospheneser/DetectiveQA"},
+        {"type": "Hugging Face", "url": "https://huggingface.co/datasets/Phospheneser/DetectiveQA"}
       ],
-      "image": "./media/example_moss_search.gif"
+      "image": "./media/detectiveqa.png"
     }
   ]
 }

@@ -1,12 +1,4 @@
 {
   "academic_services": [
-    {
-      "type": "Academic Talk",
-      "description": "Give a talk at MSRA, Beijing."
-    },
-    {
-      "type": "Teaching Assistant",
-      "description": "Pattern Recognition and Machine Learning (COMP130137.01 & AIE410001.01)"
-    }
   ]
 }
