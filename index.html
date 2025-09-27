@@ -256,6 +256,11 @@
   </div>
 </footer>
 
+<!-- 返回顶部按钮 -->
+<button id="back-to-top" class="back-to-top" title="返回顶部">
+  <i class="fas fa-chevron-up"></i>
+</button>
+
 </body>
 
 <script>
@@ -882,6 +887,26 @@ function initializeCardSlider() {
 
 document.addEventListener('DOMContentLoaded', () => {
   loadContent();
+
+  // 返回顶部按钮功能
+  const backToTopButton = document.getElementById('back-to-top');
+
+  // 滚动监听 - 显示/隐藏返回顶部按钮
+  window.addEventListener('scroll', () => {
+    if (window.pageYOffset > 300) {
+      backToTopButton.classList.add('show');
+    } else {
+      backToTopButton.classList.remove('show');
+    }
+  });
+
+  // 点击事件 - 平滑滚动到顶部
+  backToTopButton.addEventListener('click', () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  });
 });
 </script>
 </html>
