@@ -320,6 +320,202 @@ html {
   display: block;
 }
 
+/* 平板设备适配 (768px-1023px) - 卡片头像词云用桌面端尺寸，菜单用移动端样式 */
+@media (min-width: 769px) and (max-width: 1023px) {
+  /* 确保平板设备显示汉堡菜单 */
+  .navbar-burger {
+    display: block !important;
+    cursor: pointer;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    flex-shrink: 0 !important;
+    order: 2 !important;
+    width: 50px !important;
+    height: 50px !important;
+    background-color: rgba(255, 255, 255, 0.05) !important;
+    border-radius: 8px !important;
+    transition: all 0.3s ease !important;
+  }
+
+  .navbar-burger:hover {
+    background-color: rgba(255, 255, 255, 0.15) !important;
+    transform: scale(1.05) !important;
+  }
+
+  .navbar-burger:active {
+    transform: scale(0.95) !important;
+    background-color: rgba(255, 255, 255, 0.2) !important;
+  }
+
+  .navbar-burger span {
+    background-color: #ffffff !important;
+    height: 3px !important;
+    width: 24px !important;
+    margin: 4px 0 !important;
+    display: block !important;
+    transition: all 0.3s ease !important;
+  }
+
+  /* 平板设备菜单样式 - 与手机端一致 */
+  .navbar-menu {
+    display: none !important;
+    position: absolute !important;
+    top: 100% !important;
+    left: 0 !important;
+    right: 0 !important;
+    z-index: 9999 !important;
+    background-color: #111211 !important;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3) !important;
+    width: 100% !important;
+    height: auto !important;
+    flex-direction: column !important;
+    opacity: 1 !important;
+  }
+
+  .navbar-menu.is-active {
+    display: flex !important;
+    position: absolute !important;
+    top: 100% !important;
+    right: 0 !important;
+    left: auto !important;
+    z-index: 9998 !important;
+    width: 280px !important;
+    max-width: 85vw !important;
+    background: linear-gradient(135deg, rgba(17, 18, 17, 0.95) 0%, rgba(44, 62, 80, 0.92) 100%) !important;
+    backdrop-filter: blur(12px) !important;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3), 0 6px 20px rgba(0, 0, 0, 0.15) !important;
+    flex-direction: column !important;
+    opacity: 1 !important;
+    border-radius: 0 0 8px 8px !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    border-top: none !important;
+    border-right: none !important;
+    animation: slideDown 0.25s ease-out !important;
+    overflow: hidden !important;
+  }
+
+  /* 平板设备菜单项样式 */
+  .navbar-menu.is-active .navbar-item {
+    display: block !important;
+    width: 100% !important;
+    padding: 0.9rem 1.2rem !important;
+    color: #ffffff !important;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.03) 100%) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+    text-decoration: none !important;
+    font-size: 1rem !important;
+    font-weight: 500 !important;
+    line-height: 1.4 !important;
+    box-sizing: border-box !important;
+    min-height: 48px !important;
+    transition: all 0.2s ease !important;
+    position: relative !important;
+    backdrop-filter: blur(8px) !important;
+  }
+
+  /* 语言dropdown在平板菜单中的样式 */
+  .navbar-menu.is-active .has-dropdown.is-active .navbar-dropdown {
+    position: static !important;
+    display: block !important;
+    background: rgba(255, 255, 255, 0.05) !important;
+    border: none !important;
+    box-shadow: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .navbar-menu.is-active .has-dropdown.is-active .navbar-link {
+    background: linear-gradient(135deg, rgba(52, 152, 219, 0.2) 0%, rgba(155, 89, 182, 0.15) 100%) !important;
+    border-left: 3px solid #3498db !important;
+  }
+
+  .navbar-menu.is-active .navbar-dropdown .navbar-item {
+    padding-left: 2.2rem !important;
+    background: rgba(255, 255, 255, 0.03) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+    font-size: 0.95rem !important;
+  }
+
+  .navbar-menu.is-active .navbar-item:hover {
+    background: linear-gradient(135deg, rgba(52, 152, 219, 0.25) 0%, rgba(155, 89, 182, 0.2) 100%) !important;
+    transform: translateX(-4px) !important;
+    box-shadow: 0 4px 20px rgba(52, 152, 219, 0.15) !important;
+    border-left: 3px solid #3498db !important;
+  }
+
+  .navbar-menu.is-active .navbar-item:last-child {
+    border-bottom: none !important;
+    border-radius: 0 0 8px 8px !important;
+  }
+
+  .navbar-menu.is-active .navbar-item:first-child {
+    border-radius: 0 !important;
+  }
+
+  /* 平板设备保持桌面端尺寸 - 覆盖移动端缩小样式 */
+  /* 词云容器使用桌面端尺寸 */
+  #canvas-container {
+    width: 300px !important;
+    height: 300px !important;
+    margin: 0 auto !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+  }
+
+  /* 卡片容器使用桌面端尺寸 */
+  .card-container {
+    width: 400px !important;
+    height: 200px !important;
+    margin: 0 auto !important;
+  }
+
+  /* 头像使用桌面端尺寸 */
+  .image.is-128x128 {
+    width: 200px !important;
+    height: 200px !important;
+  }
+
+  /* 主内容区域使用桌面端布局 */
+  .container > div[style*="display: flex"] {
+    flex-direction: row !important;
+    height: 300px !important;
+    padding: 0 !important;
+  }
+
+  /* 各个子容器使用桌面端布局 */
+  .container > div[style*="display: flex"] > div {
+    flex: 1 !important;
+    margin-bottom: 0 !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+  }
+
+  /* 标题使用桌面端尺寸 */
+  .title.is-size-3-tablet.is-size-4-mobile {
+    font-size: 2.5rem !important;
+    margin: 1.5rem 0 !important;
+  }
+
+  .subtitle.is-size-4-tablet.is-size-5-mobile {
+    font-size: 1.25rem !important;
+    margin-bottom: 1.5rem !important;
+  }
+
+  /* 图标区域使用桌面端尺寸 */
+  .icon-box {
+    max-width: 300px !important;
+    padding: 10px !important;
+    margin: 20px auto !important;
+  }
+
+  .icon-box a {
+    font-size: 24px !important;
+  }
+}
+
 /* 移动端适配 */
 @media (max-width: 768px) {
   .back-to-top {
