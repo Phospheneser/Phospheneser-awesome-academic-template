@@ -4,7 +4,8 @@
       "title": "AgentSim2: A Large-Scale Agent Town Driven by Large Language Models",
       "date": "2024.2-2024.5",
       "authors": "Jiaju Lin*, Shiduo Zhang*",
-      "description": "The second version of <a href=\"https://github.com/py499372727/AgentSims\">AgentSim</a>. A much larger AI town than <a href=\"https://arxiv.org/pdf/2304.03442\">Stanford one</a>."
+      "description": "The second version of <a href=\"https://github.com/py499372727/AgentSims\">AgentSim</a>. A much larger AI town than <a href=\"https://arxiv.org/pdf/2304.03442\">Stanford one</a>.",
+      "image": "./media/pandai_gif.gif"
     },
     {
       "title": "Generalizing Motion Planners with Mixture of Experts for Autonomous Driving",
@@ -15,19 +16,22 @@
         {"type": "Paper", "url": "https://arxiv.org/abs/2410.15774"},
         {"type": "Project Page", "url": "https://tsinghua-mars-lab.github.io/StateTransformer/"},
         {"type": "Code", "url": "https://github.com/Tsinghua-MARS-Lab/StateTransformer"}
-      ]
+      ],
+      "image": "./media/architexture.png"
     },
     {
       "title": "General Intelligent Agent for Computer Usage: A Method to Robotics Process Automation AI.",
       "date": "2022.5-2022.11",
       "authors": "Shiduo Zhang, Ziwen Zhuang & Hang Zhao",
-      "description": "A <span style=\"font-weight: bold;color: #ee1212;\">highly forward-thinking and insightful idea!</span>. Using mouse control for general-purpose RPA tasks. Just like Claude's work in October 2024. However, our practice began two years earlier, in a time before GPT."
+      "description": "A <span style=\"font-weight: bold;color: #ee1212;\">highly forward-thinking and insightful idea!</span>. Using mouse control for general-purpose RPA tasks. Just like Claude's work in October 2024. However, our practice began two years earlier, in a time before GPT.",
+      "image": "./media/rpa.gif"
     },
     {
       "title": "Vision-Guided Quadrupedal Agile Locomotion with Multi-Modal Information Fusion",
       "date": "2021.12-2022.8",
       "authors": "Shiduo Zhang, Ziwen Zhuang & Hang Zhao",
-      "description": "One of the earliest projects on locomotion. Concurrent work of Legged Gym."
+      "description": "One of the earliest projects on locomotion. Concurrent work of Legged Gym.",
+      "image": "./media/quad_avoid.gif"
     }
   ]
 }

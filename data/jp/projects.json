@@ -1,3 +1,37 @@
 {
-  "projects": []
+  "projects": [
+    {
+      "title": "AgentSim2：大規模言語モデル駆動の大規模エージェントタウン",
+      "date": "2024.2-2024.5",
+      "authors": "Jiaju Lin*, Shiduo Zhang*",
+      "description": "<a href=\"https://github.com/py499372727/AgentSims\">AgentSim</a> の第2バージョン。<a href=\"https://arxiv.org/pdf/2304.03442\">スタンフォード大学</a> よりはるかに大きな AI タウン。",
+      "image": "./media/pandai_gif.gif"
+    },
+    {
+      "title": "自動運転のための混合専門家による運動計画の一般化",
+      "date": "2023.12-2024.2",
+      "authors": "Shiduo Zhang が主要なアイデアを提供。",
+      "description": "自動運転に MoE を導入、私が提案。時間的制約により、初期議論でのアイデアとベースラインへの貢献のみ。",
+      "links": [
+        {"type": "論文", "url": "https://arxiv.org/abs/2410.15774"},
+        {"type": "プロジェクトページ", "url": "https://tsinghua-mars-lab.github.io/StateTransformer/"},
+        {"type": "コード", "url": "https://github.com/Tsinghua-MARS-Lab/StateTransformer"}
+      ],
+      "image": "./media/architexture.png"
+    },
+    {
+      "title": "コンピュータ使用のための汎用インテリジェントエージェント：ロボティクスプロセスオートメーション AI の方法。",
+      "date": "2022.5-2022.11",
+      "authors": "Shiduo Zhang, Ziwen Zhuang & Hang Zhao",
+      "description": "<span style=\"font-weight: bold;color: #ee1212;\">非常に前向きで洞察力のあるアイデア！</span>。汎用 RPA タスクのためのマウス制御。Claude の 2024 年 10 月の仕事と同様。ただし、私たちの実践は 2 年前に始まり、GPT 以前の時代。",
+      "image": "./media/rpa.gif"
+    },
+    {
+      "title": "マルチモーダル情報融合による視覚誘導四足敏捷運動",
+      "date": "2021.12-2022.8",
+      "authors": "Shiduo Zhang, Ziwen Zhuang & Hang Zhao",
+      "description": "運動学の初期プロジェクトの一つ。Legged Gym と同時進行。",
+      "image": "./media/quad_avoid.gif"
+    }
+  ]
 }
