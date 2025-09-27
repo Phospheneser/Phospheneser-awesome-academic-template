@@ -895,16 +895,7 @@ function initializeCardSlider() {
 document.addEventListener('DOMContentLoaded', () => {
   loadContent();
 
-  // 汉堡菜单功能
-  const burger = document.querySelector('.navbar-burger');
-  const menu = document.querySelector('.navbar-menu');
-
-  if (burger && menu) {
-    burger.addEventListener('click', () => {
-      burger.classList.toggle('is-active');
-      menu.classList.toggle('is-active');
-    });
-  }
+  // 汉堡菜单功能已由jQuery处理
 
   // 返回顶部按钮功能
   const backToTopButton = document.getElementById('back-to-top');

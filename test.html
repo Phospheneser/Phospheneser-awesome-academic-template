@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎨 导航菜单美化测试</title>
+    <link rel="stylesheet" href="./static/css/index.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+        .demo-container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 2.5rem;
+            border-radius: 15px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+        }
+        .demo-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .demo-nav {
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            border-radius: 12px;
+            margin: 2rem 0;
+            box-shadow: 0 8px 25px rgba(44, 62, 80, 0.3);
+        }
+        .info-card {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1.5rem 0;
+            border-left: 4px solid #007bff;
+        }
+        .feature-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+        .feature-item {
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        .feature-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        .responsive-demo {
+            display: flex;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+        .demo-frame {
+            flex: 1;
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: center;
+        }
+        .frame-title {
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            color: #495057;
+        }
+        .viewport-info {
+            background: #e3f2fd;
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            font-family: 'Courier New', monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="demo-container">
+        <div class="demo-header">
+            <h1>🎨 美观的响应式导航菜单</h1>
+            <p>精致的右上角紧凑菜单设计，完美适配所有设备</p>
+        </div>
+
+        <div class="demo-nav">
+            <nav class="navbar is-primary">
+                <div class="navbar-brand">
+                    <a class="navbar-item" href="/">
+                        <strong>✨ 美观导航</strong>
+                    </a>
+                    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="demo-navbar">
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </a>
+                </div>
+                <div id="demo-navbar" class="navbar-menu">
+                    <div class="navbar-end">
+                        <a class="navbar-item" href="#home">🏠 首页</a>
+                        <a class="navbar-item" href="#about">👤 关于</a>
+                        <a class="navbar-item" href="#services">⚙️ 服务</a>
+                        <a class="navbar-item" href="#portfolio">💼 作品</a>
+                        <a class="navbar-item" href="#contact">📧 联系</a>
+                    </div>
+                </div>
+            </nav>
+        </div>
+
+        <div class="viewport-info">
+            <strong>📱 当前视口信息：</strong><br>
+            宽度: <span id="viewport-width">0</span>px |
+            高度: <span id="viewport-height">0</span>px |
+            设备像素比: <span id="device-pixel-ratio">1</span>
+        </div>
+
+        <div class="info-card">
+            <h3>🔧 汉堡按钮定位检查</h3>
+            <p>请打开浏览器开发者工具控制台查看汉堡按钮的定位信息。</p>
+            <p>预期行为：汉堡按钮应该始终在导航栏的最右边。</p>
+        </div>
+
+        <div class="info-card">
+            <h3>🎯 设计特点</h3>
+            <div class="feature-list">
+                <div class="feature-item">
+                    <div class="feature-icon">📱</div>
+                    <strong>响应式设计</strong>
+                    <p>完美适配桌面、平板、手机</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">🎨</div>
+                    <strong>现代化外观</strong>
+                    <p>渐变背景、毛玻璃效果、流畅动画</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">⚡</div>
+                    <strong>紧凑布局</strong>
+                    <p>右上角定位，节省屏幕空间</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">🖱️</div>
+                    <strong>交互友好</strong>
+                    <p>悬停效果、平滑过渡、易于点击</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="info-card">
+            <h3>📋 测试指南</h3>
+            <ol>
+                <li><strong>桌面端 (≥1024px)</strong>：汉堡菜单隐藏，导航项水平显示</li>
+                <li><strong>平板端 (769px-1023px)</strong>：汉堡菜单显示，点击显示260px右上角菜单</li>
+                <li><strong>手机端 (481px-768px)</strong>：汉堡菜单显示，点击显示260px右上角菜单</li>
+                <li><strong>小屏手机 (≤480px)</strong>：菜单自动调整为220px宽度</li>
+            </ol>
+        </div>
+
+        <div class="responsive-demo">
+            <div class="demo-frame">
+                <div class="frame-title">🖥️ 桌面端</div>
+                <p>≥1024px<br>汉堡菜单隐藏</p>
+            </div>
+            <div class="demo-frame">
+                <div class="frame-title">📱 平板端</div>
+                <p>769px-1023px<br>260px右上角菜单</p>
+            </div>
+            <div class="demo-frame">
+                <div class="frame-title">📱 手机端</div>
+                <p>481px-768px<br>260px紧凑菜单</p>
+            </div>
+            <div class="demo-frame">
+                <div class="frame-title">📱 小屏手机</div>
+                <p>≤480px<br>220px超紧凑菜单</p>
+            </div>
+        </div>
+
+        <div class="info-card">
+            <h3>🔍 调试信息</h3>
+            <p>💡 请打开浏览器开发者工具控制台，点击汉堡菜单查看详细调试输出</p>
+            <p>🎯 预期行为：菜单始终显示在右上角，宽度适中，不会占满屏幕</p>
+        </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="./static/js/index.js"></script>
+    <script>
+        function updateViewportInfo() {
+            document.getElementById('viewport-width').textContent = window.innerWidth;
+            document.getElementById('viewport-height').textContent = window.innerHeight;
+            document.getElementById('device-pixel-ratio').textContent = window.devicePixelRatio || 1;
+        }
+
+        updateViewportInfo();
+        window.addEventListener('resize', updateViewportInfo);
+
+        $(document).ready(function() {
+            console.log('🎨 美观导航菜单演示页面加载完成');
+            console.log('📐 当前视口：', window.innerWidth + 'x' + window.innerHeight);
+            console.log('🍔 汉堡菜单元素：', $('.navbar-burger').length);
+            console.log('📋 导航菜单元素：', $('.navbar-menu').length);
+        });
+    </script>
+</body>
+</html>

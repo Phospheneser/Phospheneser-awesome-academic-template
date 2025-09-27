@@ -325,25 +325,39 @@ html {
   .navbar-brand .navbar-item {
     font-size: 1.2rem;
     padding: 0.5rem 1rem;
+    flex: 1 1 auto !important; /* 占据剩余空间 */
+    text-align: left !important;
   }
 
   /* 确保导航栏在移动端没有额外的右边距 */
   .navbar-brand {
     margin-right: 0 !important;
     padding-right: 0 !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    width: 100% !important;
   }
 
   /* 汉堡菜单按钮样式 */
   .navbar-burger {
+    display: none !important; /* 默认隐藏，在移动端显示 */
     color: #ffffff !important;
     background-color: transparent !important;
     border: none !important;
-    padding: 0.5rem !important;
-    margin-right: 0 !important;
+    padding: 0.6rem !important;
+    margin: 0 !important;
+    cursor: pointer !important;
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    appearance: none !important;
+    transition: all 0.3s ease !important;
+    border-radius: 4px !important;
   }
 
   .navbar-burger:hover {
     background-color: rgba(255, 255, 255, 0.1) !important;
+    transform: scale(1.05) !important;
   }
 
   .navbar-burger span {
@@ -357,15 +371,23 @@ html {
     padding: 0.5rem;
     background-color: #111211 !important;
     opacity: 0.95;
+    display: flex;
   }
 
-  /* 确保桌面版导航菜单正常显示 */
+  /* 桌面版导航菜单样式 */
   @media (min-width: 1024px) {
     .navbar-menu {
       display: flex !important;
       position: static !important;
       background-color: transparent !important;
       box-shadow: none !important;
+      flex-direction: row !important;
+      top: auto !important;
+      left: auto !important;
+      right: auto !important;
+    }
+    .navbar-burger {
+      display: none !important; /* 桌面版隐藏汉堡菜单 */
     }
   }
 
@@ -404,31 +426,110 @@ html {
     background-color: rgba(255, 255, 255, 0.1) !important;
   }
 
-  .navbar-menu.is-active {
-    display: block !important;
+
+  /* 小屏幕优化 */
+  @media (max-width: 480px) {
+    .navbar-menu.is-active {
+      width: 220px !important;
+    }
+    .navbar-menu.is-active .navbar-item {
+      padding: 0.75rem 0.9rem !important;
+      font-size: 0.9rem !important;
+      min-height: 42px !important;
+    }
   }
 
-  /* 确保导航栏在小屏幕上正确显示 */
+  /* 移动端导航栏样式 */
   @media (max-width: 1023px) {
+    /* 确保移动端汉堡按钮在最右边 */
+    .navbar-brand {
+      display: flex !important;
+      justify-content: space-between !important;
+      align-items: center !important;
+      width: 100% !important;
+    }
     .navbar-menu {
       display: none !important;
-      position: absolute;
-      top: 100%;
-      left: 0;
-      right: 0;
-      z-index: 1000;
+      position: absolute !important;
+      top: 100% !important;
+      left: 0 !important;
+      right: 0 !important;
+      z-index: 9999 !important;
       background-color: #111211 !important;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      width: 100%;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3) !important;
+      width: 100% !important;
+      height: auto !important;
+      flex-direction: column !important;
+      opacity: 1 !important;
     }
 
     .navbar-menu.is-active {
-      display: block !important;
+      display: flex !important;
+      position: absolute !important;
+      top: 100% !important;
+      right: 0 !important;
+      left: auto !important;
+      z-index: 99999 !important;
+      width: 260px !important;
+      max-width: 85vw !important;
+      background: linear-gradient(135deg, rgba(17, 18, 17, 0.95) 0%, rgba(44, 62, 80, 0.92) 100%) !important;
+      backdrop-filter: blur(12px) !important;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3), 0 6px 20px rgba(0, 0, 0, 0.15) !important;
+      flex-direction: column !important;
+      opacity: 1 !important;
+      border-radius: 0 0 8px 8px !important;
+      border: 1px solid rgba(255, 255, 255, 0.12) !important;
+      border-top: none !important;
+      border-right: none !important;
+      animation: slideDown 0.25s ease-out !important;
+      overflow: hidden !important;
     }
+
+    /* 移动端菜单项样式 */
+    .navbar-menu.is-active .navbar-item {
+      display: block !important;
+      width: 100% !important;
+      padding: 0.85rem 1.1rem !important;
+      color: #ffffff !important;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.03) 100%) !important;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+      text-decoration: none !important;
+      font-size: 0.95rem !important;
+      font-weight: 500 !important;
+      line-height: 1.4 !important;
+      box-sizing: border-box !important;
+      min-height: 44px !important;
+      transition: all 0.2s ease !important;
+      position: relative !important;
+      backdrop-filter: blur(8px) !important;
+    }
+
+    .navbar-menu.is-active .navbar-item:hover {
+      background: linear-gradient(135deg, rgba(52, 152, 219, 0.25) 0%, rgba(155, 89, 182, 0.2) 100%) !important;
+      transform: translateX(-4px) !important;
+      box-shadow: 0 4px 20px rgba(52, 152, 219, 0.15) !important;
+      border-left: 3px solid #3498db !important;
+    }
+
+    .navbar-menu.is-active .navbar-item:last-child {
+      border-bottom: none !important;
+      border-radius: 0 0 8px 8px !important;
+    }
+
+    .navbar-menu.is-active .navbar-item:first-child {
+      border-radius: 0 !important;
+    }
+
 
     /* 确保移动端汉堡菜单按钮正常显示 */
     .navbar-burger {
       display: block !important;
+      cursor: pointer;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+      flex-shrink: 0 !important; /* 防止被压缩 */
+      order: 2 !important; /* 确保在右边 */
     }
   }
 
@@ -763,7 +864,16 @@ ul {
   font-size: 1em;
   color: #666;
   text-align: center;
-  padding: 0 20px;
-  font-family:Arial, sans-serif;
-  color: aliceblue;
+}
+
+/* 导航菜单动画 */
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px) translateX(5px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) translateX(0) scale(1);
+  }
 }
