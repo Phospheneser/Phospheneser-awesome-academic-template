@@ -261,8 +261,10 @@
   <div class="container is-max-desktop">
     <div id="publications">
       <h1 class="title is-3" style="margin-bottom: 1ex;" id="publications-title">📑 Publications</h1>
+      <div>
+        <!-- 出版物内容将动态生成 -->
+      </div>
     </div>
-    <!-- 出版物内容将动态生成 -->
   </div>
 </section>
 
@@ -270,8 +272,10 @@
   <div class="container is-max-desktop">
     <div id="projects">
       <h1 class="title is-3" id="projects-title">⚙️ Projects</h1>
+      <div>
+        <!-- 项目内容将动态生成 -->
+      </div>
     </div>
-    <!-- 项目内容将动态生成 -->
   </div>
 </section>
 
@@ -296,6 +300,9 @@
   <div class="container is-max-desktop">
     <div id="blogs">
       <h1 class="title is-3" style="margin-bottom: 1ex;" id="blogs-title">Blogs</h1>
+      <div>
+        <!-- 博客内容将动态生成 -->
+      </div>
     </div>
   </div>
 </section>
@@ -450,7 +457,15 @@ function generateLanguageButtons(webContent) {
 
 function generateNews(newsList) {
   const newsContainer = document.querySelector('#news .container');
+  if (!newsContainer) {
+    console.error('News container not found');
+    return;
+  }
   const newsDiv = newsContainer.querySelector('div:last-child');
+  if (!newsDiv) {
+    console.error('News content div not found');
+    return;
+  }
   newsDiv.innerHTML = '';
   newsList.forEach(item => {
     const div = document.createElement('div');
@@ -465,9 +480,17 @@ function generateNews(newsList) {
 
 function generatePublications(publicationsList) {
   const publicationsSection = document.querySelector('#publications');
-  const container = publicationsSection.querySelector('.container');
+  if (!publicationsSection) {
+    console.error('Publications section not found');
+    return;
+  }
+  const contentDiv = publicationsSection.querySelector('div:last-child');
+  if (!contentDiv) {
+    console.error('Publications content div not found');
+    return;
+  }
   // 移除现有 paper-container
-  const existingContainers = container.querySelectorAll('.paper-container');
+  const existingContainers = contentDiv.querySelectorAll('.paper-container');
   existingContainers.forEach(c => c.remove());
 
   publicationsList.forEach(pub => {
@@ -485,15 +508,23 @@ function generatePublications(publicationsList) {
         </p>
       </div>
     `;
-    container.appendChild(paperContainer);
+    contentDiv.appendChild(paperContainer);
   });
 }
 
 function generateProjects(projectsList) {
   const projectsSection = document.querySelector('#projects');
-  const container = projectsSection.querySelector('.container');
+  if (!projectsSection) {
+    console.error('Projects section not found');
+    return;
+  }
+  const contentDiv = projectsSection.querySelector('div:last-child');
+  if (!contentDiv) {
+    console.error('Projects content div not found');
+    return;
+  }
   // 移除现有 paper-container
-  const existingContainers = container.querySelectorAll('.paper-container');
+  const existingContainers = contentDiv.querySelectorAll('.paper-container');
   existingContainers.forEach(c => c.remove());
 
   projectsList.forEach(proj => {
@@ -512,15 +543,39 @@ function generateProjects(projectsList) {
         ${proj.links ? `<p>${proj.links.map(link => `<a href="${link.url}" target="_blank" class="paper-link">[${link.type}]</a>`).join(' ')}</p>` : ''}
       </div>
     `;
-    container.appendChild(paperContainer);
+    contentDiv.appendChild(paperContainer);
   });
 }
 
 function generateBlogs(blogsList) {
   const blogsSection = document.querySelector('#blogs');
-  const container = blogsSection.querySelector('.container');
+  if (!blogsSection) {
+    console.error('Blogs section not found');
+    return;
+  }
+  const contentDiv = blogsSection.querySelector('div:last-child');
+  if (!contentDiv) {
+    console.error('Blogs content div not found');
+    return;
+  }
+  // 清空现有内容
+  contentDiv.innerHTML = '';
+
   // 可以在这里生成博客内容，如果有的话
   // 目前 blogs.json 是空的
+  if (blogsList.length === 0) {
+    contentDiv.innerHTML = '<p>No blog posts yet.</p>';
+  } else {
+    blogsList.forEach(blog => {
+      const blogDiv = document.createElement('div');
+      blogDiv.innerHTML = `
+        <h3>${blog.title}</h3>
+        <p>${blog.date}</p>
+        <p>${blog.content}</p>
+      `;
+      contentDiv.appendChild(blogDiv);
+    });
+  }
 }
 
 function switchLanguage(lang) {

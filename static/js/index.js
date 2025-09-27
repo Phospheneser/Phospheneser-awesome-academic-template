@@ -68,7 +68,16 @@ $(document).ready(function() {
 
     // bulmaSlider.attach();
 
-    document.getElementById("single-task-result-video").playbackRate = 2.0;
-    document.getElementById("multi-task-result-video").playbackRate = 2.0;
+    // Check if video elements exist before setting playback rate
+    const singleTaskVideo = document.getElementById("single-task-result-video");
+    const multiTaskVideo = document.getElementById("multi-task-result-video");
+
+    if (singleTaskVideo) {
+        singleTaskVideo.playbackRate = 2.0;
+    }
+
+    if (multiTaskVideo) {
+        multiTaskVideo.playbackRate = 2.0;
+    }
 })
 
