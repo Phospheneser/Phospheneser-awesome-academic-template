@@ -456,6 +456,7 @@ function generateLanguageButtons(webContent) {
 }
 
 function generateNews(newsList) {
+  console.log('Generating news with data:', newsList);
   const newsContainer = document.querySelector('#news');
   if (!newsContainer) {
     console.error('News container not found');
@@ -464,8 +465,10 @@ function generateNews(newsList) {
   const newsDiv = newsContainer.querySelector('div:last-child');
   if (!newsDiv) {
     console.error('News content div not found');
+    console.log('News container children:', newsContainer.children);
     return;
   }
+  console.log('Found news div:', newsDiv);
   newsDiv.innerHTML = '';
   newsList.forEach(item => {
     const div = document.createElement('div');
@@ -476,6 +479,7 @@ function generateNews(newsList) {
     `;
     newsDiv.appendChild(div);
   });
+  console.log('News generation completed');
 }
 
 function generatePublications(publicationsList) {
