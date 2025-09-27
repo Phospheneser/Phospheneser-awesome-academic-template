@@ -355,28 +355,9 @@
 </script>
 <script>
 let currentLang = localStorage.getItem('lang') || 'en';
-let availableLanguages = [];
-
-async function loadLanguages() {
-  try {
-    // 获取语言列表（data/ 下面的文件夹）
-    const response = await fetch('data/');
-    const text = await response.text();
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(text, 'text/html');
-    const links = Array.from(doc.querySelectorAll('a')).filter(a => a.href.includes('data/') && a.href.endsWith('/'));
-    availableLanguages = links.map(a => a.href.split('/').slice(-2, -1)[0]).filter(lang => lang !== 'data');
-    console.log('Available languages:', availableLanguages);
-  } catch (error) {
-    console.error('Error loading languages:', error);
-    availableLanguages = ['en', 'zh', 'jp']; // 默认语言
-  }
-}
+let availableLanguages = ['en', 'zh', 'jp']; // 直接定义可用语言列表
 
 async function loadContent(lang = currentLang) {
-  if (availableLanguages.length === 0) {
-    await loadLanguages();
-  }
 
   // 加载所有数据文件
   const [webContentRes, projectsRes, publicationsRes, newsRes, blogsRes] = await Promise.all([
@@ -393,41 +374,40 @@ async function loadContent(lang = currentLang) {
   const news = await newsRes.json();
   const blogs = await blogsRes.json();
 
-  const content = webContent;
   const projectsList = projects.projects || [];
   const publicationsList = publications.publications || [];
   const newsList = news.news || [];
   const blogsList = blogs.blogs || [];
 
   // 更新导航栏
-  updateElement('#navbar-about', content.navbar_about);
-  updateElement('#navbar-news', content.navbar_news);
-  updateElement('#navbar-publications', content.navbar_publications);
-  updateElement('#navbar-projects', content.navbar_projects);
-  updateElement('#navbar-blogs', content.navbar_blogs);
-  updateElement('#navbar-language', content.language);
+  updateElement('#navbar-about', webContent.navbar_about);
+  updateElement('#navbar-news', webContent.navbar_news);
+  updateElement('#navbar-publications', webContent.navbar_publications);
+  updateElement('#navbar-projects', webContent.navbar_projects);
+  updateElement('#navbar-blogs', webContent.navbar_blogs);
+  updateElement('#navbar-language', webContent.language);
 
   // 动态生成语言切换按钮
-  generateLanguageButtons();
+  generateLanguageButtons(webContent);
 
   // 更新标题和副标题
-  updateElement('#main-title', content.title);
-  updateElement('#main-subtitle', content.subtitle);
+  updateElement('#main-title', webContent.title);
+  updateElement('#main-subtitle', webContent.subtitle);
 
   // 更新 About 部分
-  updateElement('#about-title', content.about_title);
-  updateElement('#about-text1', content.about_text1);
-  updateElement('#about-text2', content.about_text2);
+  updateElement('#about-title', webContent.about_title);
+  updateElement('#about-text1', webContent.about_text1);
+  updateElement('#about-text2', webContent.about_text2);
 
   // 更新其他部分标题
-  updateElement('#news-title', content.news_title);
-  updateElement('#publications-title', content.publications_title);
-  updateElement('#projects-title', content.projects_title);
-  updateElement('#academic-service-title', content.academic_service_title);
-  updateElement('#blogs-title', content.blogs_title);
+  updateElement('#news-title', webContent.news_title);
+  updateElement('#publications-title', webContent.publications_title);
+  updateElement('#projects-title', webContent.projects_title);
+  updateElement('#academic-service-title', webContent.academic_service_title);
+  updateElement('#blogs-title', webContent.blogs_title);
 
   // 更新页脚
-  updateElement('#footer-text', content.footer);
+  updateElement('#footer-text', webContent.footer);
 
   // 动态生成新闻
   generateNews(newsList);
@@ -447,20 +427,23 @@ function updateElement(selector, html) {
   if (element) element.innerHTML = html;
 }
 
-function generateLanguageButtons() {
+function generateLanguageButtons(webContent) {
   const langDropdown = document.querySelector('#navbar-language').parentElement;
   const dropdown = langDropdown.querySelector('.navbar-dropdown');
   dropdown.innerHTML = '';
   availableLanguages.forEach(lang => {
-    const langData = {
-      'en': 'English',
-      'zh': '中文',
-      'jp': '日本語'
+    // 从当前语言的 webContent 中获取语言名称
+    const langKeyMap = {
+      'en': 'english',
+      'zh': 'chinese',
+      'jp': 'japanese'
     };
+    const langKey = langKeyMap[lang];
+    const langName = webContent[langKey] || lang;
     const button = document.createElement('a');
     button.className = 'navbar-item';
     button.onclick = () => switchLanguage(lang);
-    button.innerHTML = langData[lang] || lang;
+    button.innerHTML = langName;
     dropdown.appendChild(button);
   });
 }
@@ -546,7 +529,7 @@ function switchLanguage(lang) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  loadLanguages().then(() => loadContent());
+  loadContent();
 });
 </script>
 </html>
