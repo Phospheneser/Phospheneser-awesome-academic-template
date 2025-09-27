@@ -86,7 +86,7 @@
   <nav class="navbar is-primary">
     <div class="navbar-brand">
         <a class="navbar-item" href="/">
-            <strong>Hey! Joshua!</strong>
+            <strong id="navbar-title">Hey! Joshua!</strong>
         </a>
     </div>
 
@@ -294,6 +294,7 @@ async function loadContent(lang = currentLang) {
   const wordcloudList = wordcloud.wordcloud || [];
 
   // 更新导航栏
+  updateElement('#navbar-title', webContent.navbar_title);
   updateElement('#navbar-about', webContent.navbar_about);
   updateElement('#navbar-news', webContent.navbar_news);
   updateElement('#navbar-publications', webContent.navbar_publications);
