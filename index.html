@@ -646,12 +646,165 @@ function generateWordCloud(wordcloudList) {
         shape: 'spiral',
         tooltip: true
       });
+
+      // 添加自定义的自动重新开始功能
+      setupWordCloudAutoRestart();
     }
   } catch (e) {
     console.error('TagCanvas re-initialization error:', e);
   }
 
   console.log('Word cloud generation completed');
+}
+
+// 设置词云自动重新开始功能
+function setupWordCloudAutoRestart() {
+  const canvas = document.getElementById('word-cloud');
+  if (!canvas) return;
+
+  let restartTimer = null;
+  let isUserInteracting = false;
+  let lastInteractionTime = Date.now();
+  let dragStartTime = 0;
+
+  // 监听鼠标按下事件
+  canvas.addEventListener('mousedown', function(e) {
+    isUserInteracting = true;
+    dragStartTime = Date.now();
+    lastInteractionTime = Date.now();
+    console.log('Word cloud interaction started');
+
+    // 清除之前的定时器
+    if (restartTimer) {
+      clearTimeout(restartTimer);
+    }
+  });
+
+  // 监听document的鼠标释放事件，确保即使鼠标在区域外释放也能检测到
+  document.addEventListener('mouseup', function(e) {
+    if (isUserInteracting) {
+      isUserInteracting = false;
+      lastInteractionTime = Date.now();
+      const interactionDuration = Date.now() - dragStartTime;
+      console.log('Word cloud interaction ended, duration:', interactionDuration + 'ms');
+
+      // 如果交互时间很短（只是点击），立即重启
+      if (interactionDuration < 100) {
+        console.log('Short click detected, restarting immediately');
+        setTimeout(() => startWordCloudRotation(), 100);
+        return;
+      }
+
+      // 清除之前的定时器
+      if (restartTimer) {
+        clearTimeout(restartTimer);
+      }
+
+      // 5秒后重新开始转动
+      restartTimer = setTimeout(function() {
+        const timeSinceLastInteraction = Date.now() - lastInteractionTime;
+        if (timeSinceLastInteraction >= 5000 && !isUserInteracting) {
+          console.log('Word cloud restarting after 5 seconds of inactivity');
+          startWordCloudRotation();
+        }
+      }, 5000);
+    }
+  });
+
+  // 监听鼠标移动事件
+  canvas.addEventListener('mousemove', function(e) {
+    if (isUserInteracting) {
+      lastInteractionTime = Date.now();
+      // 清除定时器，因为用户正在交互
+      if (restartTimer) {
+        clearTimeout(restartTimer);
+        restartTimer = setTimeout(function() {
+          const timeSinceLastInteraction = Date.now() - lastInteractionTime;
+          if (timeSinceLastInteraction >= 5000 && !isUserInteracting) {
+            console.log('Word cloud restarting after 5 seconds of inactivity');
+            startWordCloudRotation();
+          }
+        }, 5000);
+      }
+    }
+  });
+
+  // 监听鼠标离开事件
+  canvas.addEventListener('mouseleave', function() {
+    // 鼠标离开时不改变isUserInteracting状态，让document的mouseup事件处理
+    console.log('Mouse left word cloud area');
+  });
+
+  // 监听鼠标进入事件
+  canvas.addEventListener('mouseenter', function() {
+    // 如果鼠标进入时还在交互状态（说明鼠标在区域外释放了）
+    if (!isUserInteracting && Date.now() - lastInteractionTime < 5000) {
+      isUserInteracting = true;
+      lastInteractionTime = Date.now();
+
+      // 鼠标重新进入时，清除定时器，因为用户回来了
+      if (restartTimer) {
+        clearTimeout(restartTimer);
+        restartTimer = null;
+        console.log('Mouse entered word cloud area, timer cleared');
+      } else {
+        console.log('Mouse entered word cloud area');
+      }
+    }
+  });
+}
+
+// 启动词云转动（逐步加速）
+function startWordCloudRotation() {
+  if (typeof TagCanvas === 'undefined') return;
+
+  try {
+    const canvas = document.getElementById('word-cloud');
+    if (canvas) {
+      // 尝试重新开始TagCanvas动画
+      if (canvas.tc) {
+        // 重新设置动画状态
+        canvas.tc.animating = true;
+        canvas.tc.active = true;
+
+        // 给所有标签添加随机速度
+        if (canvas.tc.taglist && canvas.tc.taglist.length > 0) {
+          canvas.tc.taglist.forEach(function(tag) {
+            tag.vx = (Math.random() - 0.5) * 0.02;
+            tag.vy = (Math.random() - 0.5) * 0.02;
+            tag.va = (Math.random() - 0.5) * 0.02;
+          });
+        }
+
+        // 强制重绘
+        if (canvas.tc.Draw) {
+          canvas.tc.Draw();
+        }
+        console.log('Word cloud rotation restarted with velocity reset');
+      } else {
+        // 如果tc对象不存在，重新初始化
+        TagCanvas.Start('word-cloud', 'tags', {
+          textColour: '#FFFFFF',
+          outlineColour: 'rgba(255, 255, 255, 0.5)',
+          reverse: true,
+          depth: 0.8,
+          maxSpeed: 0.01,
+          textFont: 'Papyrus, Arial, sans-serif',
+          textHeight: 20,
+          shuffleTags: true,
+          initial: [0.3, 0.3],
+          decel: 0.98,
+          dragControl: true,
+          weight: true,
+          shape: 'spiral',
+          tooltip: true
+        });
+        console.log('Word cloud re-initialized');
+      }
+    }
+  } catch (e) {
+    console.error('Error restarting word cloud rotation:', e);
+  }
 }
 
 function switchLanguage(lang) {
