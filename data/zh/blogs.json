@@ -8,6 +8,10 @@
         {
           "type": "原文",
           "url": "https://www.open-moss.com/cn/speechgpt2-preview/"
+        },
+        {
+          "type": "代码",
+          "url": "https://github.com/OpenMOSS/SpeechGPT-2.0-preview"
         }
       ],
       "image": "./media/sgpt2p.png"

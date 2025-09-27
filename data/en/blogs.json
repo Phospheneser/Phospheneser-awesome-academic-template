@@ -8,6 +8,10 @@
         {
           "type": "Original Article",
           "url": "https://www.open-moss.com/en/speechgpt2-preview/"
+        },
+        {
+          "type": "Code",
+          "url": "https://github.com/OpenMoss/SpeechGPT2"
         }
       ],
       "image": "./media/sgpt2p.png"
