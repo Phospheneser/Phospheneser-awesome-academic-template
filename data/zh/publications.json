@@ -21,7 +21,7 @@
         {"type": "Hugging Face", "url": "https://huggingface.co/datasets/LutherXD/LongSafetyBench"},
         {"type": "代码", "url": "https://github.com/OpenMOSS/LongSafety"}
       ],
-      "image": "./media/LSB.png"
+      "image": "./media/LSB.jpg"
     },
     {
       "title": "DetectiveQA: 在侦探小说中进行长上下文推理的评估基准",
@@ -33,7 +33,7 @@
         {"type": "代码", "url": "https://github.com/Phospheneser/DetectiveQA"},
         {"type": "Hugging Face", "url": "https://huggingface.co/datasets/Phospheneser/DetectiveQA"}
       ],
-      "image": "./media/detectiveqa.png"
+      "image": "./media/detectiveqa.jpg"
     }
   ]
 }

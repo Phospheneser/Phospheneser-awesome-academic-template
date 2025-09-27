@@ -21,7 +21,7 @@
         {"type": "Hugging Face", "url": "https://huggingface.co/datasets/LutherXD/LongSafetyBench"},
         {"type": "コード", "url": "https://github.com/OpenMOSS/LongSafety"}
       ],
-      "image": "./media/LSB.png"
+      "image": "./media/LSB.jpg"
     },
     {
       "title": "DetectiveQA: 推理小説に基づく長文脈推論の評価",
@@ -33,7 +33,7 @@
         {"type": "コード", "url": "https://github.com/Phospheneser/DetectiveQA"},
         {"type": "Hugging Face", "url": "https://huggingface.co/datasets/Phospheneser/DetectiveQA"}
       ],
-      "image": "./media/detectiveqa.png"
+      "image": "./media/detectiveqa.jpg"
     }
   ]
 }
