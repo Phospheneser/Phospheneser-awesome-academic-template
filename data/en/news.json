@@ -1,15 +1,15 @@
 {
   "news": [
     {
-      "date": "2026.1.26",
+      "date": "2026.01.26",
       "content": "SpeechGPT-2-preview was released!"
     },
     {
-      "date": "2025.6.26",
+      "date": "2025.06.26",
       "content": "VLABench was accepted by ICCV 2025!"
     },
     {
-      "date": "2025.3.5",
+      "date": "2025.03.05",
       "content": "DetectiveQA was accepted by Reasoning and Planning for LLMs @ ICLR 2025!"
     },
     {
