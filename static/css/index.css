@@ -1263,6 +1263,11 @@ body.dark-mode .footer {
   border-top: 1px solid #555 !important;
 }
 
+/* 暗夜模式下strong标签文字样式 */
+body.dark-mode strong {
+  color: #ffffff !important;
+}
+
 /* 暗夜模式按钮悬停效果 */
 body.dark-mode .navbar-item:hover {
   background-color: rgba(255, 255, 255, 0.2) !important;

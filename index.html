@@ -82,7 +82,7 @@
 
 <body>
 
-  <div style="background-image:linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)),url('./media/occupacy.jpg');background-size: cover; background-position: center;padding-top: 52px; padding-bottom: 20px; margin-top: -52px; width: 100vw; position: relative;">
+  <div id="background-container" style="background-image:linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)),url('./media/occupacy.jpg');background-size: cover; background-position: center;padding-top: 52px; padding-bottom: 20px; margin-top: -52px; width: 100vw; position: relative;">
   <nav class="navbar is-primary">
     <div class="navbar-brand">
         <a class="navbar-item" href="/">
@@ -963,12 +963,15 @@ function initializeDarkMode() {
   function toggleDarkMode() {
     const isCurrentlyDark = body.classList.contains('dark-mode');
     const iconContainer = darkModeToggle;
+    const backgroundContainer = document.getElementById('background-container');
     console.log('Current dark mode state:', isCurrentlyDark);
 
     if (isCurrentlyDark) {
       // 切换到白天模式
       body.classList.remove('dark-mode');
       localStorage.setItem('darkMode', 'false');
+      // 恢复背景图片为occupacy.jpg
+      backgroundContainer.style.backgroundImage = "linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)),url('./media/occupacy.jpg')";
       // 直接替换HTML内容为月亮图标
       iconContainer.innerHTML = '<i class="fas fa-moon"></i>';
       console.log('Switched to light mode');
@@ -976,6 +979,21 @@ function initializeDarkMode() {
       // 切换到暗夜模式
       body.classList.add('dark-mode');
       localStorage.setItem('darkMode', 'true');
+
+      // 尝试加载occupacy_dark.jpg，如果不存在则使用蒙版方案
+      const darkImage = new Image();
+      darkImage.onload = function() {
+        // 如果图片加载成功，使用occupacy_dark.jpg
+        backgroundContainer.style.backgroundImage = "linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)),url('./media/occupacy_dark.jpg')";
+        console.log('Loaded occupacy_dark.jpg successfully');
+      };
+      darkImage.onerror = function() {
+        // 如果图片加载失败，使用现有的蒙版方案
+        console.log('occupacy_dark.jpg not found, using fallback mask');
+        // 保持现有的蒙版方案（CSS中已定义）
+      };
+      darkImage.src = './media/occupacy_dark.jpg';
+
       // 直接替换HTML内容为太阳图标
       iconContainer.innerHTML = '<i class="fas fa-sun"></i>';
       console.log('Switched to dark mode');
