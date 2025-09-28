@@ -82,10 +82,10 @@
 
 <body>
 
-  <div id="background-container" style="background-image:linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)),url('./media/occupacy.jpg');background-size: cover; background-position: center;padding-top: 52px; padding-bottom: 20px; margin-top: -52px; width: 100vw; position: relative;">
+  <div id="background-container" style="background-image:linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)),url('./media/occupacy.jpg');background-size: cover; background-position: center;padding-top: 52px; padding-bottom: 20px; margin-top: -52px; width: 100vw; position: relative; min-height: 100vh;">
   <nav class="navbar is-primary">
     <div class="navbar-brand">
-        <a class="navbar-item" href="/">
+        <a class="navbar-item" href="main.html" id="navbar-home">
             <strong id="navbar-title">Hey! Joshua!</strong>
         </a>
 
@@ -101,6 +101,9 @@
         <div class="navbar-end">
             <a class="navbar-item" href="#" id="dark-mode-toggle" title="Toggle Dark Mode">
                 <i class="fas fa-moon"></i>
+            </a>
+            <a class="navbar-item layout-mode-toggle" href="#" id="layout-mode-toggle" title="Switch to Single-page Mode">
+              <i class="fas fa-file-alt"></i>
             </a>
             <a class="navbar-item" href="#about" id="navbar-about">
                 About Me
@@ -277,6 +280,7 @@
 <script>
 let currentLang = localStorage.getItem('lang') || 'en';
 let availableLanguages = ['en', 'zh', 'jp']; // 直接定义可用语言列表
+let layoutMode = localStorage.getItem('layoutMode') || 'multi'; // 默认多页模式
 
 async function loadContent(lang = currentLang) {
 
@@ -311,6 +315,7 @@ async function loadContent(lang = currentLang) {
 
   // 更新导航栏
   updateElement('#navbar-title', webContent.navbar_title);
+  updateElement('#navbar-home', webContent.navbar_home);
   updateElement('#navbar-about', webContent.navbar_about);
   updateElement('#navbar-news', webContent.navbar_news);
   updateElement('#navbar-publications', webContent.navbar_publications);
@@ -861,6 +866,48 @@ function switchLanguage(lang) {
   }, 100);
 }
 
+// 布局模式切换功能
+function initializeLayoutMode() {
+  const layoutModeToggle = document.getElementById('layout-mode-toggle');
+
+  function updateLayoutButton() {
+    if (layoutModeToggle) {
+      if (layoutMode === 'single') {
+        layoutModeToggle.innerHTML = '<i class="fas fa-layer-group"></i>';
+        layoutModeToggle.title = 'Switch to Multi-page Mode';
+      } else {
+        layoutModeToggle.innerHTML = '<i class="fas fa-file-alt"></i>';
+        layoutModeToggle.title = 'Switch to Single-page Mode';
+      }
+    }
+  }
+
+  function toggleLayoutMode() {
+    const oldMode = layoutMode;
+    layoutMode = layoutMode === 'single' ? 'multi' : 'single';
+    localStorage.setItem('layoutMode', layoutMode);
+    updateLayoutButton();
+
+    // 如果切换到单页模式，跳转到主页面
+    if (oldMode === 'multi' && layoutMode === 'single') {
+      window.location.href = 'main.html';
+    }
+    // 如果切换到多页模式，保持在当前页面
+    else if (oldMode === 'single' && layoutMode === 'multi') {
+      // 保持在当前页面，不需要跳转
+    }
+  }
+
+  if (layoutModeToggle) {
+    layoutModeToggle.addEventListener('click', (e) => {
+      e.preventDefault();
+      toggleLayoutMode();
+    });
+  }
+
+  updateLayoutButton();
+}
+
 // 初始化语言dropdown功能
 function initializeLanguageDropdown() {
   const languageLink = document.querySelector('#navbar-language');
@@ -1017,6 +1064,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 初始化语言dropdown功能
   initializeLanguageDropdown();
+
+  // 初始化布局模式功能
+  initializeLayoutMode();
 
   // 初始化暗夜模式功能
   initializeDarkMode();

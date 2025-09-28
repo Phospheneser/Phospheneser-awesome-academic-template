@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Me - Zhe Xu - Homepage</title>
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-R2ZLMKHR2E"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-R2ZLMKHR2E');
+  </script>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+        rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Playfair+Display&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/wordcloud2.js/1.0.6/wordcloud2.min.js"></script>
+  <script src="https://www.goat1000.com/tagcanvas.min.js"></script>
+</head>
+
+<body>
+
+  <div id="background-container" style="background-image:linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)),url('./media/occupacy.jpg');background-size: cover; background-position: center;padding-top: 52px; padding-bottom: 20px; margin-top: -52px; width: 100vw; position: relative; min-height: 100vh;">
+  <nav class="navbar is-primary">
+    <div class="navbar-brand">
+        <a class="navbar-item" href="index.html">
+            <strong id="navbar-title">Hey! Joshua!</strong>
+        </a>
+
+        <!-- 亮暗模式切换按钮 -->
+        <a class="navbar-item dark-mode-toggle-mobile" href="#" id="dark-mode-toggle-mobile" title="Toggle Dark Mode">
+            <i class="fas fa-moon"></i>
+        </a>
+
+        <!-- 汉堡菜单按钮 -->
+        <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="top-navbar">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+    </div>
+
+    <div id="top-navbar" class="navbar-menu">
+        <div class="navbar-end">
+            <a class="navbar-item" href="main.html" id="navbar-home">Home</a>
+            <a class="navbar-item" href="about.html" id="navbar-about">About Me</a>
+            <a class="navbar-item" href="news.html" id="navbar-news">News</a>
+            <a class="navbar-item" href="publications.html" id="navbar-publications">Publications</a>
+            <a class="navbar-item" href="projects.html" id="navbar-projects">Projects</a>
+            <a class="navbar-item" href="blogs.html" id="navbar-blogs">Blogs</a>
+            <a class="navbar-item layout-mode-toggle" href="#" id="layout-mode-toggle" title="Switch to Single-page Mode">
+              <i class="fas fa-file-alt"></i>
+            </a>
+            <div class="navbar-item has-dropdown" id="language-dropdown">
+              <a class="navbar-link" id="navbar-language">
+                Language
+              </a>
+              <div class="navbar-dropdown" id="language-dropdown-menu">
+                <!-- 语言按钮将动态生成 -->
+              </div>
+            </div>
+        </div>
+    </div>
+  </nav>
+
+  <div class="container is-max-desktop">
+    <section class="section" name="sec-intro">
+      <div id="about">
+        <h1 class="title is-3" id="about-title" style="margin-top: 60px;">🎄 About Me</h1>
+      </div>
+      <div>
+        <p class="text-homepage-1" id="about-text1"></p>
+        <p class="text-homepage-1" id="about-text2"></p>
+      </div>
+    </section>
+  </div>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="columns is-centered">
+        <div class="column">
+          <div class="content has-text-centered">
+            <p id="footer-text">
+              Edit by Joshua@2025.9.27
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+<!-- 返回顶部按钮 -->
+<button id="back-to-top" class="back-to-top" title="返回顶部">
+  <i class="fas fa-chevron-up"></i>
+</button>
+</div> <!-- 结束背景容器 -->
+
+</body>
+
+<script>
+let currentLang = localStorage.getItem('lang') || 'en';
+let availableLanguages = ['en', 'zh', 'jp'];
+let layoutMode = localStorage.getItem('layoutMode') || 'multi'; // 默认多页模式
+
+async function loadContent(lang = currentLang) {
+  // 加载所有数据文件
+  const [webContentRes, projectsRes, publicationsRes, newsRes, blogsRes, academicServiceRes, cardsRes, wordcloudRes] = await Promise.all([
+    fetch(`data/${lang}/web_content.json`),
+    fetch(`data/${lang}/projects.json`),
+    fetch(`data/${lang}/publications.json`),
+    fetch(`data/${lang}/news.json`),
+    fetch(`data/${lang}/blogs.json`),
+    fetch(`data/${lang}/academic_service.json`),
+    fetch(`data/${lang}/cards.json`),
+    fetch(`data/${lang}/wordcloud.json`)
+  ]);
+
+  const webContent = await webContentRes.json();
+  const projects = await projectsRes.json();
+  const publications = await publicationsRes.json();
+  const news = await newsRes.json();
+  const blogs = await blogsRes.json();
+  const academicService = await academicServiceRes.json();
+  const cards = await cardsRes.json();
+  const wordcloud = await wordcloudRes.json();
+
+  // 更新导航栏
+  updateElement('#navbar-title', webContent.navbar_title);
+  updateElement('#navbar-home', webContent.navbar_home);
+  updateElement('#navbar-about', webContent.navbar_about);
+  updateElement('#navbar-news', webContent.navbar_news);
+  updateElement('#navbar-publications', webContent.navbar_publications);
+  updateElement('#navbar-projects', webContent.navbar_projects);
+  updateElement('#navbar-blogs', webContent.navbar_blogs);
+  updateElement('#navbar-language', webContent.language);
+
+  // 动态生成语言切换按钮
+  generateLanguageButtons(webContent);
+
+  // 更新 About 部分
+  updateElement('#about-title', webContent.about_title);
+  updateElement('#about-text1', webContent.about_text1);
+  updateElement('#about-text2', webContent.about_text2);
+
+  // 更新页脚
+  updateElement('#footer-text', webContent.footer);
+}
+
+// 复用主页面中的函数
+function updateElement(selector, html) {
+  const element = document.querySelector(selector);
+  if (element) element.innerHTML = html;
+}
+
+function generateLanguageButtons(webContent) {
+  const langDropdown = document.querySelector('#language-dropdown');
+  const dropdown = document.querySelector('#language-dropdown-menu');
+  dropdown.innerHTML = '';
+  availableLanguages.forEach(lang => {
+    const langKeyMap = {
+      'en': 'english',
+      'zh': 'chinese',
+      'jp': 'japanese'
+    };
+    const langKey = langKeyMap[lang];
+    const langName = webContent[langKey] || lang;
+    const button = document.createElement('a');
+    button.className = 'navbar-item';
+    button.onclick = (e) => {
+      e.stopPropagation();
+      switchLanguage(lang);
+    };
+    button.innerHTML = langName;
+    dropdown.appendChild(button);
+  });
+}
+
+function switchLanguage(lang) {
+  localStorage.setItem('lang', lang);
+  loadContent(lang);
+  setTimeout(() => {
+    const dropdown = document.querySelector('#language-dropdown');
+    if (dropdown && window.innerWidth <= 1023) {
+      dropdown.classList.add('is-active');
+    }
+  }, 100);
+}
+
+// 布局模式切换功能
+function initializeLayoutMode() {
+  const layoutModeToggle = document.getElementById('layout-mode-toggle');
+
+  function updateLayoutButton() {
+    if (layoutModeToggle) {
+      if (layoutMode === 'single') {
+        layoutModeToggle.innerHTML = '<i class="fas fa-layer-group"></i>';
+        layoutModeToggle.title = 'Switch to Multi-page Mode';
+      } else {
+        layoutModeToggle.innerHTML = '<i class="fas fa-file-alt"></i>';
+        layoutModeToggle.title = 'Switch to Single-page Mode';
+      }
+    }
+  }
+
+  function toggleLayoutMode() {
+    const oldMode = layoutMode;
+    layoutMode = layoutMode === 'single' ? 'multi' : 'single';
+    localStorage.setItem('layoutMode', layoutMode);
+    updateLayoutButton();
+
+    // 如果切换到单页模式，跳转到主页面
+    if (oldMode === 'multi' && layoutMode === 'single') {
+      window.location.href = 'main.html';
+    }
+    // 如果切换到多页模式且当前页面不是about页面，跳转到about页面
+    else if (oldMode === 'single' && layoutMode === 'multi') {
+      // 保持在当前页面，不需要跳转
+      // window.location.href = 'about.html'; // 注释掉，避免不必要的跳转
+    }
+  }
+
+  if (layoutModeToggle) {
+    layoutModeToggle.addEventListener('click', (e) => {
+      e.preventDefault();
+      toggleLayoutMode();
+    });
+  }
+
+  updateLayoutButton();
+}
+
+// 暗夜模式功能
+function initializeDarkMode() {
+  const darkModeToggle = document.getElementById('dark-mode-toggle');
+  const darkModeToggleMobile = document.getElementById('dark-mode-toggle-mobile');
+  const body = document.body;
+
+  const isDarkMode = localStorage.getItem('darkMode') === 'true';
+
+  if (isDarkMode) {
+    body.classList.add('dark-mode');
+    if (darkModeToggleMobile) {
+      darkModeToggleMobile.innerHTML = '<i class="fas fa-sun"></i>';
+    }
+  } else {
+    if (darkModeToggleMobile) {
+      darkModeToggleMobile.innerHTML = '<i class="fas fa-moon"></i>';
+    }
+  }
+
+  function toggleDarkMode() {
+    const isCurrentlyDark = body.classList.contains('dark-mode');
+    const backgroundContainer = document.getElementById('background-container');
+
+    if (isCurrentlyDark) {
+      body.classList.remove('dark-mode');
+      localStorage.setItem('darkMode', 'false');
+      backgroundContainer.style.backgroundImage = "linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)),url('./media/occupacy.jpg')";
+      if (darkModeToggleMobile) {
+        darkModeToggleMobile.innerHTML = '<i class="fas fa-moon"></i>';
+      }
+    } else {
+      body.classList.add('dark-mode');
+      localStorage.setItem('darkMode', 'true');
+      const darkImage = new Image();
+      darkImage.onload = function() {
+        backgroundContainer.style.backgroundImage = "linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)),url('./media/occupacy_dark.jpg')";
+      };
+      darkImage.onerror = function() {
+        // 保持现有的蒙版方案
+      };
+      darkImage.src = './media/occupacy_dark.jpg';
+
+      if (darkModeToggleMobile) {
+        darkModeToggleMobile.innerHTML = '<i class="fas fa-sun"></i>';
+      }
+    }
+  }
+
+  if (darkModeToggleMobile) {
+    darkModeToggleMobile.addEventListener('click', (e) => {
+      e.preventDefault();
+      toggleDarkMode();
+    });
+  }
+}
+
+// 初始化语言dropdown功能
+function initializeLanguageDropdown() {
+  const languageLink = document.querySelector('#navbar-language');
+  const languageDropdown = document.querySelector('#language-dropdown');
+
+  if (languageLink && languageDropdown) {
+    languageLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      languageDropdown.classList.toggle('is-active');
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!languageDropdown.contains(e.target)) {
+        languageDropdown.classList.remove('is-active');
+      }
+    });
+  }
+}
+
+// 返回顶部按钮功能
+function initializeBackToTop() {
+  const backToTopButton = document.getElementById('back-to-top');
+
+  window.addEventListener('scroll', () => {
+    if (window.pageYOffset > 300) {
+      backToTopButton.classList.add('show');
+    } else {
+      backToTopButton.classList.remove('show');
+    }
+  });
+
+  backToTopButton.addEventListener('click', () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  loadContent();
+
+  // 初始化语言dropdown功能
+  initializeLanguageDropdown();
+
+  // 初始化布局模式功能
+  initializeLayoutMode();
+
+  // 初始化暗夜模式功能
+  initializeDarkMode();
+
+  // 初始化返回顶部功能
+  initializeBackToTop();
+});
+</script>
+</html>
