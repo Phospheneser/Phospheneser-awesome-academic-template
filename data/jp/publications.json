@@ -3,7 +3,7 @@
     {
       "title": "SpeechGPT 2.0 - プレビュー版",
       "conference": "<a href='https://www.open-moss.com/jp/'>OpenMOSS</a>",
-      "authors": "<strong>OpenMOSS Team/strong>",
+      "authors": "<strong>OpenMOSS Team</strong>",
       "description": "SpeechGPT 2.0-previewは、コンテキストインテリジェンスに向けた最初の擬人化リアルタイム対話システムです。数百万時間の音声データで学習したエンドツーエンドの音声大規模モデルとして、擬人化された話し言葉表現と100ミリ秒未満の低遅延応答を特徴とし、自然で流暢なリアルタイム割り込み対話をサポートします。",
       "links": [
         {
