@@ -1,9 +1,26 @@
 {
   "publications": [
     {
+      "title": "SpeechGPT 2.0 - Preview Version",
+      "conference": "<a href='https://www.open-moss.com/en/'>OpenMOSS</a>",
+      "authors": "<strong>OpenMOSS Team/strong>",
+      "description": "SpeechGPT 2.0-preview is the first anthropomorphic real-time interactive system we launched towards contextual intelligence. As an end-to-end speech large model trained on millions of hours of voice data, it features anthropomorphic spoken expression and sub-100ms low-latency response, supporting natural and fluent real-time interruption interaction.",
+      "links": [
+        {
+          "type": "Blog",
+          "url": "https://www.open-moss.com/en/speechgpt2-preview/"
+        },
+        {
+          "type": "Code",
+          "url": "https://github.com/OpenMoss/SpeechGPT-2.0-preview"
+        }
+      ],
+      "image": "./media/sgpt2p.png"
+    },
+    {
       "title": "VLABench: A Large-Scale Benchmark for Language-Conditioned Robotics Manipulation with Long-Horizon Reasoning Tasks",
-      "conference": "CVPR'25 (But 1 of 19)",
-      "authors": "<strong>Shiduo Zhang</strong>, Zhe Xu, Peiju Liu, Xiaopeng Yu, Yuan Li, Qinghui Gao, Zhaoye Fei, Zhangyue Yin, Zuxuan Wu, Yu-Gang Jiang & Xipeng Qiu",
+      "conference": "CVPR'25 (But 1 of 19), ICCV'25",
+      "authors": "Shiduo Zhang <strong>Zhe Xu</strong>,, Peiju Liu, Xiaopeng Yu, Yuan Li, Qinghui Gao, Zhaoye Fei, Zhangyue Yin, Zuxuan Wu, Yu-Gang Jiang & Xipeng Qiu",
       "description": "\"First benchmark for VLA. Not only for evaluation, definition matters most.\"",
       "links": [
         {"type": "Paper", "url": "https://arxiv.org/abs/2412.18194"},
