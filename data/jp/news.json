@@ -1,6 +1,18 @@
 {
   "news": [
     {
+      "date": "2026.1.26",
+      "content": "SpeechGPT-2-preview リリース！"
+    },
+    {
+      "date": "2025.6.26",
+      "content": "VLABench が ICCV 2025 に採択されました！"
+    },
+    {
+      "date": "2025.3.5",
+      "content": "DetectiveQA が Reasoning and Planning for LLMs @ ICLR 2025 に採択されました！"
+    },
+    {
       "date": "2024.12.25",
       "content": "VLABench プレビュー版がリリースされました！"
     }
