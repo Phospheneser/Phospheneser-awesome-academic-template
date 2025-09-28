@@ -40,13 +40,18 @@
   <div id="background-container" style="background-image:linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)),url('./media/occupacy.jpg');background-size: cover; background-position: center;padding-top: 52px; padding-bottom: 20px; margin-top: -52px; width: 100vw; position: relative; min-height: 100vh;">
   <nav class="navbar is-primary">
     <div class="navbar-brand">
-        <a class="navbar-item" href="index.html">
+        <a class="navbar-item" href="#" id="navbar-home" onclick="goHome()">
             <strong id="navbar-title">Hey! Joshua!</strong>
         </a>
 
         <!-- 亮暗模式切换按钮 -->
         <a class="navbar-item dark-mode-toggle-mobile" href="#" id="dark-mode-toggle-mobile" title="Toggle Dark Mode">
             <i class="fas fa-moon"></i>
+        </a>
+
+        <!-- 单多页切换按钮 -->
+        <a class="navbar-item layout-mode-toggle" href="#" id="layout-mode-toggle" title="Switch to Single-page Mode">
+          <i class="fas fa-file-alt"></i>
         </a>
 
         <!-- 汉堡菜单按钮 -->
@@ -59,15 +64,11 @@
 
     <div id="top-navbar" class="navbar-menu">
         <div class="navbar-end">
-            <a class="navbar-item" href="main.html" id="navbar-home">Home</a>
             <a class="navbar-item" href="about.html" id="navbar-about">About Me</a>
             <a class="navbar-item" href="news.html" id="navbar-news">News</a>
             <a class="navbar-item" href="publications.html" id="navbar-publications">Publications</a>
             <a class="navbar-item" href="projects.html" id="navbar-projects">Projects</a>
             <a class="navbar-item" href="blogs.html" id="navbar-blogs">Blogs</a>
-            <a class="navbar-item layout-mode-toggle" href="#" id="layout-mode-toggle" title="Switch to Single-page Mode">
-              <i class="fas fa-file-alt"></i>
-            </a>
             <div class="navbar-item has-dropdown" id="language-dropdown">
               <a class="navbar-link" id="navbar-language">
                 Language
@@ -116,7 +117,20 @@
 <script>
 let currentLang = localStorage.getItem('lang') || 'en';
 let availableLanguages = ['en', 'zh', 'jp'];
-let layoutMode = localStorage.getItem('layoutMode') || 'multi'; // 默认多页模式
+// 根据当前页面和localStorage确定布局模式
+function getInitialLayoutMode() {
+  const stored = localStorage.getItem('layoutMode');
+  if (stored) return stored;
+
+  // 如果没有存储的模式，检查当前页面
+  if (window.location.pathname.includes('main.html')) {
+    return 'single'; // main.html默认单页模式
+  } else {
+    return 'multi'; // 其他页面默认多页模式
+  }
+}
+
+let layoutMode = getInitialLayoutMode();
 
 async function loadContent(lang = currentLang) {
   // 加载新闻数据文件
@@ -191,6 +205,17 @@ function switchLanguage(lang) {
   }, 100);
 }
 
+function goHome() {
+  const currentLayoutMode = localStorage.getItem('layoutMode') || 'multi';
+  if (currentLayoutMode === 'single') {
+    // 在单页模式下，回到单页首页
+    window.location.href = 'main.html';
+  } else {
+    // 在多页模式下，回到多页首页
+    window.location.href = 'index.html';
+  }
+}
+
 function generateNews(newsList) {
   console.log('Generating news with data:', newsList);
   const newsContainer = document.querySelector('#news');
@@ -244,11 +269,12 @@ function initializeLayoutMode() {
 
     // 如果切换到单页模式，跳转到主页面
     if (oldMode === 'multi' && layoutMode === 'single') {
-      window.location.href = 'main.html';
-    }
-    // 如果切换到多页模式，保持在当前页面
-    else if (oldMode === 'single' && layoutMode === 'multi') {
       // 保持在当前页面，不需要跳转
+      console.log('保持在当前页面，不需要跳转');
+    }
+    else if (oldMode === 'single' && layoutMode === 'multi') {
+    // 如果切换到多页模式，保持在当前页面
+      window.location.href = 'index.html?scroll=top';
     }
   }
 
@@ -259,6 +285,7 @@ function initializeLayoutMode() {
     });
   }
 
+  // 立即更新按钮状态
   updateLayoutButton();
 }
 
