@@ -1404,3 +1404,9 @@ body.dark-mode .back-to-top:hover {
 #dark-mode-toggle:hover {
   transform: scale(1.1);
 }
+
+footer.footer {
+  padding: 0.25rem 0.5rem !important;
+  background-color: #111;  /* 保持背景色，避免透明 */
+  height: auto !important; /* 自动根据内容撑开 */
+}
