@@ -1151,3 +1151,170 @@ ul {
     transform: translateY(0) translateX(0) scale(1);
   }
 }
+
+/* 暗夜模式样式 */
+body.dark-mode {
+  background-color: #2d2d2d !important;
+  color: #f0f0f0 !important;
+  transition: all 0.3s ease;
+}
+
+/* 暗夜模式导航栏样式 */
+body.dark-mode .navbar.is-primary {
+  background-color: #3a3a3a !important;
+  border-bottom: 1px solid #555 !important;
+}
+
+/* 暗夜模式背景容器样式 - 保持背景图片原样，只添加轻微暗色调 */
+body.dark-mode > div:first-child {
+  background-color: rgba(45, 45, 45, 0.3) !important;
+  background-blend-mode: darken !important;
+}
+
+/* 暗夜模式卡片样式 */
+body.dark-mode .card-container {
+  background-color: rgba(50, 50, 50, 0.9) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4) !important;
+}
+
+body.dark-mode .card {
+  background-color: rgba(55, 55, 55, 0.9) !important;
+}
+
+body.dark-mode .card-title {
+  color: #ffffff !important;
+}
+
+body.dark-mode .card-description {
+  color: #ffffff !important;
+}
+
+body.dark-mode .paper-container {
+  background-color: rgba(55, 55, 55, 0.9) !important;
+}
+
+body.dark-mode .paper-description {
+  color: #ffffff !important;
+}
+
+body.dark-mode .paper-authors {
+  color: #ffffff !important;
+}
+
+body.dark-mode #academic-service div[style*="display: flex"] {
+  background-color: rgba(55, 55, 55, 0.8) !important;
+  padding: 10px !important;
+  border-radius: 5px !important;
+}
+
+body.dark-mode #academic-service span:first-child {
+  color: #ffffff !important;
+}
+
+body.dark-mode #academic-service span:last-child {
+  color: #e8e8e8 !important;
+}
+
+/* 暗夜模式文字样式 */
+body.dark-mode .text-homepage-1 {
+  color: #e8e8e8 !important;
+}
+
+body.dark-mode .title,
+body.dark-mode .subtitle {
+  color: #ffffff !important;
+}
+
+body.dark-mode .section .title {
+  color: #ffffff !important;
+}
+
+/* 暗夜模式按钮样式 */
+body.dark-mode .arrow-btn {
+  background-color: rgba(255, 255, 255, 0.15) !important;
+  border-color: rgba(255, 255, 255, 0.4) !important;
+  color: rgba(255, 255, 255, 0.8) !important;
+}
+
+body.dark-mode .arrow-btn:hover {
+  background-color: rgba(255, 255, 255, 0.25) !important;
+  border-color: rgba(255, 255, 255, 0.6) !important;
+  color: #ffffff !important;
+}
+
+/* 暗夜模式图标区域样式 */
+body.dark-mode .icon-box {
+  border-color: #666 !important;
+  background-color: rgba(60, 60, 60, 0.7) !important;
+}
+
+body.dark-mode .icon-box a {
+  color: #e0e0e0 !important;
+}
+
+body.dark-mode .icon-box a:hover {
+  color: #ffffff !important;
+}
+
+/* 暗夜模式页脚样式 */
+body.dark-mode .footer {
+  background-color: #333333 !important;
+  color: #d0d0d0 !important;
+  border-top: 1px solid #555 !important;
+}
+
+/* 暗夜模式按钮悬停效果 */
+body.dark-mode .navbar-item:hover {
+  background-color: rgba(255, 255, 255, 0.2) !important;
+  color: #ffffff !important;
+}
+
+body.dark-mode .navbar-link:hover {
+  background-color: rgba(255, 255, 255, 0.2) !important;
+  color: #ffffff !important;
+}
+
+/* 暗夜模式菜单样式 */
+body.dark-mode .navbar-menu.is-active {
+  background: linear-gradient(135deg, rgba(58, 58, 58, 0.95) 0%, rgba(75, 75, 75, 0.92) 100%) !important;
+  border-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+body.dark-mode .navbar-menu.is-active .navbar-item {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.05) 100%) !important;
+  border-bottom-color: rgba(255, 255, 255, 0.2) !important;
+  color: #ffffff !important;
+}
+
+body.dark-mode .navbar-menu.is-active .navbar-item:hover {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.15) 100%) !important;
+  border-left-color: #ffffff !important;
+}
+
+/* 暗夜模式返回顶部按钮 */
+body.dark-mode .back-to-top {
+  background-color: #4a4a4a !important;
+  color: #ffffff !important;
+}
+
+body.dark-mode .back-to-top:hover {
+  background-color: #666666 !important;
+}
+
+/* 暗夜模式切换按钮样式 */
+#dark-mode-toggle {
+  transition: all 0.3s ease;
+}
+
+#dark-mode-toggle:hover {
+  transform: scale(1.1);
+}
+
+/* 暗夜模式切换按钮样式 */
+#dark-mode-toggle {
+  transition: all 0.3s ease;
+}
+
+#dark-mode-toggle:hover {
+  transform: scale(1.1);
+}

@@ -99,6 +99,9 @@
 
     <div id="top-navbar" class="navbar-menu">
         <div class="navbar-end">
+            <a class="navbar-item" href="#" id="dark-mode-toggle" title="Toggle Dark Mode">
+                <i class="fas fa-moon"></i>
+            </a>
             <a class="navbar-item" href="#about" id="navbar-about">
                 About Me
             </a>
@@ -938,11 +941,67 @@ function initializeCardSlider() {
   }
 }
 
+// 暗夜模式功能
+function initializeDarkMode() {
+  const darkModeToggle = document.getElementById('dark-mode-toggle');
+  const body = document.body;
+
+  // 检查本地存储中的暗夜模式设置
+  const isDarkMode = localStorage.getItem('darkMode') === 'true';
+
+  // 如果之前设置了暗夜模式，则应用它
+  if (isDarkMode) {
+    body.classList.add('dark-mode');
+    // 设置太阳图标
+    darkModeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+  } else {
+    // 设置月亮图标
+    darkModeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+  }
+
+  // 暗夜模式切换功能
+  function toggleDarkMode() {
+    const isCurrentlyDark = body.classList.contains('dark-mode');
+    const iconContainer = darkModeToggle;
+    console.log('Current dark mode state:', isCurrentlyDark);
+
+    if (isCurrentlyDark) {
+      // 切换到白天模式
+      body.classList.remove('dark-mode');
+      localStorage.setItem('darkMode', 'false');
+      // 直接替换HTML内容为月亮图标
+      iconContainer.innerHTML = '<i class="fas fa-moon"></i>';
+      console.log('Switched to light mode');
+    } else {
+      // 切换到暗夜模式
+      body.classList.add('dark-mode');
+      localStorage.setItem('darkMode', 'true');
+      // 直接替换HTML内容为太阳图标
+      iconContainer.innerHTML = '<i class="fas fa-sun"></i>';
+      console.log('Switched to dark mode');
+    }
+
+    // 调试：检查body类名
+    console.log('Body classes after toggle:', body.className);
+  }
+
+  // 为暗夜模式按钮添加点击事件监听器
+  if (darkModeToggle) {
+    darkModeToggle.addEventListener('click', (e) => {
+      e.preventDefault();
+      toggleDarkMode();
+    });
+  }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   loadContent();
 
   // 初始化语言dropdown功能
   initializeLanguageDropdown();
+
+  // 初始化暗夜模式功能
+  initializeDarkMode();
 
   // 汉堡菜单功能已由jQuery处理
 
