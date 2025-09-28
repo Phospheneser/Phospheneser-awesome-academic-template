@@ -537,12 +537,52 @@ html {
     font-size: 16px;
   }
 
-  /* 导航栏移动端适配 */
-  .navbar-brand .navbar-item {
+  /* 导航栏移动端适配 - 首页按钮保持固定 */
+  .navbar-brand .navbar-item:first-child {
+    flex: 0 0 auto !important;
     font-size: 1.2rem;
     padding: 0.5rem 1rem;
-    flex: 1 1 auto !important; /* 占据剩余空间 */
+    margin-right: 0.25rem !important;
+  }
+
+  /* 切换按钮在所有情况下都固定尺寸和位置 */
+  .navbar-brand .dark-mode-toggle-mobile,
+  .navbar-brand .layout-mode-toggle {
+    flex: none !important;         /* 🚀 彻底禁用 flex-grow 和 flex-shrink */
+    width: 52px !important;        /* 固定宽度 */
+    height: 52px !important;
+    margin: 0 0.25rem !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  /* 超小屏幕手机端适配 */
+  @media (max-width: 480px) {
+    .navbar-brand {
+      padding: 0.25rem !important;
+    }
+
+    .navbar-brand .dark-mode-toggle-mobile,
+    .navbar-brand .layout-mode-toggle {
+      width: 48px !important;
+      height: 48px !important;
+      padding: 0.6rem !important;
+      margin: 0 0.15rem !important;
+    }
+
+    .navbar-brand .navbar-item:first-child {
+      font-size: 1rem !important;
+      padding: 0.4rem 0.8rem !important;
+    }
+  }
+
+  /* 移动端其他导航项占据剩余空间（排除切换按钮和首页按钮） */
+  .navbar-brand .navbar-item:not(:first-child):not(.dark-mode-toggle-mobile):not(.layout-mode-toggle) {
+    flex: 1 1 auto !important;
     text-align: left !important;
+    font-size: 1.2rem;
+    padding: 0.5rem 1rem;
   }
 
   /* 确保导航栏在移动端没有额外的右边距 */
@@ -590,6 +630,19 @@ html {
     display: flex;
   }
 
+  /* 平板端导航样式 */
+  @media (min-width: 769px) and (max-width: 1023px) {
+    .navbar-brand {
+      justify-content: flex-start !important;
+    }
+
+    .navbar-brand .dark-mode-toggle-mobile,
+    .navbar-brand .layout-mode-toggle {
+      flex: 0 0 auto !important;
+      margin: 0 0.25rem !important;
+    }
+  }
+
   /* 桌面版导航菜单样式 */
   @media (min-width: 1024px) {
     .navbar-menu {
@@ -605,12 +658,40 @@ html {
     .navbar-burger {
       display: none !important; /* 桌面版隐藏汉堡菜单 */
     }
+
+    /* 桌面端确保切换按钮正确显示 */
+    .navbar-brand .dark-mode-toggle-mobile,
+    .navbar-brand .layout-mode-toggle {
+      flex: 0 0 auto !important;
+      margin: 0 0.25rem !important;
+    }
   }
 
   .navbar-item {
     font-size: 0.9rem;
     padding: 0.75rem 1rem;
     color: #ffffff !important;
+  }
+
+  /* 切换按钮在所有屏幕尺寸下保持正方形 */
+  .dark-mode-toggle-mobile,
+  .layout-mode-toggle {
+    width: 52px !important;
+    height: 52px !important;
+    padding: 0.75rem !important;
+    margin: 0 0.25rem !important;
+    text-align: center !important;
+    border-radius: 6px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex: 0 0 auto !important;
+  }
+
+  /* 首页按钮样式 */
+  .navbar-brand .navbar-item:first-child {
+    flex: 0 0 auto !important;
+    margin-right: 0.5rem !important;
   }
 
   .navbar-item:hover {
