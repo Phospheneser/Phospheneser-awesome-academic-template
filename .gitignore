@@ -1,3 +1,13 @@
+# Ignore individual HTML pages kept locally but not tracked
+/about.html
+/blogs.html
+/character_card.html
+/main.html
+/news.html
+/projects.html
+/publications.html
+/test.html
+/wordcloud.html
 .vscode
 *_sdz*
 .gitignore

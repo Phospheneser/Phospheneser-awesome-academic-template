@@ -300,17 +300,10 @@
   let layoutMode = getInitialLayoutMode();
 
   function goHome() {
-    const currentLayoutMode = localStorage.getItem('layoutMode') || 'multi';
-    if (currentLayoutMode === 'single') {
-      // 在单页模式下，回到单页首页
-      window.location.href = 'main.html';
-    } else {
-      // 在多页模式下，回到页面顶部
-      window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
-      });
-    }
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    })
   }
 
   async function loadContent(lang = currentLang) {
@@ -915,18 +908,12 @@
 
     function toggleLayoutMode() {
       const oldMode = layoutMode;
-      layoutMode = layoutMode === 'single' ? 'multi' : 'single';
+      layoutMode = layoutMode = 'multi';
       localStorage.setItem('layoutMode', layoutMode);
       updateLayoutButton();
 
-      // 如果切换到单页模式，跳转到主页面
-      if (oldMode === 'multi' && layoutMode === 'single') {
-        window.location.href = 'main.html?scroll=top';
-      }
-      // 如果切换到多页模式，保持在当前页面
-      else if (oldMode === 'single' && layoutMode === 'multi') {
-        // 保持在当前页面，不需要跳转
-      }
+      window.location.href = 'multipage_index.html?page=home';
+
     }
 
     if (layoutModeToggle) {
