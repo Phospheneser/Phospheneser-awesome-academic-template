@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,21 +10,19 @@
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-R2ZLMKHR2E"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
+    function gtag() { dataLayer.push(arguments); }
     gtag('js', new Date());
 
     gtag('config', 'G-R2ZLMKHR2E');
   </script>
 
-  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
-        rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Playfair+Display&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./static/css/bulma.min.css">
   <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
   <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
   <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
-  <link rel="stylesheet"
-        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
   <link rel="stylesheet" href="./static/css/index.css">
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -37,16 +36,17 @@
 
 <body>
 
-  <div id="background-container" style="background-image:linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)),url('./media/occupacy.jpg');background-size: cover; background-position: center;padding-top: 52px; padding-bottom: 20px; margin-top: -52px; width: 100vw; position: relative; min-height: 100vh;">
-  <nav class="navbar is-primary">
-    <div class="navbar-brand">
+  <div id="background-container"
+    style="background-image:linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)),url('./media/occupacy.jpg');background-size: cover; background-position: center;padding-top: 52px; padding-bottom: 20px; margin-top: -52px; width: 100vw; position: relative; min-height: 100vh;">
+    <nav class="navbar is-primary">
+      <div class="navbar-brand">
         <a class="navbar-item" href="#" id="navbar-home" onclick="goHome()">
-            <strong id="navbar-title">Hey! Joshua!</strong>
+          <strong id="navbar-title">Homepage</strong>
         </a>
 
         <!-- 亮暗模式切换按钮 -->
         <a class="navbar-item dark-mode-toggle-mobile" href="#" id="dark-mode-toggle-mobile" title="Toggle Dark Mode">
-            <i class="fas fa-moon"></i>
+          <i class="fas fa-moon"></i>
         </a>
 
         <!-- 单多页切换按钮 -->
@@ -56,360 +56,361 @@
 
         <!-- 汉堡菜单按钮 -->
         <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="top-navbar">
-            <span aria-hidden="true"></span>
-            <span aria-hidden="true"></span>
-            <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
         </a>
-    </div>
-
-    <div id="top-navbar" class="navbar-menu">
-        <div class="navbar-end">
-            <a class="navbar-item" href="about.html" id="navbar-about">About Me</a>
-            <a class="navbar-item" href="news.html" id="navbar-news">News</a>
-            <a class="navbar-item" href="publications.html" id="navbar-publications">Publications</a>
-            <a class="navbar-item" href="projects.html" id="navbar-projects">Projects</a>
-            <a class="navbar-item" href="blogs.html" id="navbar-blogs">Blogs</a>
-            <div class="navbar-item has-dropdown" id="language-dropdown">
-              <a class="navbar-link" id="navbar-language">
-                Language
-              </a>
-              <div class="navbar-dropdown" id="language-dropdown-menu">
-                <!-- 语言按钮将动态生成 -->
-              </div>
-            </div>
-        </div>
-    </div>
-  </nav>
-
-  <div class="container has-text-centered">
-    <div style="display: flex; justify-content: space-between; align-items: center; height: 300px;">
-      <div style="flex: 1; display: flex; justify-content: center; align-items: center;">
-        <figure class="image is-128x128 is-inline-block" style="width: 200px; height: 200px; margin: 0;">
-          <img class="is-rounded" src="./media/personal.jpg" alt="Avatar" style="width: 100%; height: 100%;">
-        </figure>
       </div>
-    </div>
-    <h1 class="title is-size-3-tablet is-size-4-mobile" style="font-family: Futura;" id="main-title">
-      Dream Big, Work Hard, Stay Humble.
-    </h1>
-    <p class="subtitle is-size-4-tablet is-size-5-mobile" style="font-family: Brush Script MT;" id="main-subtitle">
-      ——Be Versatile, Be Great.
-    </p>
-    <div class="icon-box">
-      <a href="https://github.com/Phospheneser" target="_blank">
-          <i class="fab fa-github"></i>
-      </a>
-      <a href="https://scholar.google.com/citations?user=TSUlagkAAAAJ&hl=zh-CN" target="_blank">
-          <i class="fas fa-graduation-cap"></i>
-      </a>
-      <a href="https://x.com/PhospheneserXu" target="_blank">
-          <i class="fab fa-twitter"></i>
-      </a>
-      <a href="mailto:zxu24@m.fudan.edu.cn">
-          <i class="fas fa-envelope"></i>
-      </a>
-  </div>
-  </div>
 
-  <footer class="footer" style="position: fixed; bottom: 0; left: 0; right: 0; z-index: 1000;">
-    <div class="container">
-      <div class="columns is-centered">
-        <div class="column">
-          <div class="content has-text-centered">
-            <p id="footer-text">
-              Edit by Joshua@2025.9.27
-            </p>
+      <div id="top-navbar" class="navbar-menu">
+        <div class="navbar-end">
+          <a class="navbar-item" href="about.html" id="navbar-about">About Me</a>
+          <a class="navbar-item" href="news.html" id="navbar-news">News</a>
+          <a class="navbar-item" href="publications.html" id="navbar-publications">Publications</a>
+          <a class="navbar-item" href="projects.html" id="navbar-projects">Projects</a>
+          <a class="navbar-item" href="blogs.html" id="navbar-blogs">Blogs</a>
+          <div class="navbar-item has-dropdown" id="language-dropdown">
+            <a class="navbar-link" id="navbar-language">
+              Language
+            </a>
+            <div class="navbar-dropdown" id="language-dropdown-menu">
+              <!-- 语言按钮将动态生成 -->
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  </footer>
+    </nav>
 
-<!-- 返回顶部按钮 -->
-<button id="back-to-top" class="back-to-top" title="返回顶部">
-  <i class="fas fa-chevron-up"></i>
-</button>
-</div> <!-- 结束背景容器 -->
+    <div class="container has-text-centered">
+      <div style="display: flex; justify-content: space-between; align-items: center; height: 300px;">
+        <div style="flex: 1; display: flex; justify-content: center; align-items: center;">
+          <figure class="image is-128x128 is-inline-block" style="width: 200px; height: 200px; margin: 0;">
+            <img class="is-rounded" src="./media/personal.jpg" alt="Avatar" style="width: 100%; height: 100%;">
+          </figure>
+        </div>
+      </div>
+      <h1 class="title is-size-3-tablet is-size-4-mobile" style="font-family: Futura;" id="main-title">
+        Dream Big, Work Hard, Stay Humble.
+      </h1>
+      <p class="subtitle is-size-4-tablet is-size-5-mobile" style="font-family: Brush Script MT;" id="main-subtitle">
+        ——Be Versatile, Be Great.
+      </p>
+      <div class="icon-box">
+        <a href="https://github.com/Phospheneser" target="_blank">
+          <i class="fab fa-github"></i>
+        </a>
+        <a href="https://scholar.google.com/citations?user=TSUlagkAAAAJ&hl=zh-CN" target="_blank">
+          <i class="fas fa-graduation-cap"></i>
+        </a>
+        <a href="https://x.com/PhospheneserXu" target="_blank">
+          <i class="fab fa-twitter"></i>
+        </a>
+        <a href="mailto:zxu24@m.fudan.edu.cn">
+          <i class="fas fa-envelope"></i>
+        </a>
+      </div>
+    </div>
+
+    <footer class="footer" style="position: fixed; bottom: 0; left: 0; right: 0; z-index: 1000;">
+      <div class="container">
+        <div class="columns is-centered">
+          <div class="column">
+            <div class="content has-text-centered">
+              <p id="footer-text">
+                Edit by Joshua@2025.9.27
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- 返回顶部按钮 -->
+    <button id="back-to-top" class="back-to-top" title="返回顶部">
+      <i class="fas fa-chevron-up"></i>
+    </button>
+  </div> <!-- 结束背景容器 -->
 
 </body>
 
 <script>
-let currentLang = localStorage.getItem('lang') || 'en';
-let availableLanguages = ['en', 'zh', 'jp'];
-// 根据当前页面和localStorage确定布局模式
-function getInitialLayoutMode() {
-  const stored = localStorage.getItem('layoutMode');
-  if (stored) return stored;
+  let currentLang = localStorage.getItem('lang') || 'en';
+  let availableLanguages = ['en', 'zh', 'jp'];
+  // 根据当前页面和localStorage确定布局模式
+  function getInitialLayoutMode() {
+    const stored = localStorage.getItem('layoutMode');
+    if (stored) return stored;
 
-  // 如果没有存储的模式，检查当前页面
-  if (window.location.pathname.includes('main.html')) {
-    return 'single'; // main.html默认单页模式
-  } else {
-    return 'multi'; // 其他页面默认多页模式
+    // 如果没有存储的模式，检查当前页面
+    if (window.location.pathname.includes('main.html')) {
+      return 'single'; // main.html默认单页模式
+    } else {
+      return 'multi'; // 其他页面默认多页模式
+    }
   }
-}
 
-let layoutMode = getInitialLayoutMode();
+  let layoutMode = getInitialLayoutMode();
 
-async function loadContent(lang = currentLang) {
-  // 检查是否需要滚动到顶部（从其他页面跳转过来）
-  const shouldScrollToTop = document.referrer && !document.referrer.includes('main.html');
+  async function loadContent(lang = currentLang) {
+    // 检查是否需要滚动到顶部（从其他页面跳转过来）
+    const shouldScrollToTop = document.referrer && !document.referrer.includes('main.html');
 
-  // 加载web_content数据文件
-  const webContentRes = await fetch(`data/${lang}/web_content.json`);
-  const webContent = await webContentRes.json();
+    // 加载web_content数据文件
+    const webContentRes = await fetch(`data/${lang}/web_content.json`);
+    const webContent = await webContentRes.json();
 
-  // 如果需要，滚动到顶部
-  if (shouldScrollToTop) {
+    // 如果需要，滚动到顶部
+    if (shouldScrollToTop) {
+      setTimeout(() => {
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
+      }, 100);
+    }
+
+    // 更新导航栏
+    updateElement('#navbar-title', webContent.navbar_title);
+    updateElement('#navbar-home', webContent.navbar_home);
+    updateElement('#navbar-about', webContent.navbar_about);
+    updateElement('#navbar-news', webContent.navbar_news);
+    updateElement('#navbar-publications', webContent.navbar_publications);
+    updateElement('#navbar-projects', webContent.navbar_projects);
+    updateElement('#navbar-blogs', webContent.navbar_blogs);
+    updateElement('#navbar-language', webContent.language);
+
+    // 动态生成语言切换按钮
+    generateLanguageButtons(webContent);
+
+    // 更新标题和副标题
+    updateElement('#main-title', webContent.title);
+    updateElement('#main-subtitle', webContent.subtitle);
+
+    // 更新页脚
+    updateElement('#footer-text', webContent.footer);
+  }
+
+  function updateElement(selector, html) {
+    const element = document.querySelector(selector);
+    if (element) element.innerHTML = html;
+  }
+
+  function generateLanguageButtons(webContent) {
+    const langDropdown = document.querySelector('#language-dropdown');
+    const dropdown = document.querySelector('#language-dropdown-menu');
+    dropdown.innerHTML = '';
+    availableLanguages.forEach(lang => {
+      const langKeyMap = {
+        'en': 'english',
+        'zh': 'chinese',
+        'jp': 'japanese'
+      };
+      const langKey = langKeyMap[lang];
+      const langName = webContent[langKey] || lang;
+      const button = document.createElement('a');
+      button.className = 'navbar-item';
+      button.onclick = (e) => {
+        e.stopPropagation();
+        switchLanguage(lang);
+      };
+      button.innerHTML = langName;
+      dropdown.appendChild(button);
+    });
+  }
+
+  function switchLanguage(lang) {
+    localStorage.setItem('lang', lang);
+    loadContent(lang);
     setTimeout(() => {
+      const dropdown = document.querySelector('#language-dropdown');
+      if (dropdown && window.innerWidth <= 1023) {
+        dropdown.classList.add('is-active');
+      }
+    }, 100);
+  }
+
+  function goHome() {
+    const currentLayoutMode = localStorage.getItem('layoutMode') || 'single';
+    if (currentLayoutMode === 'single') {
+      // 在单页模式下，回到页面顶部
       window.scrollTo({
         top: 0,
         behavior: 'smooth'
       });
-    }, 100);
-  }
-
-  // 更新导航栏
-  updateElement('#navbar-title', webContent.navbar_title);
-  updateElement('#navbar-home', webContent.navbar_home);
-  updateElement('#navbar-about', webContent.navbar_about);
-  updateElement('#navbar-news', webContent.navbar_news);
-  updateElement('#navbar-publications', webContent.navbar_publications);
-  updateElement('#navbar-projects', webContent.navbar_projects);
-  updateElement('#navbar-blogs', webContent.navbar_blogs);
-  updateElement('#navbar-language', webContent.language);
-
-  // 动态生成语言切换按钮
-  generateLanguageButtons(webContent);
-
-  // 更新标题和副标题
-  updateElement('#main-title', webContent.title);
-  updateElement('#main-subtitle', webContent.subtitle);
-
-  // 更新页脚
-  updateElement('#footer-text', webContent.footer);
-}
-
-function updateElement(selector, html) {
-  const element = document.querySelector(selector);
-  if (element) element.innerHTML = html;
-}
-
-function generateLanguageButtons(webContent) {
-  const langDropdown = document.querySelector('#language-dropdown');
-  const dropdown = document.querySelector('#language-dropdown-menu');
-  dropdown.innerHTML = '';
-  availableLanguages.forEach(lang => {
-    const langKeyMap = {
-      'en': 'english',
-      'zh': 'chinese',
-      'jp': 'japanese'
-    };
-    const langKey = langKeyMap[lang];
-    const langName = webContent[langKey] || lang;
-    const button = document.createElement('a');
-    button.className = 'navbar-item';
-    button.onclick = (e) => {
-      e.stopPropagation();
-      switchLanguage(lang);
-    };
-    button.innerHTML = langName;
-    dropdown.appendChild(button);
-  });
-}
-
-function switchLanguage(lang) {
-  localStorage.setItem('lang', lang);
-  loadContent(lang);
-  setTimeout(() => {
-    const dropdown = document.querySelector('#language-dropdown');
-    if (dropdown && window.innerWidth <= 1023) {
-      dropdown.classList.add('is-active');
-    }
-  }, 100);
-}
-
-function goHome() {
-  const currentLayoutMode = localStorage.getItem('layoutMode') || 'single';
-  if (currentLayoutMode === 'single') {
-    // 在单页模式下，回到页面顶部
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
-    });
-  } else {
-    // 在多页模式下，跳转到多页首页
-    window.location.href = 'index.html';
-  }
-}
-
-// 布局模式切换功能
-function initializeLayoutMode() {
-  const layoutModeToggle = document.getElementById('layout-mode-toggle');
-
-  function updateLayoutButton() {
-    if (layoutModeToggle) {
-      if (layoutMode === 'single') {
-        layoutModeToggle.innerHTML = '<i class="fas fa-layer-group"></i>';
-        layoutModeToggle.title = 'Switch to Multi-page Mode';
-      } else {
-        layoutModeToggle.innerHTML = '<i class="fas fa-file-alt"></i>';
-        layoutModeToggle.title = 'Switch to Single-page Mode';
-      }
-    }
-  }
-
-  function toggleLayoutMode() {
-    const oldMode = layoutMode;
-    layoutMode = layoutMode === 'single' ? 'multi' : 'single';
-    localStorage.setItem('layoutMode', layoutMode);
-    updateLayoutButton();
-
-    // 如果切换到多页模式，跳转到主页面
-    if (oldMode === 'single' && layoutMode === 'multi') {
-      window.location.href = 'index.html?scroll=top';
-    }
-    // 如果切换到单页模式，保持在当前页面
-    else if (oldMode === 'multi' && layoutMode === 'single') {
-      // 保持在当前页面，不需要跳转
-    }
-  }
-
-  if (layoutModeToggle) {
-    layoutModeToggle.addEventListener('click', (e) => {
-      e.preventDefault();
-      toggleLayoutMode();
-    });
-  }
-
-  // 立即更新按钮状态
-  updateLayoutButton();
-}
-
-// 暗夜模式功能
-function initializeDarkMode() {
-  const darkModeToggleMobile = document.getElementById('dark-mode-toggle-mobile');
-  const body = document.body;
-
-  const isDarkMode = localStorage.getItem('darkMode') === 'true';
-
-  if (isDarkMode) {
-    body.classList.add('dark-mode');
-    if (darkModeToggleMobile) {
-      darkModeToggleMobile.innerHTML = '<i class="fas fa-sun"></i>';
-    }
-  } else {
-    if (darkModeToggleMobile) {
-      darkModeToggleMobile.innerHTML = '<i class="fas fa-moon"></i>';
-    }
-  }
-
-  function toggleDarkMode() {
-    const isCurrentlyDark = body.classList.contains('dark-mode');
-    const backgroundContainer = document.getElementById('background-container');
-
-    if (isCurrentlyDark) {
-      body.classList.remove('dark-mode');
-      localStorage.setItem('darkMode', 'false');
-      backgroundContainer.style.backgroundImage = "linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)),url('./media/occupacy.jpg')";
-      if (darkModeToggleMobile) {
-        darkModeToggleMobile.innerHTML = '<i class="fas fa-moon"></i>';
-      }
     } else {
-      body.classList.add('dark-mode');
-      localStorage.setItem('darkMode', 'true');
-      const darkImage = new Image();
-      darkImage.onload = function() {
-        backgroundContainer.style.backgroundImage = "linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)),url('./media/occupacy_dark.jpg')";
-      };
-      darkImage.onerror = function() {
-        // 保持现有的蒙版方案
-      };
-      darkImage.src = './media/occupacy_dark.jpg';
+      // 在多页模式下，跳转到多页首页
+      window.location.href = 'index.html';
+    }
+  }
 
+  // 布局模式切换功能
+  function initializeLayoutMode() {
+    const layoutModeToggle = document.getElementById('layout-mode-toggle');
+
+    function updateLayoutButton() {
+      if (layoutModeToggle) {
+        if (layoutMode === 'single') {
+          layoutModeToggle.innerHTML = '<i class="fas fa-layer-group"></i>';
+          layoutModeToggle.title = 'Switch to Multi-page Mode';
+        } else {
+          layoutModeToggle.innerHTML = '<i class="fas fa-file-alt"></i>';
+          layoutModeToggle.title = 'Switch to Single-page Mode';
+        }
+      }
+    }
+
+    function toggleLayoutMode() {
+      const oldMode = layoutMode;
+      layoutMode = layoutMode === 'single' ? 'multi' : 'single';
+      localStorage.setItem('layoutMode', layoutMode);
+      updateLayoutButton();
+
+      // 如果切换到多页模式，跳转到主页面
+      if (oldMode === 'single' && layoutMode === 'multi') {
+        window.location.href = 'index.html?scroll=top';
+      }
+      // 如果切换到单页模式，保持在当前页面
+      else if (oldMode === 'multi' && layoutMode === 'single') {
+        // 保持在当前页面，不需要跳转
+      }
+    }
+
+    if (layoutModeToggle) {
+      layoutModeToggle.addEventListener('click', (e) => {
+        e.preventDefault();
+        toggleLayoutMode();
+      });
+    }
+
+    // 立即更新按钮状态
+    updateLayoutButton();
+  }
+
+  // 暗夜模式功能
+  function initializeDarkMode() {
+    const darkModeToggleMobile = document.getElementById('dark-mode-toggle-mobile');
+    const body = document.body;
+
+    const isDarkMode = localStorage.getItem('darkMode') === 'true';
+
+    if (isDarkMode) {
+      body.classList.add('dark-mode');
       if (darkModeToggleMobile) {
         darkModeToggleMobile.innerHTML = '<i class="fas fa-sun"></i>';
       }
+    } else {
+      if (darkModeToggleMobile) {
+        darkModeToggleMobile.innerHTML = '<i class="fas fa-moon"></i>';
+      }
+    }
+
+    function toggleDarkMode() {
+      const isCurrentlyDark = body.classList.contains('dark-mode');
+      const backgroundContainer = document.getElementById('background-container');
+
+      if (isCurrentlyDark) {
+        body.classList.remove('dark-mode');
+        localStorage.setItem('darkMode', 'false');
+        backgroundContainer.style.backgroundImage = "linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)),url('./media/occupacy.jpg')";
+        if (darkModeToggleMobile) {
+          darkModeToggleMobile.innerHTML = '<i class="fas fa-moon"></i>';
+        }
+      } else {
+        body.classList.add('dark-mode');
+        localStorage.setItem('darkMode', 'true');
+        const darkImage = new Image();
+        darkImage.onload = function () {
+          backgroundContainer.style.backgroundImage = "linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)),url('./media/occupacy_dark.jpg')";
+        };
+        darkImage.onerror = function () {
+          // 保持现有的蒙版方案
+        };
+        darkImage.src = './media/occupacy_dark.jpg';
+
+        if (darkModeToggleMobile) {
+          darkModeToggleMobile.innerHTML = '<i class="fas fa-sun"></i>';
+        }
+      }
+    }
+
+    if (darkModeToggleMobile) {
+      darkModeToggleMobile.addEventListener('click', (e) => {
+        e.preventDefault();
+        toggleDarkMode();
+      });
     }
   }
 
-  if (darkModeToggleMobile) {
-    darkModeToggleMobile.addEventListener('click', (e) => {
-      e.preventDefault();
-      toggleDarkMode();
-    });
+  // 初始化语言dropdown功能
+  function initializeLanguageDropdown() {
+    const languageLink = document.querySelector('#navbar-language');
+    const languageDropdown = document.querySelector('#language-dropdown');
+
+    if (languageLink && languageDropdown) {
+      languageLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        languageDropdown.classList.toggle('is-active');
+      });
+
+      document.addEventListener('click', (e) => {
+        if (!languageDropdown.contains(e.target)) {
+          languageDropdown.classList.remove('is-active');
+        }
+      });
+    }
   }
-}
 
-// 初始化语言dropdown功能
-function initializeLanguageDropdown() {
-  const languageLink = document.querySelector('#navbar-language');
-  const languageDropdown = document.querySelector('#language-dropdown');
+  // 返回顶部按钮功能
+  function initializeBackToTop() {
+    const backToTopButton = document.getElementById('back-to-top');
 
-  if (languageLink && languageDropdown) {
-    languageLink.addEventListener('click', (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      languageDropdown.classList.toggle('is-active');
-    });
-
-    document.addEventListener('click', (e) => {
-      if (!languageDropdown.contains(e.target)) {
-        languageDropdown.classList.remove('is-active');
+    window.addEventListener('scroll', () => {
+      if (window.pageYOffset > 300) {
+        backToTopButton.classList.add('show');
+      } else {
+        backToTopButton.classList.remove('show');
       }
     });
-  }
-}
 
-// 返回顶部按钮功能
-function initializeBackToTop() {
-  const backToTopButton = document.getElementById('back-to-top');
-
-  window.addEventListener('scroll', () => {
-    if (window.pageYOffset > 300) {
-      backToTopButton.classList.add('show');
-    } else {
-      backToTopButton.classList.remove('show');
-    }
-  });
-
-  backToTopButton.addEventListener('click', () => {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
-    });
-  });
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-  loadContent();
-
-  // 检查是否需要滚动到顶部
-  const urlParams = new URLSearchParams(window.location.search);
-  const shouldScrollToTop = urlParams.get('scroll') === 'top';
-
-  if (shouldScrollToTop) {
-    setTimeout(() => {
+    backToTopButton.addEventListener('click', () => {
       window.scrollTo({
         top: 0,
         behavior: 'smooth'
       });
-      // 清理URL参数
-      window.history.replaceState({}, document.title, window.location.pathname);
-    }, 100);
+    });
   }
 
-  // 初始化语言dropdown功能
-  initializeLanguageDropdown();
+  document.addEventListener('DOMContentLoaded', () => {
+    loadContent();
 
-  // 初始化布局模式功能
-  initializeLayoutMode();
+    // 检查是否需要滚动到顶部
+    const urlParams = new URLSearchParams(window.location.search);
+    const shouldScrollToTop = urlParams.get('scroll') === 'top';
 
-  // 初始化暗夜模式功能
-  initializeDarkMode();
+    if (shouldScrollToTop) {
+      setTimeout(() => {
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
+        // 清理URL参数
+        window.history.replaceState({}, document.title, window.location.pathname);
+      }, 100);
+    }
 
-  // 初始化返回顶部功能
-  initializeBackToTop();
-});
+    // 初始化语言dropdown功能
+    initializeLanguageDropdown();
+
+    // 初始化布局模式功能
+    initializeLayoutMode();
+
+    // 初始化暗夜模式功能
+    initializeDarkMode();
+
+    // 初始化返回顶部功能
+    initializeBackToTop();
+  });
 </script>
+
 </html>
