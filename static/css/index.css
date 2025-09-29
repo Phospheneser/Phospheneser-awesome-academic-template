@@ -12,9 +12,15 @@ html {
 .lang-arrow {
   margin-left: 8px;
   transition: transform 0.3s ease;
+  transform: rotate(90deg);
 }
 
 #language-dropdown.is-active .lang-arrow {
+  transform: rotate(270deg);
+}
+
+/* 收起动画中，箭头保持指向下 */
+#language-dropdown.is-closing .lang-arrow {
   transform: rotate(90deg);
 }
 
@@ -1516,6 +1522,12 @@ body.mp-home-fixed {
 body.dark-mode .navbar-item:hover {
   background-color: rgba(255, 255, 255, 0.2) !important;
   color: #ffffff !important;
+}
+
+/* 暗夜模式语言按钮悬停效果 */
+body.dark-mode #language-dropdown .navbar-item:hover {
+  background-color: rgba(190, 190, 190, 0.2) !important;
+  color: #101010 !important;
 }
 
 body.dark-mode .navbar-link:hover {
