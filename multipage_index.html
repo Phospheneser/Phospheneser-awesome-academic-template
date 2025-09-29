@@ -435,6 +435,19 @@
         });
     }
 
+    function initializeHamburgerAutoClose() {
+        const burger = document.querySelector('.navbar-burger');
+        const menu = document.querySelector('.navbar-menu');
+
+        if (!burger || !menu) return;
+        document.addEventListener('click', (e) => {
+            if (!menu.contains(e.target) && menu.classList.contains('is-active')) {
+                console.log("menu is active, deactive it");
+                menu.classList.remove('is-active');
+                burger.classList.remove('is-active');
+            }
+        });
+    }
     function initializeHomeLink() {
         const home = document.getElementById('navbar-home');
         if (home) {
@@ -466,6 +479,7 @@
         initializeBackToTop();
         initializeHomeLink();
         wireNavLinks();
+        initializeHamburgerAutoClose();
     });
 </script>
 

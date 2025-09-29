@@ -970,6 +970,21 @@
     }
   }
 
+  // 汉堡菜单：点击外部自动收起
+  function initializeHamburgerAutoClose() {
+    const burger = document.querySelector('.navbar-burger');
+    const menu = document.querySelector('.navbar-menu');
+
+    if (!burger || !menu) return;
+    document.addEventListener('click', (e) => {
+      if (!menu.contains(e.target) && menu.classList.contains('is-active')) {
+        console.log("menu is active, deactive it");
+        menu.classList.remove('is-active');
+        burger.classList.remove('is-active');
+      }
+    });
+  }
+
   // 初始化卡片切换功能
   function initializeCardSlider() {
     const cards = document.querySelectorAll('.card');
@@ -1096,6 +1111,9 @@
 
     // 初始化暗夜模式功能
     initializeDarkMode();
+
+    // 初始化汉堡菜单外部点击收起
+    initializeHamburgerAutoClose();
 
     // 汉堡菜单功能已由jQuery处理
 
