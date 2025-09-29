@@ -1397,6 +1397,15 @@ body.dark-mode strong {
   color: #ffffff !important;
 }
 
+/* multipage 首页禁用整体滚动（所有端） */
+html.mp-home-fixed {
+  overflow: hidden !important;
+}
+
+body.mp-home-fixed {
+  overflow: hidden !important;
+}
+
 /* 暗夜模式按钮悬停效果 */
 body.dark-mode .navbar-item:hover {
   background-color: rgba(255, 255, 255, 0.2) !important;

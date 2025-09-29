@@ -171,7 +171,14 @@
         const root = document.getElementById('content-root');
         root.innerHTML = '';
 
+        // 切换前，先恢复滚动，避免禁用遗留
+        document.documentElement.classList.remove('mp-home-fixed');
+        document.body.classList.remove('mp-home-fixed');
+
         if (page === 'home') {
+            // 首页在所有端禁用滚动
+            document.documentElement.classList.add('mp-home-fixed');
+            document.body.classList.add('mp-home-fixed');
             const container = document.createElement('div');
             container.className = 'container has-text-centered';
             container.innerHTML = `
@@ -194,6 +201,7 @@
             updateElement('#main-title', webContent.title);
             updateElement('#main-subtitle', webContent.subtitle);
         } else if (page === 'about') {
+            // 其他页面保持滚动开启（已在开头处理）
             const [academicServiceRes] = await Promise.all([
                 fetch(`data/${currentLang}/academic_service.json`)
             ]);
@@ -435,6 +443,16 @@
     document.addEventListener('DOMContentLoaded', () => {
         // 多页容器
         renderPage();
+        // 监听窗口尺寸变化：先恢复，再按需禁用
+        window.addEventListener('resize', () => {
+            const page = getPageKey();
+            document.documentElement.classList.remove('mp-home-fixed');
+            document.body.classList.remove('mp-home-fixed');
+            if (page === 'home') {
+                document.documentElement.classList.add('mp-home-fixed');
+                document.body.classList.add('mp-home-fixed');
+            }
+        });
         initializeLanguageDropdown();
         initializeLayoutMode();
         initializeDarkMode();
