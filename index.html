@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,7 +10,7 @@
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-R2ZLMKHR2E"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
+    function gtag() { dataLayer.push(arguments); }
     gtag('js', new Date());
 
     gtag('config', 'G-R2ZLMKHR2E');
@@ -18,25 +19,25 @@
   <script>
     function loadWordCloud() {
       const traits = [
-      ["Leader", 30],
-      ["Instructor", 15],
-      ["Connector", 25],
-      ["Smart", 15],
-      ["Mature", 20],
-      ["Impact-Driven", 40],
-      ["Resilience", 30],
-      ["Passionate", 20],
-      ["Faithful", 30],
-      ["Confident", 20]
-      ["Innovative", 15],
-      ["Questioner", 30],
-      ["Insightful", 40],
-      ["Visionary", 20],
-      ["Emotionally Stable", 25],
+        ["Leader", 30],
+        ["Instructor", 15],
+        ["Connector", 25],
+        ["Smart", 15],
+        ["Mature", 20],
+        ["Impact-Driven", 40],
+        ["Resilience", 30],
+        ["Passionate", 20],
+        ["Faithful", 30],
+        ["Confident", 20]
+        ["Innovative", 15],
+        ["Questioner", 30],
+        ["Insightful", 40],
+        ["Visionary", 20],
+        ["Emotionally Stable", 25],
       ];
 
       const canvas = document.getElementById("word-cloud");
-      
+
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
 
@@ -60,15 +61,13 @@
 
   <!-- 3D word cloud will be initialized dynamically -->
 
-  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
-        rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Playfair+Display&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./static/css/bulma.min.css">
   <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
   <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
   <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
-  <link rel="stylesheet"
-        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
   <link rel="stylesheet" href="./static/css/index.css">
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -82,410 +81,414 @@
 
 <body>
 
-  <div id="background-container" style="background-image:linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)),url('./media/occupacy.jpg');background-size: cover; background-position: center;padding-top: 52px; padding-bottom: 20px; margin-top: -52px; width: 100vw; position: relative; min-height: 100vh;">
-  <nav class="navbar is-primary">
-    <div class="navbar-brand">
+  <div id="background-container"
+    style="background-image:linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)),url('./media/occupacy.jpg');background-size: cover; background-position: center;padding-top: 52px; padding-bottom: 20px; margin-top: -52px; width: 100vw; position: relative; min-height: 100vh;">
+    <nav class="navbar is-primary">
+      <div class="navbar-brand">
         <a class="navbar-item" href="#" id="navbar-home" onclick="goHome()">
-            <strong id="navbar-title">Hey! Joshua!</strong>
+          <strong id="navbar-title">Hey! Joshua!</strong>
         </a>
-        
-            <a class="navbar-item" href="#" id="dark-mode-toggle" title="Toggle Dark Mode">
-                <i class="fas fa-moon"></i>
-            </a>
-            <a class="navbar-item layout-mode-toggle" href="#" id="layout-mode-toggle" title="Switch to Single-page Mode">
-              <i class="fas fa-file-alt"></i>
-            </a>
+
+        <!-- 亮暗模式切换按钮（与 main.html 保持一致） -->
+        <a class="navbar-item dark-mode-toggle-mobile" href="#" id="dark-mode-toggle-mobile" title="Toggle Dark Mode">
+          <i class="fas fa-moon"></i>
+        </a>
+        <a class="navbar-item layout-mode-toggle" href="#" id="layout-mode-toggle" title="Switch to Single-page Mode">
+          <i class="fas fa-file-alt"></i>
+        </a>
 
         <!-- 汉堡菜单按钮 -->
         <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="top-navbar">
-            <span aria-hidden="true"></span>
-            <span aria-hidden="true"></span>
-            <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
         </a>
-    </div>
+      </div>
 
-    <div id="top-navbar" class="navbar-menu">
+      <div id="top-navbar" class="navbar-menu">
         <div class="navbar-end">
-            <a class="navbar-item" href="#about" id="navbar-about">
-                About Me
+          <a class="navbar-item" href="#about" id="navbar-about">
+            About Me
+          </a>
+          <a class="navbar-item" href="#news" id="navbar-news">
+            News
+          </a>
+          <a class="navbar-item" href="#publications" id="navbar-publications">
+            Publications
+          </a>
+          <a class="navbar-item" href="#projects" id="navbar-projects">
+            Projects
+          </a>
+          <a class="navbar-item" href="#blogs" id="navbar-blogs">
+            Blogs
+          </a>
+          <div class="navbar-item has-dropdown" id="language-dropdown">
+            <a class="navbar-link" id="navbar-language">
+              Language
             </a>
-            <a class="navbar-item" href="#news" id="navbar-news">
-                News
-            </a>
-            <a class="navbar-item" href="#publications" id="navbar-publications">
-                Publications
-            </a>
-            <a class="navbar-item" href="#projects" id="navbar-projects">
-                Projects
-            </a>
-            <a class="navbar-item" href="#blogs" id="navbar-blogs">
-                Blogs
-            </a>
-            <div class="navbar-item has-dropdown" id="language-dropdown">
-              <a class="navbar-link" id="navbar-language">
-                Language
-              </a>
-              <div class="navbar-dropdown" id="language-dropdown-menu">
-                <!-- 语言按钮将动态生成 -->
-              </div>
+            <div class="navbar-dropdown" id="language-dropdown-menu">
+              <!-- 语言按钮将动态生成 -->
             </div>
-        </div>
-    </div>
-  </nav>
-  <div class="container has-text-centered">
-    <div style="display: flex; justify-content: space-between; align-items: center; height: 300px;">
-      <div style="flex: 1;display: flex; justify-content: center; align-items: center;">
-        <div class="card-container">
-          <!-- 卡片内容将动态生成 -->
-      
-          <!-- Arrow Buttons -->
-          <button class="arrow-btn arrow-left" id="prev-btn">
-            <i class="fas fa-arrow-left"></i>
-          </button>
-          <button class="arrow-btn arrow-right" id="next-btn">
-            <i class="fas fa-arrow-right"></i>
-          </button>
+          </div>
         </div>
       </div>
-    
-      <div style="flex: 1; display: flex; justify-content: center; align-items: center;">
-        <figure class="image is-128x128 is-inline-block" style="width: 200px; height: 200px; margin: 0;">
-          <img class="is-rounded" src="./media/personal.jpg" alt="Avatar" style="width: 100%; height: 100%;">
-        </figure>
-      </div>
-  
-      <div style="flex: 1; display: flex; justify-content: center; align-items: center;">
-        <div id="canvas-container">
-          <canvas id="word-cloud" width="400" height="300"></canvas>
-          <ul id="tags">
-            <!-- 词云标签将动态生成 -->
-          </ul>
+    </nav>
+    <div class="container has-text-centered">
+      <div style="display: flex; justify-content: space-between; align-items: center; height: 300px;">
+        <div style="flex: 1;display: flex; justify-content: center; align-items: center;">
+          <div class="card-container">
+            <!-- 卡片内容将动态生成 -->
+
+            <!-- Arrow Buttons -->
+            <button class="arrow-btn arrow-left" id="prev-btn">
+              <i class="fas fa-arrow-left"></i>
+            </button>
+            <button class="arrow-btn arrow-right" id="next-btn">
+              <i class="fas fa-arrow-right"></i>
+            </button>
+          </div>
+        </div>
+
+        <div style="flex: 1; display: flex; justify-content: center; align-items: center;">
+          <figure class="image is-128x128 is-inline-block" style="width: 200px; height: 200px; margin: 0;">
+            <img class="is-rounded" src="./media/personal.jpg" alt="Avatar" style="width: 100%; height: 100%;">
+          </figure>
+        </div>
+
+        <div style="flex: 1; display: flex; justify-content: center; align-items: center;">
+          <div id="canvas-container">
+            <canvas id="word-cloud" width="400" height="300"></canvas>
+            <ul id="tags">
+              <!-- 词云标签将动态生成 -->
+            </ul>
+          </div>
         </div>
       </div>
-    </div>
-    <h1 class="title is-size-3-tablet is-size-4-mobile" style="font-family: Futura;" id="main-title">
-      Dream Big, Work Hard, Stay Humble.
-    </h1>
-    <p class="subtitle is-size-4-tablet is-size-5-mobile" style="font-family: Brush Script MT;" id="main-subtitle">
-      ——Be Versatile, Be Great.
-    </p>
-    <div class="icon-box">
-      <a href="https://github.com/Phospheneser" target="_blank">
+      <h1 class="title is-size-3-tablet is-size-4-mobile" style="font-family: Futura;" id="main-title">
+        Dream Big, Work Hard, Stay Humble.
+      </h1>
+      <p class="subtitle is-size-4-tablet is-size-5-mobile" style="font-family: Brush Script MT;" id="main-subtitle">
+        ——Be Versatile, Be Great.
+      </p>
+      <div class="icon-box">
+        <a href="https://github.com/Phospheneser" target="_blank">
           <i class="fab fa-github"></i>
-      </a>
-      <a href="https://scholar.google.com/citations?user=TSUlagkAAAAJ&hl=zh-CN" target="_blank">
+        </a>
+        <a href="https://scholar.google.com/citations?user=TSUlagkAAAAJ&hl=zh-CN" target="_blank">
           <i class="fas fa-graduation-cap"></i>
-      </a>
-      <a href="https://x.com/PhospheneserXu" target="_blank">
+        </a>
+        <a href="https://x.com/PhospheneserXu" target="_blank">
           <i class="fab fa-twitter"></i>
-      </a>
-      <a href="mailto:zxu24@m.fudan.edu.cn">
+        </a>
+        <a href="mailto:zxu24@m.fudan.edu.cn">
           <i class="fas fa-envelope"></i>
-      </a>
-  </div>
-  </div>
-</div>
-
-
-<section class="section" name="sec-intro">
-  <div class="container is-max-desktop">
-    <div id="about">
-      <h1 class="title is-3" id="about-title" style="margin-top: 60px;">🎄 About Me</h1>
-    </div>
-    <div>
-      <p class="text-homepage-1" id="about-text1"></p>
-      <p class="text-homepage-1" id="about-text2"></p>
-    </div>
-  </div>
-  
-</section>
-
-<section class="section" name="sec-news">
-  <div class="container is-max-desktop">
-    <div id="news">
-      <h1 class="title is-3" style="margin-bottom: 1ex; margin-top: 60px;" id="news-title">🔥 News</h1>
-      <div>
-        <!-- 新闻内容将动态生成 -->
+        </a>
       </div>
     </div>
   </div>
-</section>
 
-<section class="section" name="sec-publications">
-  <div class="container is-max-desktop">
-    <div id="publications">
-      <h1 class="title is-3" style="margin-bottom: 1ex; margin-top: 60px;" id="publications-title">📑 Publications</h1>
+
+  <section class="section" name="sec-intro">
+    <div class="container is-max-desktop">
+      <div id="about">
+        <h1 class="title is-3" id="about-title" style="margin-top: 60px;">🎄 About Me</h1>
+      </div>
       <div>
-        <!-- 出版物内容将动态生成 -->
+        <p class="text-homepage-1" id="about-text1"></p>
+        <p class="text-homepage-1" id="about-text2"></p>
       </div>
     </div>
-  </div>
-</section>
 
-<section class="section" name="sec-projects">
-  <div class="container is-max-desktop">
-    <div id="projects">
-      <h1 class="title is-3" id="projects-title" style="margin-top: 60px;">⚙️ Projects</h1>
-      <div>
-        <!-- 项目内容将动态生成 -->
-      </div>
-    </div>
-  </div>
-</section>
+  </section>
 
-<section class="section">
-  <div class="container is-max-desktop">
-    <div id="academic-service">
-      <h1 class="title is-3" style="margin-bottom: 1em; margin-top: 60px;" id="academic-service-title">Academic Service</h1>
-      <div>
-        <!-- 学术服务内容将动态生成 -->
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="blogs">
-  <div class="container is-max-desktop">
-    <div id="blogs">
-      <h1 class="title is-3" style="margin-bottom: 1ex; margin-top: 60px;" id="blogs-title">Blogs</h1>
-      <div>
-        <!-- 博客内容将动态生成 -->
-      </div>
-    </div>
-  </div>
-</section>
-
-
-<footer class="footer">
-  <div class="container">
-    <div class="columns is-centered">
-      <div class="column">
-        <div class="content has-text-centered">
-          <p id="footer-text">
-            Edit by Joshua@2025.9.27
-          </p>
+  <section class="section" name="sec-news">
+    <div class="container is-max-desktop">
+      <div id="news">
+        <h1 class="title is-3" style="margin-bottom: 1ex; margin-top: 60px;" id="news-title">🔥 News</h1>
+        <div>
+          <!-- 新闻内容将动态生成 -->
         </div>
       </div>
     </div>
-  </div>
-</footer>
+  </section>
 
-<!-- 返回顶部按钮 -->
-<button id="back-to-top" class="back-to-top" title="返回顶部">
-  <i class="fas fa-chevron-up"></i>
-</button>
+  <section class="section" name="sec-publications">
+    <div class="container is-max-desktop">
+      <div id="publications">
+        <h1 class="title is-3" style="margin-bottom: 1ex; margin-top: 60px;" id="publications-title">📑 Publications
+        </h1>
+        <div>
+          <!-- 出版物内容将动态生成 -->
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" name="sec-projects">
+    <div class="container is-max-desktop">
+      <div id="projects">
+        <h1 class="title is-3" id="projects-title" style="margin-top: 60px;">⚙️ Projects</h1>
+        <div>
+          <!-- 项目内容将动态生成 -->
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container is-max-desktop">
+      <div id="academic-service">
+        <h1 class="title is-3" style="margin-bottom: 1em; margin-top: 60px;" id="academic-service-title">Academic
+          Service</h1>
+        <div>
+          <!-- 学术服务内容将动态生成 -->
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="blogs">
+    <div class="container is-max-desktop">
+      <div id="blogs">
+        <h1 class="title is-3" style="margin-bottom: 1ex; margin-top: 60px;" id="blogs-title">Blogs</h1>
+        <div>
+          <!-- 博客内容将动态生成 -->
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <footer class="footer">
+    <div class="container">
+      <div class="columns is-centered">
+        <div class="column">
+          <div class="content has-text-centered">
+            <p id="footer-text">
+              Edit by Joshua@2025.9.27
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- 返回顶部按钮 -->
+  <button id="back-to-top" class="back-to-top" title="返回顶部">
+    <i class="fas fa-chevron-up"></i>
+  </button>
   </div> <!-- 结束背景容器 -->
 
 </body>
 
 <script>
-let currentLang = localStorage.getItem('lang') || 'en';
-let availableLanguages = ['en', 'zh', 'jp']; // 直接定义可用语言列表
-// 根据当前页面和localStorage确定布局模式
-function getInitialLayoutMode() {
-  const stored = localStorage.getItem('layoutMode');
-  if (stored) return stored;
+  let currentLang = localStorage.getItem('lang') || 'en';
+  let availableLanguages = ['en', 'zh', 'jp']; // 直接定义可用语言列表
+  // 根据当前页面和localStorage确定布局模式
+  function getInitialLayoutMode() {
+    const stored = localStorage.getItem('layoutMode');
+    if (stored) return stored;
 
-  // 如果没有存储的模式，检查当前页面
-  if (window.location.pathname.includes('main.html')) {
-    return 'single'; // main.html默认单页模式
-  } else {
-    return 'multi'; // 其他页面默认多页模式
+    // 如果没有存储的模式，检查当前页面
+    if (window.location.pathname.includes('main.html')) {
+      return 'single'; // main.html默认单页模式
+    } else {
+      return 'multi'; // 其他页面默认多页模式
+    }
   }
-}
 
-let layoutMode = getInitialLayoutMode();
+  let layoutMode = getInitialLayoutMode();
 
-function goHome() {
-  const currentLayoutMode = localStorage.getItem('layoutMode') || 'multi';
-  if (currentLayoutMode === 'single') {
-    // 在单页模式下，回到单页首页
-    window.location.href = 'main.html';
-  } else {
-    // 在多页模式下，回到页面顶部
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
+  function goHome() {
+    const currentLayoutMode = localStorage.getItem('layoutMode') || 'multi';
+    if (currentLayoutMode === 'single') {
+      // 在单页模式下，回到单页首页
+      window.location.href = 'main.html';
+    } else {
+      // 在多页模式下，回到页面顶部
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    }
+  }
+
+  async function loadContent(lang = currentLang) {
+
+    // 加载所有数据文件
+    const [webContentRes, projectsRes, publicationsRes, newsRes, blogsRes, academicServiceRes, cardsRes, wordcloudRes] = await Promise.all([
+      fetch(`data/${lang}/web_content.json`),
+      fetch(`data/${lang}/projects.json`),
+      fetch(`data/${lang}/publications.json`),
+      fetch(`data/${lang}/news.json`),
+      fetch(`data/${lang}/blogs.json`),
+      fetch(`data/${lang}/academic_service.json`),
+      fetch(`data/${lang}/cards.json`),
+      fetch(`data/${lang}/wordcloud.json`)
+    ]);
+
+    const webContent = await webContentRes.json();
+    const projects = await projectsRes.json();
+    const publications = await publicationsRes.json();
+    const news = await newsRes.json();
+    const blogs = await blogsRes.json();
+    const academicService = await academicServiceRes.json();
+    const cards = await cardsRes.json();
+    const wordcloud = await wordcloudRes.json();
+
+    const projectsList = projects.projects || [];
+    const publicationsList = publications.publications || [];
+    const newsList = news.news || [];
+    const blogsList = blogs.blogs || [];
+    const academicServiceList = academicService.academic_services || [];
+    const cardsList = cards.cards || [];
+    const wordcloudList = wordcloud.wordcloud || [];
+
+    // 更新导航栏
+    updateElement('#navbar-title', webContent.navbar_title);
+    updateElement('#navbar-home', webContent.navbar_home);
+    updateElement('#navbar-about', webContent.navbar_about);
+    updateElement('#navbar-news', webContent.navbar_news);
+    updateElement('#navbar-publications', webContent.navbar_publications);
+    updateElement('#navbar-projects', webContent.navbar_projects);
+    updateElement('#navbar-blogs', webContent.navbar_blogs);
+    updateElement('#navbar-language', webContent.language);
+
+    // 动态生成语言切换按钮
+    generateLanguageButtons(webContent);
+
+    // 更新标题和副标题
+    updateElement('#main-title', webContent.title);
+    updateElement('#main-subtitle', webContent.subtitle);
+
+    // 更新 About 部分
+    updateElement('#about-title', webContent.about_title);
+    updateElement('#about-text1', webContent.about_text1);
+    updateElement('#about-text2', webContent.about_text2);
+
+    // 更新其他部分标题
+    updateElement('#news-title', webContent.news_title);
+    updateElement('#publications-title', webContent.publications_title);
+    updateElement('#projects-title', webContent.projects_title);
+    updateElement('#academic-service-title', webContent.academic_service_title);
+    updateElement('#blogs-title', webContent.blogs_title);
+
+    // 更新页脚
+    updateElement('#footer-text', webContent.footer);
+
+    // 动态生成新闻
+    generateNews(newsList);
+
+    // 动态生成出版物
+    generatePublications(publicationsList);
+
+    // 动态生成项目
+    generateProjects(projectsList);
+
+    // 动态生成学术服务
+    generateAcademicService(academicServiceList);
+
+    // 动态生成博客
+    generateBlogs(blogsList);
+
+    // 动态生成卡片
+    generateCards(cardsList);
+
+    // 初始化卡片切换功能
+    initializeCardSlider();
+
+    // 动态生成词云
+    generateWordCloud(wordcloudList);
+
+    // 确保词云正确初始化（首次加载或语言切换）
+    setTimeout(() => {
+      generateWordCloud(wordcloudList);
+    }, 100);
+  }
+
+  function updateElement(selector, html) {
+    const element = document.querySelector(selector);
+    if (element) element.innerHTML = html;
+  }
+
+  function generateLanguageButtons(webContent) {
+    const langDropdown = document.querySelector('#language-dropdown');
+    const dropdown = document.querySelector('#language-dropdown-menu');
+    dropdown.innerHTML = '';
+    availableLanguages.forEach(lang => {
+      // 从当前语言的 webContent 中获取语言名称
+      const langKeyMap = {
+        'en': 'english',
+        'zh': 'chinese',
+        'jp': 'japanese'
+      };
+      const langKey = langKeyMap[lang];
+      const langName = webContent[langKey] || lang;
+      const button = document.createElement('a');
+      button.className = 'navbar-item';
+      button.onclick = (e) => {
+        e.stopPropagation(); // 阻止事件冒泡
+        switchLanguage(lang);
+      };
+      button.innerHTML = langName;
+      dropdown.appendChild(button);
     });
   }
-}
 
-async function loadContent(lang = currentLang) {
+  function generateNews(newsList) {
+    console.log('Generating news with data:', newsList);
+    const newsContainer = document.querySelector('#news');
+    if (!newsContainer) {
+      console.error('News container not found');
+      return;
+    }
 
-  // 加载所有数据文件
-  const [webContentRes, projectsRes, publicationsRes, newsRes, blogsRes, academicServiceRes, cardsRes, wordcloudRes] = await Promise.all([
-    fetch(`data/${lang}/web_content.json`),
-    fetch(`data/${lang}/projects.json`),
-    fetch(`data/${lang}/publications.json`),
-    fetch(`data/${lang}/news.json`),
-    fetch(`data/${lang}/blogs.json`),
-    fetch(`data/${lang}/academic_service.json`),
-    fetch(`data/${lang}/cards.json`),
-    fetch(`data/${lang}/wordcloud.json`)
-  ]);
-
-  const webContent = await webContentRes.json();
-  const projects = await projectsRes.json();
-  const publications = await publicationsRes.json();
-  const news = await newsRes.json();
-  const blogs = await blogsRes.json();
-  const academicService = await academicServiceRes.json();
-  const cards = await cardsRes.json();
-  const wordcloud = await wordcloudRes.json();
-
-  const projectsList = projects.projects || [];
-  const publicationsList = publications.publications || [];
-  const newsList = news.news || [];
-  const blogsList = blogs.blogs || [];
-  const academicServiceList = academicService.academic_services || [];
-  const cardsList = cards.cards || [];
-  const wordcloudList = wordcloud.wordcloud || [];
-
-  // 更新导航栏
-  updateElement('#navbar-title', webContent.navbar_title);
-  updateElement('#navbar-home', webContent.navbar_home);
-  updateElement('#navbar-about', webContent.navbar_about);
-  updateElement('#navbar-news', webContent.navbar_news);
-  updateElement('#navbar-publications', webContent.navbar_publications);
-  updateElement('#navbar-projects', webContent.navbar_projects);
-  updateElement('#navbar-blogs', webContent.navbar_blogs);
-  updateElement('#navbar-language', webContent.language);
-
-  // 动态生成语言切换按钮
-  generateLanguageButtons(webContent);
-
-  // 更新标题和副标题
-  updateElement('#main-title', webContent.title);
-  updateElement('#main-subtitle', webContent.subtitle);
-
-  // 更新 About 部分
-  updateElement('#about-title', webContent.about_title);
-  updateElement('#about-text1', webContent.about_text1);
-  updateElement('#about-text2', webContent.about_text2);
-
-  // 更新其他部分标题
-  updateElement('#news-title', webContent.news_title);
-  updateElement('#publications-title', webContent.publications_title);
-  updateElement('#projects-title', webContent.projects_title);
-  updateElement('#academic-service-title', webContent.academic_service_title);
-  updateElement('#blogs-title', webContent.blogs_title);
-
-  // 更新页脚
-  updateElement('#footer-text', webContent.footer);
-
-  // 动态生成新闻
-  generateNews(newsList);
-
-  // 动态生成出版物
-  generatePublications(publicationsList);
-
-  // 动态生成项目
-  generateProjects(projectsList);
-
-  // 动态生成学术服务
-  generateAcademicService(academicServiceList);
-
-  // 动态生成博客
-  generateBlogs(blogsList);
-
-  // 动态生成卡片
-  generateCards(cardsList);
-
-  // 初始化卡片切换功能
-  initializeCardSlider();
-
-  // 动态生成词云
-  generateWordCloud(wordcloudList);
-
-  // 确保词云正确初始化（首次加载或语言切换）
-  setTimeout(() => {
-    generateWordCloud(wordcloudList);
-  }, 100);
-}
-
-function updateElement(selector, html) {
-  const element = document.querySelector(selector);
-  if (element) element.innerHTML = html;
-}
-
-function generateLanguageButtons(webContent) {
-  const langDropdown = document.querySelector('#language-dropdown');
-  const dropdown = document.querySelector('#language-dropdown-menu');
-  dropdown.innerHTML = '';
-  availableLanguages.forEach(lang => {
-    // 从当前语言的 webContent 中获取语言名称
-    const langKeyMap = {
-      'en': 'english',
-      'zh': 'chinese',
-      'jp': 'japanese'
-    };
-    const langKey = langKeyMap[lang];
-    const langName = webContent[langKey] || lang;
-    const button = document.createElement('a');
-    button.className = 'navbar-item';
-    button.onclick = (e) => {
-      e.stopPropagation(); // 阻止事件冒泡
-      switchLanguage(lang);
-    };
-    button.innerHTML = langName;
-    dropdown.appendChild(button);
-  });
-}
-
-function generateNews(newsList) {
-  console.log('Generating news with data:', newsList);
-  const newsContainer = document.querySelector('#news');
-  if (!newsContainer) {
-    console.error('News container not found');
-    return;
-  }
-
-  // 直接选择 #news 的第二个子元素（内容容器）
-  const newsDiv = newsContainer.children[1];
-  if (!newsDiv) {
-    console.error('News content div not found');
-    console.log('News container children:', newsContainer.children);
-    return;
-  }
-  console.log('Found news div:', newsDiv);
-  newsDiv.innerHTML = '';
-  newsList.forEach(item => {
-    const div = document.createElement('div');
-    div.style.cssText = 'display: flex; justify-content: flex-start; align-items: center; margin-bottom: 15px;';
-    div.innerHTML = `
+    // 直接选择 #news 的第二个子元素（内容容器）
+    const newsDiv = newsContainer.children[1];
+    if (!newsDiv) {
+      console.error('News content div not found');
+      console.log('News container children:', newsContainer.children);
+      return;
+    }
+    console.log('Found news div:', newsDiv);
+    newsDiv.innerHTML = '';
+    newsList.forEach(item => {
+      const div = document.createElement('div');
+      div.style.cssText = 'display: flex; justify-content: flex-start; align-items: center; margin-bottom: 15px;';
+      div.innerHTML = `
       <span style="font-weight: bold; margin-right: 50px;">${item.date}</span>
       <span style="font-family: Georgia">${item.content}</span>
     `;
-    newsDiv.appendChild(div);
-  });
-  console.log('News generation completed');
-}
-
-function generatePublications(publicationsList) {
-  console.log('Generating publications with data:', publicationsList);
-  const publicationsSection = document.querySelector('#publications');
-  if (!publicationsSection) {
-    console.error('Publications section not found');
-    return;
+      newsDiv.appendChild(div);
+    });
+    console.log('News generation completed');
   }
 
-  // 直接选择 #publications 的第二个子元素（内容容器）
-  const contentDiv = publicationsSection.children[1];
-  if (!contentDiv) {
-    console.error('Publications content div not found');
-    console.log('Publications container children:', publicationsSection.children);
-    return;
-  }
-  console.log('Found publications div:', contentDiv);
+  function generatePublications(publicationsList) {
+    console.log('Generating publications with data:', publicationsList);
+    const publicationsSection = document.querySelector('#publications');
+    if (!publicationsSection) {
+      console.error('Publications section not found');
+      return;
+    }
 
-  // 移除现有 paper-container
-  const existingContainers = contentDiv.querySelectorAll('.paper-container');
-  existingContainers.forEach(c => c.remove());
+    // 直接选择 #publications 的第二个子元素（内容容器）
+    const contentDiv = publicationsSection.children[1];
+    if (!contentDiv) {
+      console.error('Publications content div not found');
+      console.log('Publications container children:', publicationsSection.children);
+      return;
+    }
+    console.log('Found publications div:', contentDiv);
 
-  publicationsList.forEach(pub => {
-    const paperContainer = document.createElement('div');
-    paperContainer.className = 'paper-container';
-    paperContainer.innerHTML = `
+    // 移除现有 paper-container
+    const existingContainers = contentDiv.querySelectorAll('.paper-container');
+    existingContainers.forEach(c => c.remove());
+
+    publicationsList.forEach(pub => {
+      const paperContainer = document.createElement('div');
+      paperContainer.className = 'paper-container';
+      paperContainer.innerHTML = `
       <img src="${pub.image}" alt="Overview" class="paper-image">
       <div class="paper-content">
         <h2 class="paper-title">${pub.title}</h2>
@@ -497,37 +500,37 @@ function generatePublications(publicationsList) {
         </p>
       </div>
     `;
-    contentDiv.appendChild(paperContainer);
-  });
-  console.log('Publications generation completed');
-}
-
-function generateProjects(projectsList) {
-  console.log('Generating projects with data:', projectsList);
-  const projectsSection = document.querySelector('#projects');
-  if (!projectsSection) {
-    console.error('Projects section not found');
-    return;
+      contentDiv.appendChild(paperContainer);
+    });
+    console.log('Publications generation completed');
   }
 
-  // 直接选择 #projects 的第二个子元素（内容容器）
-  const contentDiv = projectsSection.children[1];
-  if (!contentDiv) {
-    console.error('Projects content div not found');
-    console.log('Projects container children:', projectsSection.children);
-    return;
-  }
-  console.log('Found projects div:', contentDiv);
+  function generateProjects(projectsList) {
+    console.log('Generating projects with data:', projectsList);
+    const projectsSection = document.querySelector('#projects');
+    if (!projectsSection) {
+      console.error('Projects section not found');
+      return;
+    }
 
-  // 移除现有 paper-container
-  const existingContainers = contentDiv.querySelectorAll('.paper-container');
-  existingContainers.forEach(c => c.remove());
+    // 直接选择 #projects 的第二个子元素（内容容器）
+    const contentDiv = projectsSection.children[1];
+    if (!contentDiv) {
+      console.error('Projects content div not found');
+      console.log('Projects container children:', projectsSection.children);
+      return;
+    }
+    console.log('Found projects div:', contentDiv);
 
-  projectsList.forEach(proj => {
-    const paperContainer = document.createElement('div');
-    paperContainer.className = 'paper-container';
-    const imageHtml = proj.image ? `<img src="${proj.image}" alt="Overview" class="paper-image">` : '<div class="paper-image" style="background: #f0f0f0; display: flex; align-items: center; justify-content: center; height: 150px;">No Image</div>';
-    paperContainer.innerHTML = `
+    // 移除现有 paper-container
+    const existingContainers = contentDiv.querySelectorAll('.paper-container');
+    existingContainers.forEach(c => c.remove());
+
+    projectsList.forEach(proj => {
+      const paperContainer = document.createElement('div');
+      paperContainer.className = 'paper-container';
+      const imageHtml = proj.image ? `<img src="${proj.image}" alt="Overview" class="paper-image">` : '<div class="paper-image" style="background: #f0f0f0; display: flex; align-items: center; justify-content: center; height: 150px;">No Image</div>';
+      paperContainer.innerHTML = `
       ${imageHtml}
       <div class="paper-content">
         <h2 class="paper-title" style="display: flex; justify-content: space-between; align-items: center;">
@@ -539,55 +542,55 @@ function generateProjects(projectsList) {
         ${proj.links ? `<p>${proj.links.map(link => `<a href="${link.url}" target="_blank" class="paper-link">[${link.type}]</a>`).join(' ')}</p>` : ''}
       </div>
     `;
-    contentDiv.appendChild(paperContainer);
-  });
-  console.log('Projects generation completed');
-}
-
-function generateBlogs(blogsList) {
-  console.log('Generating blogs with data:', blogsList);
-  const blogsSection = document.querySelector('#blogs');
-  if (!blogsSection) {
-    console.error('Blogs section not found');
-    return;
+      contentDiv.appendChild(paperContainer);
+    });
+    console.log('Projects generation completed');
   }
 
-  // 直接选择 #blogs 的第二个子元素（内容容器）
-  const contentDiv = blogsSection.children[1];
-  if (!contentDiv) {
-    console.error('Blogs content div not found');
-    console.log('Blogs container children:', blogsSection.children);
-    return;
-  }
-  console.log('Found blogs div:', contentDiv);
+  function generateBlogs(blogsList) {
+    console.log('Generating blogs with data:', blogsList);
+    const blogsSection = document.querySelector('#blogs');
+    if (!blogsSection) {
+      console.error('Blogs section not found');
+      return;
+    }
 
-  // 移除现有 paper-container
-  const existingContainers = contentDiv.querySelectorAll('.paper-container');
-  existingContainers.forEach(c => c.remove());
+    // 直接选择 #blogs 的第二个子元素（内容容器）
+    const contentDiv = blogsSection.children[1];
+    if (!contentDiv) {
+      console.error('Blogs content div not found');
+      console.log('Blogs container children:', blogsSection.children);
+      return;
+    }
+    console.log('Found blogs div:', contentDiv);
 
-  // 可以在这里生成博客内容，如果有的话
-  // 目前 blogs.json 是空的
-  if (blogsList.length === 0) {
-    contentDiv.innerHTML = '<p>No blog posts yet.</p>';
-  } else {
-    blogsList.forEach(blog => {
-      const blogContainer = document.createElement('div');
-      blogContainer.className = 'paper-container';
+    // 移除现有 paper-container
+    const existingContainers = contentDiv.querySelectorAll('.paper-container');
+    existingContainers.forEach(c => c.remove());
 
-      let linksHtml = '';
-      if (blog.links && blog.links.length > 0) {
-        linksHtml = blog.links.map(link => `
+    // 可以在这里生成博客内容，如果有的话
+    // 目前 blogs.json 是空的
+    if (blogsList.length === 0) {
+      contentDiv.innerHTML = '<p>No blog posts yet.</p>';
+    } else {
+      blogsList.forEach(blog => {
+        const blogContainer = document.createElement('div');
+        blogContainer.className = 'paper-container';
+
+        let linksHtml = '';
+        if (blog.links && blog.links.length > 0) {
+          linksHtml = blog.links.map(link => `
           <a href="${link.url}" target="_blank" rel="noopener noreferrer" class="paper-link" style="margin-right: 10px;">
             [${link.type}]
           </a>
         `).join('');
-      }
+        }
 
-      const imageHtml = blog.image
-        ? `<img src="${blog.image}" alt="${blog.title}" class="paper-image">`
-        : `<div class="paper-image" style="background: #f0f0f0; display: flex; align-items: center; justify-content: center; height: 150px; color: #666;">No Image</div>`;
+        const imageHtml = blog.image
+          ? `<img src="${blog.image}" alt="${blog.title}" class="paper-image">`
+          : `<div class="paper-image" style="background: #f0f0f0; display: flex; align-items: center; justify-content: center; height: 150px; color: #666;">No Image</div>`;
 
-      blogContainer.innerHTML = `
+        blogContainer.innerHTML = `
         ${imageHtml}
         <div class="paper-content">
           <h2 class="paper-title" style="display: flex; justify-content: space-between; align-items: center;">
@@ -598,266 +601,112 @@ function generateBlogs(blogsList) {
           <div>${linksHtml}</div>
         </div>
       `;
-      contentDiv.appendChild(blogContainer);
-    });
-  }
-  console.log('Blogs generation completed');
-}
-
-function generateAcademicService(academicServiceList) {
-  console.log('Generating academic service with data:', academicServiceList);
-  const academicServiceSection = document.querySelector('#academic-service');
-  if (!academicServiceSection) {
-    console.error('Academic service section not found');
-    return;
+        contentDiv.appendChild(blogContainer);
+      });
+    }
+    console.log('Blogs generation completed');
   }
 
-  // 直接选择 #academic-service 的第二个子元素（内容容器）
-  const contentDiv = academicServiceSection.children[1];
-  if (!contentDiv) {
-    console.error('Academic service content div not found');
-    console.log('Academic service container children:', academicServiceSection.children);
-    return;
-  }
-  console.log('Found academic service div:', contentDiv);
+  function generateAcademicService(academicServiceList) {
+    console.log('Generating academic service with data:', academicServiceList);
+    const academicServiceSection = document.querySelector('#academic-service');
+    if (!academicServiceSection) {
+      console.error('Academic service section not found');
+      return;
+    }
 
-  // 清空现有内容
-  contentDiv.innerHTML = '';
+    // 直接选择 #academic-service 的第二个子元素（内容容器）
+    const contentDiv = academicServiceSection.children[1];
+    if (!contentDiv) {
+      console.error('Academic service content div not found');
+      console.log('Academic service container children:', academicServiceSection.children);
+      return;
+    }
+    console.log('Found academic service div:', contentDiv);
 
-  if (academicServiceList.length === 0) {
-    contentDiv.innerHTML = '<p>No academic service records yet.</p>';
-  } else {
-    academicServiceList.forEach(service => {
-      const serviceDiv = document.createElement('div');
-      serviceDiv.style.cssText = 'display: flex; justify-content: flex-start; align-items: center; margin-bottom: 15px;';
-      serviceDiv.innerHTML = `
+    // 清空现有内容
+    contentDiv.innerHTML = '';
+
+    if (academicServiceList.length === 0) {
+      contentDiv.innerHTML = '<p>No academic service records yet.</p>';
+    } else {
+      academicServiceList.forEach(service => {
+        const serviceDiv = document.createElement('div');
+        serviceDiv.style.cssText = 'display: flex; justify-content: flex-start; align-items: center; margin-bottom: 15px;';
+        serviceDiv.innerHTML = `
         <span style="font-weight: bold; margin-right: 50px;">${service.type}</span>
         <span>${service.description}</span>
       `;
-      contentDiv.appendChild(serviceDiv);
-    });
-  }
-  console.log('Academic service generation completed');
-}
-
-function generateCards(cardsList) {
-  console.log('Generating cards with data:', cardsList);
-  const cardContainer = document.querySelector('.card-container');
-  if (!cardContainer) {
-    console.error('Card container not found');
-    return;
+        contentDiv.appendChild(serviceDiv);
+      });
+    }
+    console.log('Academic service generation completed');
   }
 
-  // 只删除现有的卡片元素，保留按钮
-  const existingCards = cardContainer.querySelectorAll('.card');
-  existingCards.forEach(card => card.remove());
+  function generateCards(cardsList) {
+    console.log('Generating cards with data:', cardsList);
+    const cardContainer = document.querySelector('.card-container');
+    if (!cardContainer) {
+      console.error('Card container not found');
+      return;
+    }
 
-  if (cardsList.length === 0) {
-    console.log('No cards data available');
-    return;
-  }
+    // 只删除现有的卡片元素，保留按钮
+    const existingCards = cardContainer.querySelectorAll('.card');
+    existingCards.forEach(card => card.remove());
 
-  // 只显示前5张卡片（如果有的话）
-  const displayCards = cardsList.slice(0, 5);
+    if (cardsList.length === 0) {
+      console.log('No cards data available');
+      return;
+    }
 
-  displayCards.forEach(card => {
-    const cardDiv = document.createElement('div');
-    cardDiv.className = 'card';
-    cardDiv.innerHTML = `
+    // 只显示前5张卡片（如果有的话）
+    const displayCards = cardsList.slice(0, 5);
+
+    displayCards.forEach(card => {
+      const cardDiv = document.createElement('div');
+      cardDiv.className = 'card';
+      cardDiv.innerHTML = `
       <div class="card-title">${card.title}</div>
       <div class="card-description">${card.description}</div>
     `;
-    cardContainer.appendChild(cardDiv);
-  });
+      cardContainer.appendChild(cardDiv);
+    });
 
-  console.log('Cards generation completed');
-}
-
-function generateWordCloud(wordcloudList) {
-  console.log('Generating word cloud with data:', wordcloudList);
-  const tagsContainer = document.querySelector('#tags');
-  if (!tagsContainer) {
-    console.error('Word cloud tags container not found');
-    return;
+    console.log('Cards generation completed');
   }
 
-  // 清空现有标签
-  tagsContainer.innerHTML = '';
-
-  if (wordcloudList.length === 0) {
-    console.log('No word cloud data available');
-    return;
-  }
-
-  wordcloudList.forEach(item => {
-    const li = document.createElement('li');
-    const a = document.createElement('a');
-    a.href = '#';
-    if (item.title) {
-      a.title = item.title;
+  function generateWordCloud(wordcloudList) {
+    console.log('Generating word cloud with data:', wordcloudList);
+    const tagsContainer = document.querySelector('#tags');
+    if (!tagsContainer) {
+      console.error('Word cloud tags container not found');
+      return;
     }
-    a.textContent = item.text;
-    li.appendChild(a);
-    tagsContainer.appendChild(li);
-  });
 
-  // 重新初始化TagCanvas词云
-  try {
-    if (typeof TagCanvas !== 'undefined') {
-      TagCanvas.Start('word-cloud', 'tags', {
-        textColour: '#FFFFFF',
-        outlineColour: 'rgba(255, 255, 255, 0.5)',
-        reverse: true,
-        depth: 0.8,
-        maxSpeed: 0.01,
-        textFont: 'Papyrus, Arial, sans-serif',
-        textHeight: 20,
-        shuffleTags: true,
-        initial: [0.3, 0.3],
-        decel: 0.98,
-        dragControl: true,
-        weight: true,
-        shape: 'spiral',
-        tooltip: true
-      });
+    // 清空现有标签
+    tagsContainer.innerHTML = '';
 
-      // 添加自定义的自动重新开始功能
-      setupWordCloudAutoRestart();
+    if (wordcloudList.length === 0) {
+      console.log('No word cloud data available');
+      return;
     }
-  } catch (e) {
-    console.error('TagCanvas re-initialization error:', e);
-  }
 
-  console.log('Word cloud generation completed');
-}
-
-// 设置词云自动重新开始功能
-function setupWordCloudAutoRestart() {
-  const canvas = document.getElementById('word-cloud');
-  if (!canvas) return;
-
-  let restartTimer = null;
-  let isUserInteracting = false;
-  let lastInteractionTime = Date.now();
-  let dragStartTime = 0;
-
-  // 监听鼠标按下事件
-  canvas.addEventListener('mousedown', function(e) {
-    isUserInteracting = true;
-    dragStartTime = Date.now();
-    lastInteractionTime = Date.now();
-    console.log('Word cloud interaction started');
-
-    // 清除之前的定时器
-    if (restartTimer) {
-      clearTimeout(restartTimer);
-    }
-  });
-
-  // 监听document的鼠标释放事件，确保即使鼠标在区域外释放也能检测到
-  document.addEventListener('mouseup', function(e) {
-    if (isUserInteracting) {
-      isUserInteracting = false;
-      lastInteractionTime = Date.now();
-      const interactionDuration = Date.now() - dragStartTime;
-      console.log('Word cloud interaction ended, duration:', interactionDuration + 'ms');
-
-      // 如果交互时间很短（只是点击），立即重启
-      if (interactionDuration < 100) {
-        console.log('Short click detected, restarting immediately');
-        setTimeout(() => startWordCloudRotation(), 100);
-        return;
+    wordcloudList.forEach(item => {
+      const li = document.createElement('li');
+      const a = document.createElement('a');
+      a.href = '#';
+      if (item.title) {
+        a.title = item.title;
       }
+      a.textContent = item.text;
+      li.appendChild(a);
+      tagsContainer.appendChild(li);
+    });
 
-      // 清除之前的定时器
-      if (restartTimer) {
-        clearTimeout(restartTimer);
-      }
-
-      // 5秒后重新开始转动
-      restartTimer = setTimeout(function() {
-        const timeSinceLastInteraction = Date.now() - lastInteractionTime;
-        if (timeSinceLastInteraction >= 5000 && !isUserInteracting) {
-          console.log('Word cloud restarting after 5 seconds of inactivity');
-          startWordCloudRotation();
-        }
-      }, 5000);
-    }
-  });
-
-  // 监听鼠标移动事件
-  canvas.addEventListener('mousemove', function(e) {
-    if (isUserInteracting) {
-      lastInteractionTime = Date.now();
-      // 清除定时器，因为用户正在交互
-      if (restartTimer) {
-        clearTimeout(restartTimer);
-        restartTimer = setTimeout(function() {
-          const timeSinceLastInteraction = Date.now() - lastInteractionTime;
-          if (timeSinceLastInteraction >= 5000 && !isUserInteracting) {
-            console.log('Word cloud restarting after 5 seconds of inactivity');
-            startWordCloudRotation();
-          }
-        }, 5000);
-      }
-    }
-  });
-
-  // 监听鼠标离开事件
-  canvas.addEventListener('mouseleave', function() {
-    // 鼠标离开时不改变isUserInteracting状态，让document的mouseup事件处理
-    console.log('Mouse left word cloud area');
-  });
-
-  // 监听鼠标进入事件
-  canvas.addEventListener('mouseenter', function() {
-    // 如果鼠标进入时还在交互状态（说明鼠标在区域外释放了）
-    if (!isUserInteracting && Date.now() - lastInteractionTime < 5000) {
-      isUserInteracting = true;
-      lastInteractionTime = Date.now();
-
-      // 鼠标重新进入时，清除定时器，因为用户回来了
-      if (restartTimer) {
-        clearTimeout(restartTimer);
-        restartTimer = null;
-        console.log('Mouse entered word cloud area, timer cleared');
-      } else {
-        console.log('Mouse entered word cloud area');
-      }
-    }
-  });
-}
-
-// 启动词云转动（逐步加速）
-function startWordCloudRotation() {
-  if (typeof TagCanvas === 'undefined') return;
-
-  try {
-    const canvas = document.getElementById('word-cloud');
-    if (canvas) {
-      // 尝试重新开始TagCanvas动画
-      console.log(canvas.tc)
-      if (canvas.tc) {
-        // 重新设置动画状态
-        canvas.tc.animating = true;
-        canvas.tc.active = true;
-
-        // 给所有标签添加随机速度
-        if (canvas.tc.taglist && canvas.tc.taglist.length > 0) {
-          canvas.tc.taglist.forEach(function(tag) {
-            tag.vx = (Math.random() - 0.5) * 0.02;
-            tag.vy = (Math.random() - 0.5) * 0.02;
-            tag.va = (Math.random() - 0.5) * 0.02;
-          });
-        }
-
-        // 强制重绘
-        if (canvas.tc.Draw) {
-          canvas.tc.Draw();
-        }
-        console.log('Word cloud rotation restarted with velocity reset');
-      } else {
-        // 如果tc对象不存在，重新初始化
+    // 重新初始化TagCanvas词云
+    try {
+      if (typeof TagCanvas !== 'undefined') {
         TagCanvas.Start('word-cloud', 'tags', {
           textColour: '#FFFFFF',
           outlineColour: 'rgba(255, 255, 255, 0.5)',
@@ -874,267 +723,406 @@ function startWordCloudRotation() {
           shape: 'spiral',
           tooltip: true
         });
-        console.log('Word cloud re-initialized');
+
+        // 添加自定义的自动重新开始功能
+        setupWordCloudAutoRestart();
       }
+    } catch (e) {
+      console.error('TagCanvas re-initialization error:', e);
     }
-  } catch (e) {
-    console.error('Error restarting word cloud rotation:', e);
+
+    console.log('Word cloud generation completed');
   }
-}
 
-function switchLanguage(lang) {
-  localStorage.setItem('lang', lang);
-  loadContent(lang);
-  // 语言切换后保持dropdown显示（如果在移动端汉堡菜单中）
-  setTimeout(() => {
-    const dropdown = document.querySelector('#language-dropdown');
-    if (dropdown && window.innerWidth <= 1023) {
-      dropdown.classList.add('is-active');
-    }
-  }, 100);
-}
+  // 设置词云自动重新开始功能
+  function setupWordCloudAutoRestart() {
+    const canvas = document.getElementById('word-cloud');
+    if (!canvas) return;
 
-// 布局模式切换功能
-function initializeLayoutMode() {
-  const layoutModeToggle = document.getElementById('layout-mode-toggle');
+    let restartTimer = null;
+    let isUserInteracting = false;
+    let lastInteractionTime = Date.now();
+    let dragStartTime = 0;
 
-  function updateLayoutButton() {
-    if (layoutModeToggle) {
-      if (layoutMode === 'single') {
-        layoutModeToggle.innerHTML = '<i class="fas fa-layer-group"></i>';
-        layoutModeToggle.title = 'Switch to Multi-page Mode';
-      } else {
-        layoutModeToggle.innerHTML = '<i class="fas fa-file-alt"></i>';
-        layoutModeToggle.title = 'Switch to Single-page Mode';
+    // 监听鼠标按下事件
+    canvas.addEventListener('mousedown', function (e) {
+      isUserInteracting = true;
+      dragStartTime = Date.now();
+      lastInteractionTime = Date.now();
+      console.log('Word cloud interaction started');
+
+      // 清除之前的定时器
+      if (restartTimer) {
+        clearTimeout(restartTimer);
       }
-    }
-  }
-
-  function toggleLayoutMode() {
-    const oldMode = layoutMode;
-    layoutMode = layoutMode === 'single' ? 'multi' : 'single';
-    localStorage.setItem('layoutMode', layoutMode);
-    updateLayoutButton();
-
-    // 如果切换到单页模式，跳转到主页面
-    if (oldMode === 'multi' && layoutMode === 'single') {
-      window.location.href = 'main.html?scroll=top';
-    }
-    // 如果切换到多页模式，保持在当前页面
-    else if (oldMode === 'single' && layoutMode === 'multi') {
-      // 保持在当前页面，不需要跳转
-    }
-  }
-
-  if (layoutModeToggle) {
-    layoutModeToggle.addEventListener('click', (e) => {
-      e.preventDefault();
-      toggleLayoutMode();
     });
-  }
 
-  updateLayoutButton();
-}
+    // 监听document的鼠标释放事件，确保即使鼠标在区域外释放也能检测到
+    document.addEventListener('mouseup', function (e) {
+      if (isUserInteracting) {
+        isUserInteracting = false;
+        lastInteractionTime = Date.now();
+        const interactionDuration = Date.now() - dragStartTime;
+        console.log('Word cloud interaction ended, duration:', interactionDuration + 'ms');
 
-// 初始化语言dropdown功能
-function initializeLanguageDropdown() {
-  const languageLink = document.querySelector('#navbar-language');
-  const languageDropdown = document.querySelector('#language-dropdown');
+        // 如果交互时间很短（只是点击），立即重启
+        if (interactionDuration < 100) {
+          console.log('Short click detected, restarting immediately');
+          setTimeout(() => startWordCloudRotation(), 100);
+          return;
+        }
 
-  if (languageLink && languageDropdown) {
-    languageLink.addEventListener('click', (e) => {
-      e.preventDefault();
-      e.stopPropagation();
+        // 清除之前的定时器
+        if (restartTimer) {
+          clearTimeout(restartTimer);
+        }
 
-      // 切换dropdown的激活状态
-      languageDropdown.classList.toggle('is-active');
-
-      // 如果在移动端汉堡菜单中，同步激活状态
-      if (window.innerWidth <= 1023) {
-        const mobileMenu = document.querySelector('.navbar-menu.is-active');
-        if (mobileMenu) {
-          // 在移动端菜单中也激活对应的dropdown
-          const mobileDropdown = mobileMenu.querySelector('#language-dropdown');
-          if (mobileDropdown) {
-            mobileDropdown.classList.toggle('is-active');
+        // 5秒后重新开始转动
+        restartTimer = setTimeout(function () {
+          const timeSinceLastInteraction = Date.now() - lastInteractionTime;
+          if (timeSinceLastInteraction >= 5000 && !isUserInteracting) {
+            console.log('Word cloud restarting after 5 seconds of inactivity');
+            startWordCloudRotation();
           }
+        }, 5000);
+      }
+    });
+
+    // 监听鼠标移动事件
+    canvas.addEventListener('mousemove', function (e) {
+      if (isUserInteracting) {
+        lastInteractionTime = Date.now();
+        // 清除定时器，因为用户正在交互
+        if (restartTimer) {
+          clearTimeout(restartTimer);
+          restartTimer = setTimeout(function () {
+            const timeSinceLastInteraction = Date.now() - lastInteractionTime;
+            if (timeSinceLastInteraction >= 5000 && !isUserInteracting) {
+              console.log('Word cloud restarting after 5 seconds of inactivity');
+              startWordCloudRotation();
+            }
+          }, 5000);
         }
       }
     });
 
-    // 点击外部关闭dropdown
-    document.addEventListener('click', (e) => {
-      if (!languageDropdown.contains(e.target)) {
-        languageDropdown.classList.remove('is-active');
+    // 监听鼠标离开事件
+    canvas.addEventListener('mouseleave', function () {
+      // 鼠标离开时不改变isUserInteracting状态，让document的mouseup事件处理
+      console.log('Mouse left word cloud area');
+    });
+
+    // 监听鼠标进入事件
+    canvas.addEventListener('mouseenter', function () {
+      // 如果鼠标进入时还在交互状态（说明鼠标在区域外释放了）
+      if (!isUserInteracting && Date.now() - lastInteractionTime < 5000) {
+        isUserInteracting = true;
+        lastInteractionTime = Date.now();
+
+        // 鼠标重新进入时，清除定时器，因为用户回来了
+        if (restartTimer) {
+          clearTimeout(restartTimer);
+          restartTimer = null;
+          console.log('Mouse entered word cloud area, timer cleared');
+        } else {
+          console.log('Mouse entered word cloud area');
+        }
       }
     });
   }
-}
 
-// 初始化卡片切换功能
-function initializeCardSlider() {
-  const cards = document.querySelectorAll('.card');
-  const prevBtn = document.getElementById('prev-btn');
-  const nextBtn = document.getElementById('next-btn');
-  let currentIndex = Math.floor(Math.random() * cards.length);
+  // 启动词云转动（逐步加速）
+  function startWordCloudRotation() {
+    if (typeof TagCanvas === 'undefined') return;
 
-  // Function to show the current card
-  function showCard(index) {
-    cards.forEach((card, i) => {
-      card.classList.remove('active');
-      if (i === index) {
-        card.classList.add('active');
+    try {
+      const canvas = document.getElementById('word-cloud');
+      if (canvas) {
+        // 尝试重新开始TagCanvas动画
+        console.log(canvas.tc)
+        if (canvas.tc) {
+          // 重新设置动画状态
+          canvas.tc.animating = true;
+          canvas.tc.active = true;
+
+          // 给所有标签添加随机速度
+          if (canvas.tc.taglist && canvas.tc.taglist.length > 0) {
+            canvas.tc.taglist.forEach(function (tag) {
+              tag.vx = (Math.random() - 0.5) * 0.02;
+              tag.vy = (Math.random() - 0.5) * 0.02;
+              tag.va = (Math.random() - 0.5) * 0.02;
+            });
+          }
+
+          // 强制重绘
+          if (canvas.tc.Draw) {
+            canvas.tc.Draw();
+          }
+          console.log('Word cloud rotation restarted with velocity reset');
+        } else {
+          // 如果tc对象不存在，重新初始化
+          TagCanvas.Start('word-cloud', 'tags', {
+            textColour: '#FFFFFF',
+            outlineColour: 'rgba(255, 255, 255, 0.5)',
+            reverse: true,
+            depth: 0.8,
+            maxSpeed: 0.01,
+            textFont: 'Papyrus, Arial, sans-serif',
+            textHeight: 20,
+            shuffleTags: true,
+            initial: [0.3, 0.3],
+            decel: 0.98,
+            dragControl: true,
+            weight: true,
+            shape: 'spiral',
+            tooltip: true
+          });
+          console.log('Word cloud re-initialized');
+        }
       }
-    });
+    } catch (e) {
+      console.error('Error restarting word cloud rotation:', e);
+    }
   }
 
-  // Handle Previous Button
-  if (prevBtn) {
-    prevBtn.addEventListener('click', () => {
-      currentIndex = (currentIndex - 1 + cards.length) % cards.length;
-      showCard(currentIndex);
-    });
+  function switchLanguage(lang) {
+    localStorage.setItem('lang', lang);
+    loadContent(lang);
+    // 语言切换后保持dropdown显示（如果在移动端汉堡菜单中）
+    setTimeout(() => {
+      const dropdown = document.querySelector('#language-dropdown');
+      if (dropdown && window.innerWidth <= 1023) {
+        dropdown.classList.add('is-active');
+      }
+    }, 100);
   }
 
-  // Handle Next Button
-  if (nextBtn) {
-    nextBtn.addEventListener('click', () => {
-      currentIndex = (currentIndex + 1) % cards.length;
-      showCard(currentIndex);
-    });
-  }
+  // 布局模式切换功能
+  function initializeLayoutMode() {
+    const layoutModeToggle = document.getElementById('layout-mode-toggle');
 
-  // Optionally: Auto switch cards every 5 seconds
-  setInterval(() => {
-    currentIndex = (currentIndex + 1) % cards.length;
-    showCard(currentIndex);
-  }, 5000);
-
-  // 显示第一张卡片
-  if (cards.length > 0) {
-    showCard(currentIndex);
-  }
-}
-
-// 暗夜模式功能
-function initializeDarkMode() {
-  const darkModeToggle = document.getElementById('dark-mode-toggle');
-  const body = document.body;
-
-  // 检查本地存储中的暗夜模式设置
-  const isDarkMode = localStorage.getItem('darkMode') === 'true';
-
-  // 如果之前设置了暗夜模式，则应用它
-  if (isDarkMode) {
-    body.classList.add('dark-mode');
-    // 设置太阳图标
-    darkModeToggle.innerHTML = '<i class="fas fa-sun"></i>';
-  } else {
-    // 设置月亮图标
-    darkModeToggle.innerHTML = '<i class="fas fa-moon"></i>';
-  }
-
-  // 暗夜模式切换功能
-  function toggleDarkMode() {
-    const isCurrentlyDark = body.classList.contains('dark-mode');
-    const iconContainer = darkModeToggle;
-    const backgroundContainer = document.getElementById('background-container');
-    console.log('Current dark mode state:', isCurrentlyDark);
-
-    if (isCurrentlyDark) {
-      // 切换到白天模式
-      body.classList.remove('dark-mode');
-      localStorage.setItem('darkMode', 'false');
-      // 恢复背景图片为occupacy.jpg
-      backgroundContainer.style.backgroundImage = "linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)),url('./media/occupacy.jpg')";
-      // 直接替换HTML内容为月亮图标
-      iconContainer.innerHTML = '<i class="fas fa-moon"></i>';
-      console.log('Switched to light mode');
-    } else {
-      // 切换到暗夜模式
-      body.classList.add('dark-mode');
-      localStorage.setItem('darkMode', 'true');
-
-      // 尝试加载occupacy_dark.jpg，如果不存在则使用蒙版方案
-      const darkImage = new Image();
-      darkImage.onload = function() {
-        // 如果图片加载成功，使用occupacy_dark.jpg
-        backgroundContainer.style.backgroundImage = "linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)),url('./media/occupacy_dark.jpg')";
-        console.log('Loaded occupacy_dark.jpg successfully');
-      };
-      darkImage.onerror = function() {
-        // 如果图片加载失败，使用现有的蒙版方案
-        console.log('occupacy_dark.jpg not found, using fallback mask');
-        // 保持现有的蒙版方案（CSS中已定义）
-      };
-      darkImage.src = './media/occupacy_dark.jpg';
-
-      // 直接替换HTML内容为太阳图标
-      iconContainer.innerHTML = '<i class="fas fa-sun"></i>';
-      console.log('Switched to dark mode');
+    function updateLayoutButton() {
+      if (layoutModeToggle) {
+        if (layoutMode === 'single') {
+          layoutModeToggle.innerHTML = '<i class="fas fa-layer-group"></i>';
+          layoutModeToggle.title = 'Switch to Multi-page Mode';
+        } else {
+          layoutModeToggle.innerHTML = '<i class="fas fa-file-alt"></i>';
+          layoutModeToggle.title = 'Switch to Single-page Mode';
+        }
+      }
     }
 
-    // 调试：检查body类名
-    console.log('Body classes after toggle:', body.className);
+    function toggleLayoutMode() {
+      const oldMode = layoutMode;
+      layoutMode = layoutMode === 'single' ? 'multi' : 'single';
+      localStorage.setItem('layoutMode', layoutMode);
+      updateLayoutButton();
+
+      // 如果切换到单页模式，跳转到主页面
+      if (oldMode === 'multi' && layoutMode === 'single') {
+        window.location.href = 'main.html?scroll=top';
+      }
+      // 如果切换到多页模式，保持在当前页面
+      else if (oldMode === 'single' && layoutMode === 'multi') {
+        // 保持在当前页面，不需要跳转
+      }
+    }
+
+    if (layoutModeToggle) {
+      layoutModeToggle.addEventListener('click', (e) => {
+        e.preventDefault();
+        toggleLayoutMode();
+      });
+    }
+
+    updateLayoutButton();
   }
 
-  // 为暗夜模式按钮添加点击事件监听器
-  if (darkModeToggle) {
-    darkModeToggle.addEventListener('click', (e) => {
-      e.preventDefault();
-      toggleDarkMode();
+  // 初始化语言dropdown功能
+  function initializeLanguageDropdown() {
+    const languageLink = document.querySelector('#navbar-language');
+    const languageDropdown = document.querySelector('#language-dropdown');
+
+    if (languageLink && languageDropdown) {
+      languageLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        // 切换dropdown的激活状态
+        languageDropdown.classList.toggle('is-active');
+
+        // 如果在移动端汉堡菜单中，同步激活状态
+        if (window.innerWidth <= 1023) {
+          const mobileMenu = document.querySelector('.navbar-menu.is-active');
+          if (mobileMenu) {
+            // 在移动端菜单中也激活对应的dropdown
+            const mobileDropdown = mobileMenu.querySelector('#language-dropdown');
+            if (mobileDropdown) {
+              mobileDropdown.classList.toggle('is-active');
+            }
+          }
+        }
+      });
+
+      // 点击外部关闭dropdown
+      document.addEventListener('click', (e) => {
+        if (!languageDropdown.contains(e.target)) {
+          languageDropdown.classList.remove('is-active');
+        }
+      });
+    }
+  }
+
+  // 初始化卡片切换功能
+  function initializeCardSlider() {
+    const cards = document.querySelectorAll('.card');
+    const prevBtn = document.getElementById('prev-btn');
+    const nextBtn = document.getElementById('next-btn');
+    let currentIndex = Math.floor(Math.random() * cards.length);
+
+    // Function to show the current card
+    function showCard(index) {
+      cards.forEach((card, i) => {
+        card.classList.remove('active');
+        if (i === index) {
+          card.classList.add('active');
+        }
+      });
+    }
+
+    // Handle Previous Button
+    if (prevBtn) {
+      prevBtn.addEventListener('click', () => {
+        currentIndex = (currentIndex - 1 + cards.length) % cards.length;
+        showCard(currentIndex);
+      });
+    }
+
+    // Handle Next Button
+    if (nextBtn) {
+      nextBtn.addEventListener('click', () => {
+        currentIndex = (currentIndex + 1) % cards.length;
+        showCard(currentIndex);
+      });
+    }
+
+    // Optionally: Auto switch cards every 5 seconds
+    setInterval(() => {
+      currentIndex = (currentIndex + 1) % cards.length;
+      showCard(currentIndex);
+    }, 5000);
+
+    // 显示第一张卡片
+    if (cards.length > 0) {
+      showCard(currentIndex);
+    }
+  }
+
+  // 暗夜模式功能
+  function initializeDarkMode() {
+    const darkModeToggleMobile = document.getElementById('dark-mode-toggle-mobile');
+    const body = document.body;
+
+    const isDarkMode = localStorage.getItem('darkMode') === 'true';
+
+    if (isDarkMode) {
+      body.classList.add('dark-mode');
+      if (darkModeToggleMobile) {
+        darkModeToggleMobile.innerHTML = '<i class="fas fa-sun"></i>';
+      }
+    } else {
+      if (darkModeToggleMobile) {
+        darkModeToggleMobile.innerHTML = '<i class="fas fa-moon"></i>';
+      }
+    }
+
+    function toggleDarkMode() {
+      const isCurrentlyDark = body.classList.contains('dark-mode');
+      const backgroundContainer = document.getElementById('background-container');
+
+      if (isCurrentlyDark) {
+        body.classList.remove('dark-mode');
+        localStorage.setItem('darkMode', 'false');
+        backgroundContainer.style.backgroundImage = "linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)),url('./media/occupacy.jpg')";
+        if (darkModeToggleMobile) {
+          darkModeToggleMobile.innerHTML = '<i class="fas fa-moon"></i>';
+        }
+      } else {
+        body.classList.add('dark-mode');
+        localStorage.setItem('darkMode', 'true');
+        const darkImage = new Image();
+        darkImage.onload = function () {
+          backgroundContainer.style.backgroundImage = "linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)),url('./media/occupacy_dark.jpg')";
+        };
+        darkImage.onerror = function () {
+          // 保持现有的蒙版方案
+        };
+        darkImage.src = './media/occupacy_dark.jpg';
+
+        if (darkModeToggleMobile) {
+          darkModeToggleMobile.innerHTML = '<i class="fas fa-sun"></i>';
+        }
+      }
+    }
+
+    if (darkModeToggleMobile) {
+      darkModeToggleMobile.addEventListener('click', (e) => {
+        e.preventDefault();
+        toggleDarkMode();
+      });
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    loadContent();
+
+    // 检查是否需要滚动到顶部
+    const urlParams = new URLSearchParams(window.location.search);
+    const shouldScrollToTop = urlParams.get('scroll') === 'top';
+
+    if (shouldScrollToTop) {
+      setTimeout(() => {
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
+        // 清理URL参数
+        window.history.replaceState({}, document.title, window.location.pathname);
+      }, 100);
+    }
+
+    // 初始化语言dropdown功能
+    initializeLanguageDropdown();
+
+    // 初始化布局模式功能
+    initializeLayoutMode();
+
+    // 初始化暗夜模式功能
+    initializeDarkMode();
+
+    // 汉堡菜单功能已由jQuery处理
+
+    // 返回顶部按钮功能
+    const backToTopButton = document.getElementById('back-to-top');
+
+    // 滚动监听 - 显示/隐藏返回顶部按钮
+    window.addEventListener('scroll', () => {
+      if (window.pageYOffset > 300) {
+        backToTopButton.classList.add('show');
+      } else {
+        backToTopButton.classList.remove('show');
+      }
     });
-  }
-}
 
-document.addEventListener('DOMContentLoaded', () => {
-  loadContent();
-
-  // 检查是否需要滚动到顶部
-  const urlParams = new URLSearchParams(window.location.search);
-  const shouldScrollToTop = urlParams.get('scroll') === 'top';
-
-  if (shouldScrollToTop) {
-    setTimeout(() => {
+    // 点击事件 - 平滑滚动到顶部
+    backToTopButton.addEventListener('click', () => {
       window.scrollTo({
         top: 0,
         behavior: 'smooth'
       });
-      // 清理URL参数
-      window.history.replaceState({}, document.title, window.location.pathname);
-    }, 100);
-  }
-
-  // 初始化语言dropdown功能
-  initializeLanguageDropdown();
-
-  // 初始化布局模式功能
-  initializeLayoutMode();
-
-  // 初始化暗夜模式功能
-  initializeDarkMode();
-
-  // 汉堡菜单功能已由jQuery处理
-
-  // 返回顶部按钮功能
-  const backToTopButton = document.getElementById('back-to-top');
-
-  // 滚动监听 - 显示/隐藏返回顶部按钮
-  window.addEventListener('scroll', () => {
-    if (window.pageYOffset > 300) {
-      backToTopButton.classList.add('show');
-    } else {
-      backToTopButton.classList.remove('show');
-    }
-  });
-
-  // 点击事件 - 平滑滚动到顶部
-  backToTopButton.addEventListener('click', () => {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
     });
   });
-});
 </script>
+
 </html>
