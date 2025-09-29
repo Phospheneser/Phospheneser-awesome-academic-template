@@ -20,6 +20,15 @@
     <script src="./static/js/bulma-carousel.min.js"></script>
     <script src="./static/js/bulma-slider.min.js"></script>
     <script src="./static/js/index.js"></script>
+
+    <style>
+        /* 干掉 Bulma 默认箭头 */
+        .navbar.is-primary .navbar-end .navbar-link::after,
+        .navbar.is-primary .navbar-start .navbar-link::after {
+            content: none !important;
+            border: none !important;
+        }
+    </style>
 </head>
 
 <body>
@@ -172,7 +181,8 @@
         updateElement('#navbar-publications', webContent.navbar_publications);
         updateElement('#navbar-projects', webContent.navbar_projects);
         updateElement('#navbar-blogs', webContent.navbar_blogs);
-        updateElement('#navbar-language', webContent.language);
+        // updateElement('#navbar-language', webContent.language);
+        document.getElementById('lang-label').textContent = webContent.language;
         updateElement('#footer-text', webContent.footer);
         generateLanguageButtons(webContent);
 

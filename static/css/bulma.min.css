@@ -6174,9 +6174,11 @@ print {
         color: #fff
     }
 
+
     .navbar.is-primary .navbar-end .navbar-link::after,
     .navbar.is-primary .navbar-start .navbar-link::after {
-        border-color: #fff
+        content: none !important;
+        border: none !important;
     }
 
     .navbar.is-primary .navbar-item.has-dropdown.is-active .navbar-link,

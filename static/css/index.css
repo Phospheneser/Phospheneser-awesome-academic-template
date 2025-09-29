@@ -10,7 +10,9 @@ html {
 
 /* 全局：语言下拉箭头与显隐规则（适用于所有断点） */
 .lang-arrow {
-  margin-left: 8px;
+  margin-left: auto;
+  margin-right: 8px;
+  font-size: 1.2em;
   transition: transform 0.3s ease;
   transform: rotate(90deg);
 }
@@ -89,6 +91,19 @@ html {
 #language-dropdown .navbar-link #lang-label,
 #language-dropdown .lang-arrow {
   color: #ffffff !important;
+}
+
+/* 语言按钮布局：让箭头右对齐 */
+#language-dropdown .navbar-link {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  width: 100% !important;
+}
+
+/* 语言标签右边距，让文字和箭头离得更远 */
+#language-dropdown .navbar-link #lang-label {
+  margin-right: 20px !important;
 }
 
 body {
@@ -823,7 +838,9 @@ html {
 
   /* 语言下拉箭头动画 */
   .lang-arrow {
-    margin-left: 8px;
+    margin-left: auto;
+    margin-right: 8px;
+    font-size: 1.2em;
     transition: transform 0.3s ease;
   }
 
@@ -1588,4 +1605,24 @@ footer.footer {
   /* 亮色模式下黑字 */
   height: auto !important;
   /* 自动根据内容撑开 */
+}
+
+/* 桌面端语言按钮布局：让箭头右对齐 */
+@media screen and (min-width: 1024px) {
+  #language-dropdown .navbar-link {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    width: 100% !important;
+  }
+
+  .lang-arrow {
+    margin-left: auto !important;
+    margin-right: -30px !important;
+    font-size: 1.2em !important;
+  }
+
+  #language-dropdown .navbar-link #lang-label {
+    margin-right: 20px !important;
+  }
 }
