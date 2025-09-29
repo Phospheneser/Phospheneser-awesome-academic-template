@@ -81,7 +81,7 @@
 
 <body>
 
-  <div
+  <div id="background-container"
     style="background-image:linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)),url('./media/occupacy.jpg');background-size: cover; background-position: center;padding-top: 52px; padding-bottom: 20px; margin-top: -52px; width: 100vw; position: relative;">
     <nav class="navbar is-primary">
       <div class="navbar-brand">
@@ -1055,29 +1055,25 @@
     function toggleDarkMode() {
       const isCurrentlyDark = body.classList.contains('dark-mode');
       const backgroundContainer = document.getElementById('background-container');
-
       if (isCurrentlyDark) {
         body.classList.remove('dark-mode');
         localStorage.setItem('darkMode', 'false');
-        backgroundContainer.style.backgroundImage = "linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)),url('./media/occupacy.jpg')";
-        if (darkModeToggleMobile) {
-          darkModeToggleMobile.innerHTML = '<i class="fas fa-moon"></i>';
+        if (backgroundContainer) {
+          backgroundContainer.style.backgroundImage = "linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)),url('./media/occupacy.jpg')";
         }
+        if (darkModeToggleMobile) darkModeToggleMobile.innerHTML = '<i class="fas fa-moon"></i>';
       } else {
         body.classList.add('dark-mode');
         localStorage.setItem('darkMode', 'true');
         const darkImage = new Image();
         darkImage.onload = function () {
-          backgroundContainer.style.backgroundImage = "linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)),url('./media/occupacy_dark.jpg')";
+          if (backgroundContainer) {
+            backgroundContainer.style.backgroundImage = "linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)),url('./media/occupacy_dark.jpg')";
+          }
         };
-        darkImage.onerror = function () {
-          // 保持现有的蒙版方案
-        };
+        darkImage.onerror = function () { };
         darkImage.src = './media/occupacy_dark.jpg';
-
-        if (darkModeToggleMobile) {
-          darkModeToggleMobile.innerHTML = '<i class="fas fa-sun"></i>';
-        }
+        if (darkModeToggleMobile) darkModeToggleMobile.innerHTML = '<i class="fas fa-sun"></i>';
       }
     }
 
