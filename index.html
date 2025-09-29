@@ -946,29 +946,30 @@
         e.stopPropagation();
 
         // 切换dropdown的激活状态
-        languageDropdown.classList.toggle('is-active');
-
-        // // 如果在移动端汉堡菜单中，同步激活状态
-        // if (window.innerWidth <= 1023) {
-        //   const mobileMenu = document.querySelector('.navbar-menu.is-active');
-        //   console.log(mobileMenu);
-        //   if (mobileMenu) {
-        //     // 在移动端菜单中也激活对应的dropdown
-        //     const mobileDropdown = mobileMenu.querySelector('#language-dropdown');
-        //     console.log(mobileDropdown);
-        //     if (mobileDropdown) {
-        //       mobileDropdown.classList.toggle('is-active');
-        //       console.log("monileDropdown is active");
-        //       console.log(mobileDropdown.classList);
-        //     }
-        //   }
-        // }
+        const willOpen = !languageDropdown.classList.contains('is-active');
+        if (willOpen) {
+          languageDropdown.classList.remove('is-closing');
+          languageDropdown.classList.add('is-active');
+        } else {
+          languageDropdown.classList.add('is-closing');
+          setTimeout(() => {
+            languageDropdown.classList.remove('is-active');
+            languageDropdown.classList.remove('is-closing');
+          }, 350);
+        }
       });
 
       // 点击外部关闭dropdown（包含菜单容器）
       document.addEventListener('click', (e) => {
         if (!languageDropdown.contains(e.target)) {
-          languageDropdown.classList.remove('is-active');
+          if (languageDropdown.classList.contains('is-active')) {
+            languageDropdown.classList.add('is-closing');
+            // 等待动画结束后再移除 is-active 与 is-closing
+            setTimeout(() => {
+              languageDropdown.classList.remove('is-active');
+              languageDropdown.classList.remove('is-closing');
+            }, 350);
+          }
         }
       });
     }
@@ -980,11 +981,16 @@
     const menu = document.querySelector('.navbar-menu');
 
     if (!burger || !menu) return;
+
+    // 点击页面其它区域：带收起动画
     document.addEventListener('click', (e) => {
       if (!menu.contains(e.target) && menu.classList.contains('is-active')) {
-        console.log("menu is active, deactive it");
-        menu.classList.remove('is-active');
-        burger.classList.remove('is-active');
+        menu.classList.add('is-closing');
+        setTimeout(() => {
+          menu.classList.remove('is-active');
+          menu.classList.remove('is-closing');
+          burger.classList.remove('is-active');
+        }, 100);
       }
     });
   }
@@ -1058,6 +1064,7 @@
       if (isCurrentlyDark) {
         body.classList.remove('dark-mode');
         localStorage.setItem('darkMode', 'false');
+
         if (backgroundContainer) {
           backgroundContainer.style.backgroundImage = "linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)),url('./media/occupacy.jpg')";
         }

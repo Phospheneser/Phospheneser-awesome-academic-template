@@ -372,10 +372,26 @@
             languageLink.addEventListener('click', (e) => {
                 e.preventDefault();
                 e.stopPropagation();
-                languageDropdown.classList.toggle('is-active');
+                const willOpen = !languageDropdown.classList.contains('is-active');
+                if (willOpen) {
+                    languageDropdown.classList.remove('is-closing');
+                    languageDropdown.classList.add('is-active');
+                } else {
+                    languageDropdown.classList.add('is-closing');
+                    setTimeout(() => {
+                        languageDropdown.classList.remove('is-active');
+                        languageDropdown.classList.remove('is-closing');
+                    }, 350);
+                }
             });
             document.addEventListener('click', (e) => {
-                if (!languageDropdown.contains(e.target)) languageDropdown.classList.remove('is-active');
+                if (!languageDropdown.contains(e.target) && languageDropdown.classList.contains('is-active')) {
+                    languageDropdown.classList.add('is-closing');
+                    setTimeout(() => {
+                        languageDropdown.classList.remove('is-active');
+                        languageDropdown.classList.remove('is-closing');
+                    }, 350);
+                }
             });
         }
     }
@@ -421,6 +437,7 @@
                 if (darkModeToggleMobile) darkModeToggleMobile.innerHTML = '<i class="fas fa-sun"></i>';
             }
         }
+
         if (darkModeToggleMobile) {
             darkModeToggleMobile.addEventListener('click', (e) => {
                 e.preventDefault();
@@ -442,13 +459,15 @@
     function initializeHamburgerAutoClose() {
         const burger = document.querySelector('.navbar-burger');
         const menu = document.querySelector('.navbar-menu');
-
         if (!burger || !menu) return;
         document.addEventListener('click', (e) => {
             if (!menu.contains(e.target) && menu.classList.contains('is-active')) {
-                console.log("menu is active, deactive it");
-                menu.classList.remove('is-active');
-                burger.classList.remove('is-active');
+                menu.classList.add('is-closing');
+                setTimeout(() => {
+                    menu.classList.remove('is-active');
+                    menu.classList.remove('is-closing');
+                    burger.classList.remove('is-active');
+                }, 100);
             }
         });
     }

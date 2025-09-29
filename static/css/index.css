@@ -11,15 +11,70 @@ html {
 /* 全局：语言下拉箭头与显隐规则（适用于所有断点） */
 .lang-arrow {
   margin-left: 8px;
-  transition: transform 0.2s ease;
+  transition: transform 0.3s ease;
 }
 
 #language-dropdown.is-active .lang-arrow {
   transform: rotate(90deg);
 }
 
-#language-dropdown:not(.is-active) .navbar-dropdown {
+/* 移除强制隐藏，让动效正常工作 */
+/* #language-dropdown:not(.is-active) .navbar-dropdown {
   display: none !important;
+} */
+
+/* 语言下拉菜单展开/收起动效 */
+#language-dropdown .navbar-dropdown {
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  pointer-events: none;
+}
+
+#language-dropdown.is-active .navbar-dropdown {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+/* 通用：所有导航下拉（覆盖 Bulma 的 display 切换以支持动效） */
+.navbar-item.has-dropdown .navbar-dropdown {
+  display: block !important;
+  max-height: 0;
+  opacity: 0;
+  transform: translateY(-12px) scaleY(0.98);
+  transform-origin: top center;
+  visibility: hidden;
+  overflow: hidden;
+  transition:
+    max-height 0.35s cubic-bezier(0.22, 0.61, 0.36, 1),
+    opacity 0.35s cubic-bezier(0.22, 0.61, 0.36, 1),
+    transform 0.35s cubic-bezier(0.22, 0.61, 0.36, 1),
+    visibility 0s linear 0.35s;
+  will-change: max-height, opacity, transform;
+  pointer-events: none;
+}
+
+.navbar-item.has-dropdown.is-active .navbar-dropdown {
+  max-height: 600px;
+  opacity: 1;
+  transform: translateY(0) scaleY(1);
+  visibility: visible;
+  transition:
+    max-height 0.35s cubic-bezier(0.22, 0.61, 0.36, 1),
+    opacity 0.35s cubic-bezier(0.22, 0.61, 0.36, 1),
+    transform 0.35s cubic-bezier(0.22, 0.61, 0.36, 1),
+    visibility 0s linear 0s;
+  pointer-events: auto;
+}
+
+/* 关闭动画中：保持可见，执行向上淡出并收起高度 */
+.navbar-item.has-dropdown.is-closing .navbar-dropdown {
+  max-height: 0 !important;
+  opacity: 0 !important;
+  transform: translateY(-12px) scaleY(0.98) !important;
+  visibility: visible !important;
+  pointer-events: none !important;
 }
 
 /* 修正汉堡菜单中语言按钮与箭头颜色为白色 */
@@ -763,23 +818,31 @@ html {
   /* 语言下拉箭头动画 */
   .lang-arrow {
     margin-left: 8px;
-    transition: transform 0.2s ease;
+    transition: transform 0.3s ease;
   }
 
   #language-dropdown.is-active .lang-arrow {
     transform: rotate(90deg);
-    /* 展开时指向下（从左旋到下） */
   }
 
-  /* 确保语言菜单默认收起（不依赖 Bulma 默认样式） */
-  #language-dropdown:not(.is-active) .navbar-dropdown {
-    display: none !important;
+  /* 语言下拉菜单展开/收起动效（移动端） */
+  #language-dropdown .navbar-dropdown {
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    pointer-events: none;
   }
 
-  /* 确保语言菜单默认收起（不依赖 Bulma 默认样式） */
-  #language-dropdown:not(.is-active) .navbar-dropdown {
-    display: none !important;
+  #language-dropdown.is-active .navbar-dropdown {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
   }
+
+  /* 移除强制隐藏，让动效正常工作 */
+  /* #language-dropdown:not(.is-active) .navbar-dropdown {
+    display: none !important;
+  } */
 
   /* 导航栏在移动端添加底部边框 */
   #top-navbar {
