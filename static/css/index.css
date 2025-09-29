@@ -1381,8 +1381,10 @@ body.dark-mode .icon-box a:hover {
 
 /* 暗夜模式页脚样式 */
 body.dark-mode .footer {
-  background-color: #333333 !important;
-  color: #d0d0d0 !important;
+  background-color: #111 !important;
+  /* 暗色模式下黑底 */
+  color: #ffffff !important;
+  /* 暗色模式下白字 */
   border-top: 1px solid #555 !important;
 }
 
@@ -1448,9 +1450,11 @@ body.dark-mode .back-to-top:hover {
 }
 
 footer.footer {
-  padding: 0.25rem 0.5rem !important;
-  background-color: #111;
-  /* 保持背景色，避免透明 */
+  padding: 0.2rem 0rem 0rem 0rem !important;
+  background-color: #8d8d8d;
+  /* 亮色模式下白底 */
+  color: #000;
+  /* 亮色模式下黑字 */
   height: auto !important;
   /* 自动根据内容撑开 */
 }
