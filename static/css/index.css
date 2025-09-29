@@ -1,6 +1,7 @@
 /* 全局重置和基础样式 */
 html {
-  scroll-padding-top: 60px; /* 为锚点导航留出空间 */
+  scroll-padding-top: 60px;
+  /* 为锚点导航留出空间 */
   width: 100%;
   box-sizing: border-box;
 }
@@ -10,20 +11,22 @@ body {
   width: 100%;
   margin: 0;
   padding: 0;
-  padding-top: 52px; /* 为固定导航栏留出空间 */
+  padding-top: 52px;
+  /* 为固定导航栏留出空间 */
   box-sizing: border-box;
-  overflow-x: hidden; /* 防止水平滚动 */
+  overflow-x: hidden;
+  /* 防止水平滚动 */
 }
 
 
 .footer .icon-link {
-    font-size: 25px;
-    color: #000;
+  font-size: 25px;
+  color: #000;
 }
 
 .link-block a {
-    margin-top: 5px;
-    margin-bottom: 5px;
+  margin-top: 5px;
+  margin-bottom: 5px;
 }
 
 .dnerf {
@@ -44,42 +47,43 @@ body {
 
 .teaser video {
   object-fit: fill;
-  
+
 }
-#glass{
+
+#glass {
   margin-left: -10px;
 }
 
 .publication-title {
-    font-family: 'Google Sans', sans-serif;
+  font-family: 'Google Sans', sans-serif;
 }
 
 .publication-authors {
-    font-family: 'Google Sans', sans-serif;
+  font-family: 'Google Sans', sans-serif;
 }
 
 .publication-venue {
-    color: #555;
-    width: fit-content;
-    font-weight: bold;
+  color: #555;
+  width: fit-content;
+  font-weight: bold;
 }
 
 .publication-awards {
-    color: #ff3860;
-    width: fit-content;
-    font-weight: bolder;
+  color: #ff3860;
+  width: fit-content;
+  font-weight: bolder;
 }
 
 .publication-authors a {
-   color: hsl(121, 100%, 36%) !important;
+  color: hsl(121, 100%, 36%) !important;
 }
 
 .conference-authors a {
-   color: #B83A4B !important;
+  color: #B83A4B !important;
 }
 
 .publication-authors a:hover {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
 .author-block {
@@ -87,20 +91,20 @@ body {
 }
 
 .publication-video {
-    position: relative;
-    width: 100%;
-    height: 0;
-    padding-bottom: 56.25%;
-    overflow: hidden;
-    border-radius: 10px !important;
+  position: relative;
+  width: 100%;
+  height: 0;
+  padding-bottom: 56.25%;
+  overflow: hidden;
+  border-radius: 10px !important;
 }
 
 .publication-video iframe {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }
 
 .results-carousel {
@@ -143,21 +147,22 @@ body {
 #interpolation-image-wrapper {
   width: 100%;
 }
+
 #interpolation-image-wrapper img {
   border-radius: 5px;
 }
 
 #interpolation-image img {
-    padding: 0;
-    display: block;
-    margin: 0 auto;
-    max-height: 100%;
-    max-width: 100%;
+  padding: 0;
+  display: block;
+  margin: 0 auto;
+  max-height: 100%;
+  max-width: 100%;
 }
 
- .dropdown-item{
-    white-space: pre-wrap;
-}  
+.dropdown-item {
+  white-space: pre-wrap;
+}
 
 
 .justify {
@@ -165,13 +170,13 @@ body {
 }
 
 .instruction-panel {
-  height: 70px; 
-  overflow: hidden; 
-  display: flex; 
+  height: 70px;
+  overflow: hidden;
+  display: flex;
   align-items: top;
   justify-content: center;
   border: 2px solid #479ac7;
-  border-radius: 8px; 
+  border-radius: 8px;
   background-color: #479ac7;
   margin-bottom: 10px;
   color: #f5f5f5;
@@ -193,7 +198,7 @@ body {
   width: 100% !important;
 }
 
-.text-homepage-1{
+.text-homepage-1 {
   font-family: 'Georgia', sans-serif;
   font-size: 18px;
   font-weight: 400;
@@ -203,49 +208,49 @@ body {
 
 .icon-box {
   border: 2px solid #dbdbdb;
-  border-radius: 8px; 
-  padding: 10px; 
-  display: flex; 
-  justify-content: space-around; 
-  align-items: center; 
-  max-width: 300px; 
-  margin: 20px auto; 
+  border-radius: 8px;
+  padding: 10px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  max-width: 300px;
+  margin: 20px auto;
 }
 
 .icon-box a {
-  color: #4a4a4a; 
-  font-size: 24px; 
-  transition: color 0.3s ease; 
+  color: #4a4a4a;
+  font-size: 24px;
+  transition: color 0.3s ease;
 }
 
 .icon-box a:hover {
-  color: #3273dc; 
+  color: #3273dc;
 }
 
 html {
-  scroll-behavior: smooth; 
+  scroll-behavior: smooth;
 }
 
 .paper-container {
   display: flex;
-  gap: 20px; 
-  background-color: #fff; 
+  gap: 20px;
+  background-color: #fff;
   padding: 20px;
-  border-radius: 8px; 
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   margin-top: 20px;
   margin-bottom: 20px;
 }
 
 .paper-image {
-  flex: 0 0 30%; 
-  max-width: 300px; 
+  flex: 0 0 30%;
+  max-width: 300px;
   height: auto;
-  border-radius: 8px; 
+  border-radius: 8px;
 }
 
 .paper-content {
-  flex: 1; 
+  flex: 1;
 }
 
 .paper-title {
@@ -261,7 +266,7 @@ html {
 
 .paper-link {
   font-size: 1em;
-  color: #6c94c0; 
+  color: #6c94c0;
   text-decoration: none;
 }
 
@@ -322,6 +327,7 @@ html {
 
 /* 平板设备适配 (768px-1023px) - 卡片头像词云用桌面端尺寸，菜单用移动端样式 */
 @media (min-width: 769px) and (max-width: 1023px) {
+
   /* 确保平板设备显示汉堡菜单 */
   .navbar-burger {
     display: block !important;
@@ -478,14 +484,14 @@ html {
   }
 
   /* 主内容区域使用桌面端布局 */
-  .container > div[style*="display: flex"] {
+  .container>div[style*="display: flex"] {
     flex-direction: row !important;
     height: 300px !important;
     padding: 0 !important;
   }
 
   /* 各个子容器使用桌面端布局 */
-  .container > div[style*="display: flex"] > div {
+  .container>div[style*="display: flex"]>div {
     flex: 1 !important;
     margin-bottom: 0 !important;
     display: flex !important;
@@ -548,8 +554,10 @@ html {
   /* 切换按钮在所有情况下都固定尺寸和位置 */
   .navbar-brand .dark-mode-toggle-mobile,
   .navbar-brand .layout-mode-toggle {
-    flex: none !important;         /* 🚀 彻底禁用 flex-grow 和 flex-shrink */
-    width: 52px !important;        /* 固定宽度 */
+    flex: none !important;
+    /* 🚀 彻底禁用 flex-grow 和 flex-shrink */
+    width: 52px !important;
+    /* 固定宽度 */
     height: 52px !important;
     margin: 0 0.25rem !important;
     display: flex !important;
@@ -585,19 +593,20 @@ html {
     padding: 0.5rem 1rem;
   }
 
-  /* 确保导航栏在移动端没有额外的右边距 */
+  /* 确保导航栏在移动端没有额外的右边距，左对齐主页与按钮 */
   .navbar-brand {
     margin-right: 0 !important;
     padding-right: 0 !important;
     display: flex !important;
-    justify-content: space-between !important;
+    justify-content: flex-start !important;
     align-items: center !important;
     width: 100% !important;
   }
 
   /* 汉堡菜单按钮样式 */
   .navbar-burger {
-    display: none !important; /* 默认隐藏，在移动端显示 */
+    display: none !important;
+    /* 默认隐藏，在移动端显示 */
     color: #ffffff !important;
     background-color: transparent !important;
     border: none !important;
@@ -641,6 +650,11 @@ html {
       flex: 0 0 auto !important;
       margin: 0 0.25rem !important;
     }
+
+    /* 平板端将汉堡菜单推到最右 */
+    .navbar-burger {
+      margin-left: auto !important;
+    }
   }
 
   /* 桌面版导航菜单样式 */
@@ -655,8 +669,10 @@ html {
       left: auto !important;
       right: auto !important;
     }
+
     .navbar-burger {
-      display: none !important; /* 桌面版隐藏汉堡菜单 */
+      display: none !important;
+      /* 桌面版隐藏汉堡菜单 */
     }
 
     /* 桌面端确保切换按钮正确显示 */
@@ -729,6 +745,7 @@ html {
     .navbar-menu.is-active {
       width: 220px !important;
     }
+
     .navbar-menu.is-active .navbar-item {
       padding: 0.75rem 0.9rem !important;
       font-size: 0.9rem !important;
@@ -738,13 +755,15 @@ html {
 
   /* 移动端导航栏样式 */
   @media (max-width: 1023px) {
-    /* 确保移动端汉堡按钮在最右边 */
+
+    /* 确保移动端汉堡按钮在最右边，主页与按钮在左侧紧贴 */
     .navbar-brand {
       display: flex !important;
-      justify-content: space-between !important;
+      justify-content: flex-start !important;
       align-items: center !important;
       width: 100% !important;
     }
+
     .navbar-menu {
       display: none !important;
       position: absolute !important;
@@ -847,20 +866,24 @@ html {
       -webkit-appearance: none;
       -moz-appearance: none;
       appearance: none;
-      flex-shrink: 0 !important; /* 防止被压缩 */
-      order: 2 !important; /* 确保在右边 */
+      flex-shrink: 0 !important;
+      /* 防止被压缩 */
+      order: 2 !important;
+      /* 保证在按钮之后 */
+      margin-left: auto !important;
+      /* 将汉堡菜单推到最右侧 */
     }
   }
 
   /* 主内容区域移动端适配 */
-  .container > div[style*="display: flex"] {
+  .container>div[style*="display: flex"] {
     flex-direction: column !important;
     height: auto !important;
     padding: 1rem 0;
   }
 
   /* 头像容器移动端适配 */
-  .container > div[style*="display: flex"] > div {
+  .container>div[style*="display: flex"]>div {
     flex: none !important;
     margin-bottom: 1.5rem;
     display: flex !important;
@@ -947,7 +970,9 @@ html {
   }
 
   /* 防止内容溢出视口 */
-  .container, .container.is-max-desktop, .section {
+  .container,
+  .container.is-max-desktop,
+  .section {
     max-width: 100vw !important;
     box-sizing: border-box !important;
   }
@@ -964,7 +989,7 @@ html {
   }
 
   /* 背景容器横向占满屏幕 */
-  body > div:first-child {
+  body>div:first-child {
     width: 100vw !important;
     position: relative !important;
   }
@@ -978,7 +1003,7 @@ html {
   }
 
   /* News section移动端适配 */
-  #news .container > div:not(.title) {
+  #news .container>div:not(.title) {
     padding: 0 1rem;
   }
 
@@ -1066,7 +1091,12 @@ html {
   }
 
   /* 确保所有标题在移动端都有合适的间距 */
-  h1, h2, h3, h4, h5, h6 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     line-height: 1.3 !important;
   }
 
@@ -1082,8 +1112,11 @@ html {
   }
 
   /* 优化输入框在移动端的显示（如果有的话） */
-  input, textarea, select {
-    font-size: 16px !important; /* 防止移动端浏览器自动缩放 */
+  input,
+  textarea,
+  select {
+    font-size: 16px !important;
+    /* 防止移动端浏览器自动缩放 */
   }
 
   /* 确保图片在移动端正确显示 */
@@ -1093,12 +1126,14 @@ html {
   }
 
   /* 优化列表显示 */
-  ul, ol {
+  ul,
+  ol {
     padding-left: 1.5rem !important;
   }
 
   /* 确保代码块在移动端正确显示（如果有的话） */
-  pre, code {
+  pre,
+  code {
     font-size: 0.9rem !important;
     word-break: break-word !important;
   }
@@ -1106,6 +1141,7 @@ html {
 
 /* 超小屏幕优化 */
 @media (max-width: 480px) {
+
   /* 超小屏幕上的back to top按钮优化 */
   .back-to-top {
     bottom: 12px !important;
@@ -1116,7 +1152,7 @@ html {
   }
 }
 
-.paper-conf{
+.paper-conf {
   font-style: italic;
   font-weight: bold;
   margin-bottom: 5pt;
@@ -1174,8 +1210,8 @@ ul {
 
 .card-container {
   position: relative;
-  width:400px;
-  height:200px;
+  width: 400px;
+  height: 200px;
   z-index: 1;
   display: flex;
   flex-direction: row;
@@ -1227,6 +1263,7 @@ ul {
     opacity: 0;
     transform: translateY(-10px) translateX(5px) scale(0.96);
   }
+
   to {
     opacity: 1;
     transform: translateY(0) translateX(0) scale(1);
@@ -1247,7 +1284,7 @@ body.dark-mode .navbar.is-primary {
 }
 
 /* 暗夜模式背景容器样式 - 保持背景图片原样，只添加轻微暗色调 */
-body.dark-mode > div:first-child {
+body.dark-mode>div:first-child {
   background-color: rgba(45, 45, 45, 0.3) !important;
   background-blend-mode: darken !important;
 }
@@ -1407,6 +1444,8 @@ body.dark-mode .back-to-top:hover {
 
 footer.footer {
   padding: 0.25rem 0.5rem !important;
-  background-color: #111;  /* 保持背景色，避免透明 */
-  height: auto !important; /* 自动根据内容撑开 */
+  background-color: #111;
+  /* 保持背景色，避免透明 */
+  height: auto !important;
+  /* 自动根据内容撑开 */
 }
