@@ -407,6 +407,7 @@
   function generateLanguageButtons(webContent) {
     const langDropdown = document.querySelector('#language-dropdown');
     const dropdown = document.querySelector('#language-dropdown-menu');
+    const wasOpen = langDropdown && langDropdown.classList.contains('is-active');
     dropdown.innerHTML = '';
     availableLanguages.forEach(lang => {
       // 从当前语言的 webContent 中获取语言名称
@@ -426,9 +427,10 @@
       button.innerHTML = langName;
       dropdown.appendChild(button);
     });
-    // 生成后保持菜单收起
-    const languageDropdown = document.querySelector('#language-dropdown');
-    if (languageDropdown) languageDropdown.classList.remove('is-active');
+    // 恢复原先展开状态（避免PC端切换语言后收起）
+    if (langDropdown && wasOpen) {
+      langDropdown.classList.add('is-active');
+    }
   }
 
   function generateNews(newsList) {
@@ -883,14 +885,16 @@
 
   function switchLanguage(lang) {
     localStorage.setItem('lang', lang);
-    loadContent(lang);
-    // 语言切换后保持dropdown显示（如果在移动端汉堡菜单中）
-    setTimeout(() => {
-      const dropdown = document.querySelector('#language-dropdown');
-      if (dropdown && window.innerWidth <= 1023) {
-        dropdown.classList.add('is-active');
+    // 记录切换前是否展开
+    const dropdown = document.querySelector('#language-dropdown');
+    const wasOpen = dropdown && dropdown.classList.contains('is-active');
+    loadContent(lang).then(() => {
+      // 渲染完成后恢复展开状态（桌面端与移动端均根据之前状态恢复）
+      const dd = document.querySelector('#language-dropdown');
+      if (dd && wasOpen) {
+        dd.classList.add('is-active');
       }
-    }, 100);
+    });
   }
 
   // 布局模式切换功能

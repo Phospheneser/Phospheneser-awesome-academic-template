@@ -108,6 +108,8 @@
     }
 
     function generateLanguageButtons(webContent) {
+        const langDropdown = document.querySelector('#language-dropdown');
+        const wasOpen = langDropdown && langDropdown.classList.contains('is-active');
         const dropdown = document.querySelector('#language-dropdown-menu');
         dropdown.innerHTML = '';
         availableLanguages.forEach(lang => {
@@ -120,19 +122,21 @@
             button.innerHTML = langName;
             dropdown.appendChild(button);
         });
-        // 生成后保持菜单收起
-        const languageDropdown = document.querySelector('#language-dropdown');
-        if (languageDropdown) languageDropdown.classList.remove('is-active');
+        // 恢复原先展开状态（避免PC端切换语言后收起）
+        if (langDropdown && wasOpen) {
+            langDropdown.classList.add('is-active');
+        }
     }
 
     function switchLanguage(lang) {
         localStorage.setItem('lang', lang);
         currentLang = lang;
-        renderPage();
-        setTimeout(() => {
-            const dropdown = document.querySelector('#language-dropdown');
-            if (dropdown && window.innerWidth <= 1023) dropdown.classList.add('is-active');
-        }, 100);
+        const dropdown = document.querySelector('#language-dropdown');
+        const wasOpen = dropdown && dropdown.classList.contains('is-active');
+        renderPage().then(() => {
+            const dd = document.querySelector('#language-dropdown');
+            if (dd && wasOpen) dd.classList.add('is-active');
+        });
     }
 
     function goTo(page) {
