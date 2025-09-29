@@ -4,6 +4,8 @@ html {
   /* 为锚点导航留出空间 */
   width: 100%;
   box-sizing: border-box;
+  overflow-y: auto;
+  /* 仅让根滚动 */
 }
 
 body {
@@ -16,6 +18,8 @@ body {
   box-sizing: border-box;
   overflow-x: hidden;
   /* 防止水平滚动 */
+  overflow-y: hidden;
+  /* 仅 html 滚动 */
 }
 
 
