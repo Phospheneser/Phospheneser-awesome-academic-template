@@ -123,8 +123,8 @@
             Blogs
           </a>
           <div class="navbar-item has-dropdown" id="language-dropdown">
-            <a class="navbar-link" id="navbar-language">
-              Language
+            <a class="navbar-link" id="navbar-language"><span id="lang-label">
+                Language </span><i class="fas fa-chevron-left lang-arrow"></i>
             </a>
             <div class="navbar-dropdown" id="language-dropdown-menu">
               <!-- 语言按钮将动态生成 -->
@@ -426,6 +426,9 @@
       button.innerHTML = langName;
       dropdown.appendChild(button);
     });
+    // 生成后保持菜单收起
+    const languageDropdown = document.querySelector('#language-dropdown');
+    if (languageDropdown) languageDropdown.classList.remove('is-active');
   }
 
   function generateNews(newsList) {
@@ -932,6 +935,8 @@
     const languageDropdown = document.querySelector('#language-dropdown');
 
     if (languageLink && languageDropdown) {
+      // 初始保持收起
+      languageDropdown.classList.remove('is-active');
       languageLink.addEventListener('click', (e) => {
         e.preventDefault();
         e.stopPropagation();
@@ -939,20 +944,24 @@
         // 切换dropdown的激活状态
         languageDropdown.classList.toggle('is-active');
 
-        // 如果在移动端汉堡菜单中，同步激活状态
-        if (window.innerWidth <= 1023) {
-          const mobileMenu = document.querySelector('.navbar-menu.is-active');
-          if (mobileMenu) {
-            // 在移动端菜单中也激活对应的dropdown
-            const mobileDropdown = mobileMenu.querySelector('#language-dropdown');
-            if (mobileDropdown) {
-              mobileDropdown.classList.toggle('is-active');
-            }
-          }
-        }
+        // // 如果在移动端汉堡菜单中，同步激活状态
+        // if (window.innerWidth <= 1023) {
+        //   const mobileMenu = document.querySelector('.navbar-menu.is-active');
+        //   console.log(mobileMenu);
+        //   if (mobileMenu) {
+        //     // 在移动端菜单中也激活对应的dropdown
+        //     const mobileDropdown = mobileMenu.querySelector('#language-dropdown');
+        //     console.log(mobileDropdown);
+        //     if (mobileDropdown) {
+        //       mobileDropdown.classList.toggle('is-active');
+        //       console.log("monileDropdown is active");
+        //       console.log(mobileDropdown.classList);
+        //     }
+        //   }
+        // }
       });
 
-      // 点击外部关闭dropdown
+      // 点击外部关闭dropdown（包含菜单容器）
       document.addEventListener('click', (e) => {
         if (!languageDropdown.contains(e.target)) {
           languageDropdown.classList.remove('is-active');

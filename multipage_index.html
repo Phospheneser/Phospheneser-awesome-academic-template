@@ -57,7 +57,8 @@
                     <a class="navbar-item" href="?page=projects" id="navbar-projects">Projects</a>
                     <a class="navbar-item" href="?page=blogs" id="navbar-blogs">Blogs</a>
                     <div class="navbar-item has-dropdown" id="language-dropdown">
-                        <a class="navbar-link" id="navbar-language">Language</a>
+                        <a class="navbar-link" id="navbar-language"><span id="lang-label">Language</span><i
+                                class="fas fa-chevron-left lang-arrow"></i></a>
                         <div class="navbar-dropdown" id="language-dropdown-menu"></div>
                     </div>
                 </div>
@@ -119,6 +120,9 @@
             button.innerHTML = langName;
             dropdown.appendChild(button);
         });
+        // 生成后保持菜单收起
+        const languageDropdown = document.querySelector('#language-dropdown');
+        if (languageDropdown) languageDropdown.classList.remove('is-active');
     }
 
     function switchLanguage(lang) {
@@ -358,6 +362,9 @@
         const languageLink = document.querySelector('#navbar-language');
         const languageDropdown = document.querySelector('#language-dropdown');
         if (languageLink && languageDropdown) {
+            // 初始保持收起
+            languageDropdown.classList.remove('is-active');
+
             languageLink.addEventListener('click', (e) => {
                 e.preventDefault();
                 e.stopPropagation();

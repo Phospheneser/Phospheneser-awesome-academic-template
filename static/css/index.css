@@ -8,6 +8,28 @@ html {
   /* 仅让根滚动 */
 }
 
+/* 全局：语言下拉箭头与显隐规则（适用于所有断点） */
+.lang-arrow {
+  margin-left: 8px;
+  transition: transform 0.2s ease;
+}
+
+#language-dropdown.is-active .lang-arrow {
+  transform: rotate(90deg);
+}
+
+#language-dropdown:not(.is-active) .navbar-dropdown {
+  display: none !important;
+}
+
+/* 修正汉堡菜单中语言按钮与箭头颜色为白色 */
+#language-dropdown .navbar-link,
+#language-dropdown .navbar-link:visited,
+#language-dropdown .navbar-link #lang-label,
+#language-dropdown .lang-arrow {
+  color: #ffffff !important;
+}
+
 body {
   font-family: 'Noto Sans', sans-serif;
   width: 100%;
@@ -736,6 +758,27 @@ html {
   .navbar-link:hover {
     background-color: rgba(255, 255, 255, 0.1) !important;
     color: #ffffff !important;
+  }
+
+  /* 语言下拉箭头动画 */
+  .lang-arrow {
+    margin-left: 8px;
+    transition: transform 0.2s ease;
+  }
+
+  #language-dropdown.is-active .lang-arrow {
+    transform: rotate(90deg);
+    /* 展开时指向下（从左旋到下） */
+  }
+
+  /* 确保语言菜单默认收起（不依赖 Bulma 默认样式） */
+  #language-dropdown:not(.is-active) .navbar-dropdown {
+    display: none !important;
+  }
+
+  /* 确保语言菜单默认收起（不依赖 Bulma 默认样式） */
+  #language-dropdown:not(.is-active) .navbar-dropdown {
+    display: none !important;
   }
 
   /* 导航栏在移动端添加底部边框 */
