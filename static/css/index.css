@@ -547,8 +547,8 @@ html {
   .navbar-brand .navbar-item:first-child {
     flex: 0 0 auto !important;
     font-size: 1.2rem;
-    padding: 0.5rem 1rem;
-    margin-right: 0.25rem !important;
+    padding: 0.5rem 0.4rem;
+    margin-right: 0 !important;
   }
 
   /* 切换按钮在所有情况下都固定尺寸和位置 */
@@ -556,10 +556,10 @@ html {
   .navbar-brand .layout-mode-toggle {
     flex: none !important;
     /* 🚀 彻底禁用 flex-grow 和 flex-shrink */
-    width: 52px !important;
+    width: 30px !important;
     /* 固定宽度 */
     height: 52px !important;
-    margin: 0 0.25rem !important;
+    margin: 0 0.01rem !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
@@ -648,7 +648,13 @@ html {
     .navbar-brand .dark-mode-toggle-mobile,
     .navbar-brand .layout-mode-toggle {
       flex: 0 0 auto !important;
-      margin: 0 0.25rem !important;
+      margin: 0 0.15rem !important;
+    }
+
+    /* 平板端缩小 Homepage 与按钮间距 */
+    .navbar-brand .navbar-item:first-child {
+      margin-right: 0.05rem !important;
+      padding-right: 0.4rem !important;
     }
 
     /* 平板端将汉堡菜单推到最右 */
@@ -692,16 +698,15 @@ html {
   /* 切换按钮在所有屏幕尺寸下保持正方形 */
   .dark-mode-toggle-mobile,
   .layout-mode-toggle {
-    width: 52px !important;
+    flex: none !important;
+    /* 🚀 彻底禁用 flex-grow 和 flex-shrink */
+    width: 30px !important;
+    /* 固定宽度 */
     height: 52px !important;
-    padding: 0.75rem !important;
-    margin: 0 0.25rem !important;
-    text-align: center !important;
-    border-radius: 6px !important;
+    margin: 0 0.01rem !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
-    flex: 0 0 auto !important;
   }
 
   /* 首页按钮样式 */
