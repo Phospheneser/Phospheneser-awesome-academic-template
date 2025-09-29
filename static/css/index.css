@@ -14,16 +14,16 @@ html {
   margin-right: 8px;
   font-size: 1.2em;
   transition: transform 0.3s ease;
-  transform: rotate(90deg);
+  transform: rotate(-90deg);
 }
 
 #language-dropdown.is-active .lang-arrow {
-  transform: rotate(270deg);
+  transform: rotate(90deg);
 }
 
 /* 收起动画中，箭头保持指向下 */
 #language-dropdown.is-closing .lang-arrow {
-  transform: rotate(90deg);
+  transform: rotate(-90deg);
 }
 
 /* 移除强制隐藏，让动效正常工作 */
@@ -842,10 +842,15 @@ html {
     margin-right: 8px;
     font-size: 1.2em;
     transition: transform 0.3s ease;
+    transform: rotate(-90deg);
   }
 
   #language-dropdown.is-active .lang-arrow {
     transform: rotate(90deg);
+  }
+
+  #language-dropdown.is-closing .lang-arrow {
+    transform: rotate(-90deg);
   }
 
   /* 语言下拉菜单展开/收起动效（移动端） */
