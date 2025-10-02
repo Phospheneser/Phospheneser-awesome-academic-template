@@ -555,48 +555,77 @@
 
     function renderBlogSummary(block, entry) {
       if (!entry) return;
-      block.classList.add('blog-card');
+      block.classList.add('meta-card', 'blog-card');
       const blogUrl = buildBlogUrl(entry);
 
-      const header = document.createElement('div');
-      header.className = 'blog-card-header';
+      const media = createMediaSlot(entry.image || entry.hero_image || '', entry.title);
+      if (media) block.appendChild(media);
 
-      const titleLink = document.createElement('a');
-      titleLink.className = 'blog-card-title';
-      titleLink.textContent = entry.title || 'Untitled';
-      titleLink.href = blogUrl || '#';
-      header.appendChild(titleLink);
+      const content = document.createElement('div');
+      content.className = 'meta-card-content';
+
+      const header = document.createElement('div');
+      header.className = 'blog-card-header meta-card-header';
+
+      const titleRow = document.createElement('div');
+      titleRow.className = 'meta-card-title-row';
+      const titleEl = document.createElement(isValidUrl(blogUrl) ? 'a' : 'span');
+      titleEl.className = 'blog-card-title meta-card-title';
+      titleEl.textContent = entry.title || 'Untitled';
+      if (isValidUrl(blogUrl)) {
+        titleEl.href = blogUrl;
+      }
+      titleRow.appendChild(titleEl);
+      header.appendChild(titleRow);
 
       const meta = buildBlogMeta(entry);
       if (meta) header.appendChild(meta);
 
-      block.appendChild(header);
+      content.appendChild(header);
 
       const summaryText = entry.summary || entry.excerpt || entry.description || entry.content;
       if (summaryText) {
         const summary = document.createElement('p');
-        summary.className = 'blog-summary';
+        summary.className = 'blog-summary meta-card-summary';
         summary.innerHTML = summaryText;
-        block.appendChild(summary);
+        content.appendChild(summary);
       }
 
       const tags = buildBlogTags(entry);
-      if (tags) block.appendChild(tags);
+      if (tags) {
+        tags.classList.add('meta-card-tags');
+        content.appendChild(tags);
+      }
 
       const actions = buildBlogActions(entry, blogUrl);
-      if (actions) block.appendChild(actions);
+      if (actions) {
+        actions.classList.add('meta-card-actions');
+        const readMore = actions.querySelector('.blog-read-more');
+        if (readMore) readMore.classList.add('meta-card-read-more');
+        actions.querySelectorAll('a').forEach(link => link.classList.add('meta-card-extra-link'));
+        content.appendChild(actions);
+      }
+
+      block.appendChild(content);
     }
 
     function buildBlogUrl(entry, lang = currentLang) {
       if (!entry) return '';
-      if (entry.url) return entry.url;
+      if (entry.url && isValidUrl(entry.url)) return entry.url;
       const slug = entry.slug;
       if (!slug) {
         const first = Array.isArray(entry.links) && entry.links.length ? entry.links[0].url : '';
-        return first || '';
+        return isValidUrl(first) ? first : '';
       }
       const params = new URLSearchParams({ slug: slug, lang: lang || currentLang });
       return `./post.html?${params.toString()}`;
+    }
+
+    function isValidUrl(url) {
+      if (!url) return false;
+      const trimmed = url.trim();
+      if (!trimmed || trimmed === '#' || trimmed.toLowerCase().startsWith('javascript:')) return false;
+      return true;
     }
 
     function buildBlogMeta(entry) {
@@ -604,11 +633,7 @@
       if (entry.date) parts.push(entry.date);
       if (entry.read_time) parts.push(entry.read_time);
       if (entry.author && typeof entry.author === 'string') parts.push(entry.author);
-      if (!parts.length) return null;
-      const meta = document.createElement('div');
-      meta.className = 'blog-meta';
-      meta.textContent = parts.join(' · ');
-      return meta;
+      return buildMetaLine(parts, { inline: true });
     }
 
     function buildBlogTags(entry) {
@@ -644,7 +669,7 @@
     function buildBlogExtraLinks(entry, blogUrl) {
       if (!entry || !Array.isArray(entry.links)) return [];
       return entry.links
-        .filter(link => link && link.url && link.url !== blogUrl)
+        .filter(link => link && link.url && link.url !== blogUrl && isValidUrl(link.url))
         .map(link => {
           const anchor = document.createElement('a');
           anchor.className = 'blog-extra-link';
@@ -663,6 +688,40 @@
     function getBlogReadMoreLabel(lang = currentLang) {
       const labels = BLOG_LABELS.readMore || {};
       return labels[lang] || labels.en || 'Read more';
+    }
+
+    function buildMetaLine(values, options = {}) {
+      const inline = options.inline || false;
+      const filtered = values.filter(Boolean);
+      if (!filtered.length) return null;
+      const meta = document.createElement('div');
+      meta.className = 'blog-meta meta-card-meta' + (inline ? ' meta-card-meta--inline' : '');
+      filtered.forEach((text) => {
+        const span = document.createElement('span');
+        span.className = 'meta-card-meta-item';
+        span.textContent = text;
+        meta.appendChild(span);
+      });
+      return meta;
+    }
+
+    function createMediaSlot(src, title) {
+      const wrapper = document.createElement('div');
+      wrapper.className = 'meta-card-media';
+      const hasImage = typeof src === 'string' && src.trim();
+      if (hasImage) {
+        const img = document.createElement('img');
+        img.src = src;
+        img.alt = title || 'Preview';
+        img.loading = 'lazy';
+        wrapper.appendChild(img);
+      } else {
+        wrapper.classList.add('meta-card-media--placeholder');
+        const span = document.createElement('span');
+        span.textContent = 'Media Placeholder';
+        wrapper.appendChild(span);
+      }
+      return wrapper;
     }
 
     function initializeDarkMode() {

@@ -213,16 +213,40 @@
     }
 
     .post-cover {
-      margin: 32px 0 0;
+      margin: 0 0 24px;
       border-radius: 24px;
       overflow: hidden;
       box-shadow: 0 20px 40px rgba(15, 23, 42, 0.12);
     }
 
-    .post-cover img {
+    .post-cover-media {
       width: 100%;
-      height: auto;
+      min-height: 240px;
+      background: #f5f7fb;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .post-cover-media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
       display: block;
+    }
+
+    .post-cover-media--placeholder {
+      background: repeating-linear-gradient(135deg, rgba(50, 115, 220, 0.08) 0, rgba(50, 115, 220, 0.08) 20px, rgba(50, 115, 220, 0.16) 20px, rgba(50, 115, 220, 0.16) 40px);
+      color: #4f5b62;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-size: 0.85rem;
+    }
+
+    .post-cover-media--placeholder span {
+      opacity: 0.7;
     }
 
     .post-content {
@@ -262,6 +286,16 @@
       border-radius: 16px;
       overflow-x: auto;
       font-size: 0.9rem;
+    }
+
+    body.dark-mode .post-cover-media {
+      background: rgba(15, 23, 42, 0.68);
+      box-shadow: 0 28px 60px rgba(2, 6, 23, 0.55);
+    }
+
+    body.dark-mode .post-cover-media--placeholder {
+      background: repeating-linear-gradient(135deg, rgba(129, 140, 248, 0.14) 0, rgba(129, 140, 248, 0.14) 20px, rgba(129, 140, 248, 0.22) 20px, rgba(129, 140, 248, 0.22) 40px);
+      color: #dbeafe;
     }
 
     body.dark-mode .post-content {
@@ -405,11 +439,11 @@
   <main id="post-main">
     <article class="post-wrapper" id="post-wrapper" hidden>
       <section class="post-hero">
+        <div class="post-cover" id="post-cover"></div>
         <p class="post-excerpt" id="post-excerpt"></p>
         <h1 id="post-title">Blog Post</h1>
         <div class="post-meta" id="post-meta"></div>
         <div class="post-tags" id="post-tags"></div>
-        <div class="post-cover" id="post-cover" hidden></div>
       </section>
       <section class="post-content" id="post-content"></section>
       <section class="post-actions">
@@ -474,6 +508,13 @@
         missing: '該当の記事が見つかりませんでした。リンクをご確認いただくか、ブログ一覧に戻ってください。'
       }
     };
+
+    function isValidUrl(url) {
+      if (!url) return false;
+      const trimmed = url.trim();
+      if (!trimmed || trimmed === '#' || trimmed.toLowerCase().startsWith('javascript:')) return false;
+      return true;
+    }
 
     let currentLang = (new URLSearchParams(window.location.search).get('lang')) || localStorage.getItem('lang') || 'en';
     let availableLanguages = ['en', 'zh', 'jp'];
@@ -600,15 +641,28 @@
     function renderCover(container, entry) {
       if (!container) return;
       container.innerHTML = '';
-      if (!entry || !entry.hero_image) {
-        container.hidden = true;
-        return;
-      }
-      const img = document.createElement('img');
-      img.src = entry.hero_image;
-      img.alt = entry.title || 'Blog cover';
-      container.appendChild(img);
+      const slot = createCoverSlot(entry && entry.hero_image, entry && entry.title);
+      container.appendChild(slot);
       container.hidden = false;
+    }
+
+    function createCoverSlot(src, title) {
+      const wrapper = document.createElement('div');
+      wrapper.className = 'post-cover-media';
+      const hasImage = typeof src === 'string' && src.trim();
+      if (hasImage) {
+        const img = document.createElement('img');
+        img.src = src;
+        img.alt = title || 'Blog cover';
+        img.loading = 'lazy';
+        wrapper.appendChild(img);
+      } else {
+        wrapper.classList.add('post-cover-media--placeholder');
+        const span = document.createElement('span');
+        span.textContent = 'Cover Placeholder';
+        wrapper.appendChild(span);
+      }
+      return wrapper;
     }
 
     function renderExtraLinks(container, entry) {
@@ -716,7 +770,7 @@
     function buildBlogExtraLinks(entry, blogUrl) {
       if (!entry || !Array.isArray(entry.links)) return [];
       return entry.links
-        .filter(link => link && link.url && link.url !== blogUrl)
+        .filter(link => link && link.url && link.url !== blogUrl && isValidUrl(link.url))
         .map(link => {
           const anchor = document.createElement('a');
           anchor.href = link.url;

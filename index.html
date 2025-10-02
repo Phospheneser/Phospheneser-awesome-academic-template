@@ -396,54 +396,83 @@
     }
 
     const type = section.itemType || section.id;
+    const template = getSectionTemplate(section, type);
 
     list.forEach(entry => {
       const block = document.createElement('div');
       block.className = 'section-text-block';
 
-      renderEntryIntoBlock(block, entry, type);
+      renderEntryByTemplate(block, entry, section, template, type);
 
       if (block.childElementCount > 0) {
         contentDiv.appendChild(block);
       }
     });
 
-    if (type === 'blog') {
+    if (type === 'blog' && templateSupportsArchive(template)) {
       appendBlogArchiveCallout(contentDiv);
     }
   }
 
-  function renderEntryIntoBlock(block, entry, type) {
+  function getSectionTemplate(section, type) {
+    if (!section) return 'default';
+    if (section.template) return section.template;
+    const key = type || section.itemType || section.id;
+    if (metaConfig && metaConfig.itemTypes && metaConfig.itemTypes[key] && metaConfig.itemTypes[key].template) {
+      return metaConfig.itemTypes[key].template;
+    }
+    return 'default';
+  }
+
+  function templateSupportsArchive(template) {
+    const name = (template || '').toLowerCase();
+    return name === 'paper-card' || name === 'meta-card' || name === 'feature-card' || name === 'card';
+  }
+
+  function renderEntryByTemplate(block, entry, section, template, type) {
     appendSortMetadata(block, entry);
 
-    switch (type) {
-      case 'news':
-        appendParagraph(block, formatStrongLine(entry.date, entry.content));
-        break;
-      case 'publication':
-        appendParagraph(block, formatTitleLine(entry.title, entry.conference, entry.date));
-        appendParagraph(block, entry.authors);
-        appendParagraph(block, entry.description);
-        appendLinks(block, entry.links);
-        break;
-      case 'project':
-        appendParagraph(block, formatTitleLine(entry.title, entry.date));
-        appendParagraph(block, entry.authors);
-        appendParagraph(block, entry.description);
-        appendLinks(block, entry.links);
-        break;
-      case 'blog':
-        renderBlogSummary(block, entry);
+    if (type === 'blog') {
+      renderBlogSummary(block, entry, template);
+      return;
+    }
+
+    switch ((template || '').toLowerCase()) {
+      case 'paper-card':
+      case 'meta-card':
+      case 'feature-card':
+      case 'card':
+        renderMetaCard(block, entry, type);
         break;
       case 'timeline':
-        appendParagraph(block, formatTitleLine(entry.title, entry.org, entry.date));
-        appendParagraph(block, entry.description);
+        renderTimelineEntry(block, entry);
+        break;
+      case 'list-inline':
+        renderListInlineEntry(block, entry);
         break;
       default:
-        appendParagraph(block, stringifyEntry(entry));
-        appendLinks(block, entry.links);
+        renderGenericEntry(block, entry, type);
         break;
     }
+  }
+
+  function renderListInlineEntry(block, entry) {
+    const primary = entry && (entry.content || entry.title || entry.description);
+    const line = formatStrongLine(entry && entry.date, primary);
+    appendParagraph(block, line || primary || '');
+  }
+
+  function renderTimelineEntry(block, entry) {
+    appendParagraph(block, formatTitleLine(entry && entry.title, entry && entry.org, entry && entry.date));
+    appendParagraph(block, entry && entry.description);
+  }
+
+  function renderGenericEntry(block, entry, type) {
+    const secondary = entry && (entry.org || entry.conference || entry.subtitle || entry.role || entry.location || '');
+    appendParagraph(block, formatTitleLine(entry && entry.title, secondary, entry && entry.date));
+    if (entry && entry.authors) appendParagraph(block, entry.authors);
+    appendParagraph(block, entry && (entry.description || entry.summary || entry.content));
+    appendLinks(block, entry ? entry.links : []);
   }
 
   function appendParagraph(block, text) {
@@ -475,43 +504,243 @@
     block.appendChild(p);
   }
 
-  function renderBlogSummary(block, entry) {
+  function renderMetaCard(block, entry, type) {
     if (!entry) return;
-    block.classList.add('blog-card');
+    const data = buildMetaCardData(entry, type);
+    block.classList.add('meta-card', `meta-card--${type}`);
+
+    const media = createMediaSlot(data.image, data.title);
+    if (media) block.appendChild(media);
+
+    const content = document.createElement('div');
+    content.className = 'meta-card-content';
+
+    const header = document.createElement('div');
+    header.className = 'blog-card-header meta-card-header';
+
+    const titleRow = document.createElement('div');
+    titleRow.className = 'meta-card-title-row';
+    const titleEl = createMetaCardTitle(data.title, data.url);
+    titleRow.appendChild(titleEl);
+    if (data.topRight) {
+      const badge = document.createElement('span');
+      badge.className = 'meta-card-top-right';
+      badge.textContent = data.topRight;
+      titleRow.appendChild(badge);
+    }
+    header.appendChild(titleRow);
+
+    if (data.subtitle) {
+      const subtitle = document.createElement('div');
+      subtitle.className = 'meta-card-subtitle';
+      subtitle.textContent = data.subtitle;
+      header.appendChild(subtitle);
+    }
+
+    if (data.meta && data.meta.length) {
+      const meta = buildMetaLine(data.meta);
+      if (meta) header.appendChild(meta);
+    }
+
+    content.appendChild(header);
+
+    if (data.description) {
+      const summary = document.createElement('p');
+      summary.className = 'blog-summary meta-card-summary';
+      summary.innerHTML = data.description;
+      content.appendChild(summary);
+    }
+
+    if (data.details && data.details.length) {
+      const list = document.createElement('ul');
+      list.className = 'meta-card-list';
+      data.details.forEach(item => {
+        if (!item) return;
+        const li = document.createElement('li');
+        li.innerHTML = item;
+        list.appendChild(li);
+      });
+      if (list.childElementCount) content.appendChild(list);
+    }
+
+    if (data.tags && data.tags.length) {
+      const tags = createTagList(data.tags);
+      if (tags) {
+        tags.classList.add('meta-card-tags');
+        content.appendChild(tags);
+      }
+    }
+
+    const extraLinks = buildBlogExtraLinks(entry, data.url);
+    if (extraLinks.length) {
+      const actions = document.createElement('div');
+      actions.className = 'blog-actions meta-card-actions';
+      extraLinks.forEach(link => {
+        link.classList.add('meta-card-extra-link');
+        actions.appendChild(link);
+      });
+      content.appendChild(actions);
+    }
+
+    block.appendChild(content);
+  }
+
+  function buildMetaCardData(entry, type) {
+    const data = {
+      title: entry && entry.title ? entry.title : '',
+      subtitle: '',
+      meta: [],
+      description: '',
+      details: [],
+      tags: Array.isArray(entry && entry.tags) ? entry.tags : [],
+      url: resolveEntryUrl(entry),
+      image: entry && entry.image ? entry.image : '',
+      topRight: ''
+    };
+
+    switch (type) {
+      case 'news':
+        data.title = entry.title || entry.content || 'News update';
+        data.description = entry.description || (entry.title ? entry.content : '');
+        if (!entry.title && !data.description) data.description = '';
+        if (entry.date) data.meta.push(entry.date);
+        break;
+      case 'publication':
+        data.title = entry.title || 'Publication';
+        if (entry.conference) data.subtitle = entry.conference;
+        if (entry.date) data.meta.push(entry.date);
+        if (entry.authors) data.meta.push(entry.authors);
+        data.description = entry.description || entry.abstract || entry.content || '';
+        if (entry.highlights && Array.isArray(entry.highlights)) {
+          data.details = entry.highlights;
+        }
+        break;
+      case 'project':
+        data.title = entry.title || 'Project';
+        if (entry.date) data.topRight = entry.date;
+        if (entry.authors) data.meta.push(entry.authors);
+        data.description = entry.description || entry.summary || entry.content || '';
+        if (entry.stack && Array.isArray(entry.stack)) data.details = entry.stack;
+        break;
+      case 'timeline':
+        data.title = entry.title || 'Record';
+        if (entry.org) data.subtitle = entry.org;
+        if (entry.date) data.meta.push(entry.date);
+        data.description = entry.description || '';
+        break;
+      default:
+        data.description = entry.description || entry.content || '';
+        if (entry.date) data.meta.push(entry.date);
+        if (entry.subtitle) data.subtitle = entry.subtitle;
+        break;
+    }
+
+    if (!data.title) data.title = 'Untitled';
+    return data;
+  }
+
+  function createMetaCardTitle(title, url) {
+    const isLink = isValidUrl(url);
+    const element = document.createElement(isLink ? 'a' : 'span');
+    element.className = 'blog-card-title meta-card-title';
+    element.textContent = title || 'Untitled';
+    if (isLink) {
+      element.href = url;
+      if (isExternalUrl(url)) {
+        element.target = '_blank';
+        element.rel = 'noopener noreferrer';
+      }
+    }
+    return element;
+  }
+
+  function buildMetaLine(values, options = {}) {
+    const inline = options.inline || false;
+    const filtered = values.filter(Boolean);
+    if (!filtered.length) return null;
+    const meta = document.createElement('div');
+    meta.className = 'blog-meta meta-card-meta' + (inline ? ' meta-card-meta--inline' : '');
+    filtered.forEach((text) => {
+      const span = document.createElement('span');
+      span.className = 'meta-card-meta-item';
+      span.textContent = text;
+      meta.appendChild(span);
+    });
+    return meta;
+  }
+
+  function resolveEntryUrl(entry) {
+    if (!entry || typeof entry !== 'object') return '';
+    const direct = typeof entry.url === 'string' ? entry.url.trim() : '';
+    if (isValidUrl(direct)) return direct;
+    if (Array.isArray(entry.links)) {
+      const candidate = entry.links.find(link => link && typeof link.url === 'string' && isValidUrl(link.url));
+      if (candidate) return candidate.url.trim();
+    }
+    return '';
+  }
+
+  function isValidUrl(url) {
+    if (!url) return false;
+    const trimmed = url.trim();
+    if (!trimmed || trimmed === '#' || trimmed.toLowerCase().startsWith('javascript:')) return false;
+    return true;
+  }
+
+  function isExternalUrl(url) {
+    return /^https?:\/\//i.test(url);
+  }
+
+  function renderBlogSummary(block, entry, template) {
+    if (!entry) return;
+    block.classList.add('meta-card', 'blog-card');
 
     const blogUrl = buildBlogUrl(entry);
 
-    const header = document.createElement('div');
-    header.className = 'blog-card-header';
+    const media = createMediaSlot(entry.image || entry.hero_image || '', entry.title);
+    if (media) block.appendChild(media);
 
-    const titleLink = document.createElement('a');
-    titleLink.className = 'blog-card-title';
-    titleLink.textContent = entry.title || 'Untitled';
-    if (blogUrl) {
-      titleLink.href = blogUrl;
-    } else {
-      titleLink.href = '#';
-    }
-    header.appendChild(titleLink);
+    const content = document.createElement('div');
+    content.className = 'meta-card-content';
+
+    const header = document.createElement('div');
+    header.className = 'blog-card-header meta-card-header';
+
+    const titleRow = document.createElement('div');
+    titleRow.className = 'meta-card-title-row';
+    const titleEl = createMetaCardTitle(entry.title || 'Untitled', blogUrl);
+    titleRow.appendChild(titleEl);
+    header.appendChild(titleRow);
 
     const meta = buildBlogMeta(entry);
     if (meta) header.appendChild(meta);
 
-    block.appendChild(header);
+    content.appendChild(header);
 
     const summaryText = entry.summary || entry.excerpt || entry.description || entry.content;
     if (summaryText) {
       const summary = document.createElement('p');
-      summary.className = 'blog-summary';
+      summary.className = 'blog-summary meta-card-summary';
       summary.innerHTML = summaryText;
-      block.appendChild(summary);
+      content.appendChild(summary);
     }
 
     const tags = buildBlogTags(entry);
-    if (tags) block.appendChild(tags);
+    if (tags) {
+      tags.classList.add('meta-card-tags');
+      content.appendChild(tags);
+    }
 
     const actions = buildBlogActions(entry, blogUrl);
-    if (actions) block.appendChild(actions);
+    if (actions) {
+      actions.classList.add('meta-card-actions');
+      const readMore = actions.querySelector('.blog-read-more');
+      if (readMore) readMore.classList.add('meta-card-read-more');
+      actions.querySelectorAll('a').forEach(link => link.classList.add('meta-card-extra-link'));
+      content.appendChild(actions);
+    }
+
+    block.appendChild(content);
   }
 
   function appendBlogArchiveCallout(container) {
@@ -528,11 +757,11 @@
 
   function buildBlogUrl(entry, lang = currentLang) {
     if (!entry) return '';
-    if (entry.url) return entry.url;
+    if (entry.url && isValidUrl(entry.url)) return entry.url;
     const slug = entry.slug;
     if (!slug) {
       const firstLink = Array.isArray(entry.links) && entry.links.length ? entry.links[0].url : '';
-      return firstLink || '';
+      return isValidUrl(firstLink) ? firstLink : '';
     }
     const params = new URLSearchParams({
       slug: slug,
@@ -546,21 +775,22 @@
     if (entry.date) parts.push(entry.date);
     if (entry.read_time) parts.push(entry.read_time);
     if (entry.author && typeof entry.author === 'string') parts.push(entry.author);
-    if (!parts.length) return null;
-    const meta = document.createElement('div');
-    meta.className = 'blog-meta';
-    meta.textContent = parts.join(' · ');
-    return meta;
+    return buildMetaLine(parts, { inline: true });
   }
 
   function buildBlogTags(entry) {
-    if (!entry || !Array.isArray(entry.tags) || entry.tags.length === 0) return null;
+    if (!entry) return null;
+    return createTagList(entry.tags);
+  }
+
+  function createTagList(tags) {
+    if (!Array.isArray(tags) || tags.length === 0) return null;
     const wrapper = document.createElement('div');
     wrapper.className = 'blog-tags';
-    entry.tags.forEach(tag => {
+    tags.forEach(tag => {
       if (!tag) return;
       const span = document.createElement('span');
-      span.className = 'blog-tag';
+      span.className = 'blog-tag meta-card-tag';
       span.textContent = tag;
       wrapper.appendChild(span);
     });
@@ -589,7 +819,7 @@
   function buildBlogExtraLinks(entry, blogUrl) {
     if (!entry || !Array.isArray(entry.links)) return [];
     return entry.links
-      .filter(link => link && link.url && link.url !== blogUrl)
+      .filter(link => link && link.url && link.url !== blogUrl && isValidUrl(link.url))
       .map(link => {
         const anchor = document.createElement('a');
         anchor.className = 'blog-extra-link';
@@ -613,6 +843,25 @@
   function getBlogArchiveLabel(lang = currentLang) {
     const labels = BLOG_LABELS.archive || {};
     return labels[lang] || labels.en || 'View all posts';
+  }
+
+  function createMediaSlot(src, title) {
+    const wrapper = document.createElement('div');
+    wrapper.className = 'meta-card-media';
+    const hasImage = typeof src === 'string' && src.trim();
+    if (hasImage) {
+      const img = document.createElement('img');
+      img.src = src;
+      img.alt = title || 'Preview';
+      img.loading = 'lazy';
+      wrapper.appendChild(img);
+    } else {
+      wrapper.classList.add('meta-card-media--placeholder');
+      const span = document.createElement('span');
+      span.textContent = 'Media Placeholder';
+      wrapper.appendChild(span);
+    }
+    return wrapper;
   }
 
   function appendSortMetadata(block, entry) {
