@@ -524,13 +524,12 @@
         }
 
         const container = document.createElement('div');
-        const sectionClass = page === 'blogs' ? 'blogs' : 'section';
         container.innerHTML = `
-        <section class="${sectionClass}" name="sec-${page}">
+        <section class="section" name="sec-${page}">
           <div id="${page}" class="mp-section">
             <h1 class="title is-3" style="margin-bottom: 1ex; margin-top: 60px;" id="${page}-title"></h1>
             <div class="mp-controls" id="${page}-controls"></div>
-            <div class="mp-list" id="${page}-content"></div>
+            <div class="mp-list about-texts" id="${page}-content"></div>
           </div>
         </section>`;
         root.appendChild(container);
@@ -557,11 +556,136 @@
     function drawList(list, section, contentDiv) {
         if (!contentDiv) return;
         contentDiv.innerHTML = '';
-        const type = section.itemType;
-        const templateName = (metaConfig && metaConfig.itemTypes && metaConfig.itemTypes[type] && metaConfig.itemTypes[type].template) || (type === 'news' ? 'list-inline' : 'paper-card');
-        const renderer = (window.TemplateRegistry && window.TemplateRegistry.get(templateName));
-        if (renderer) {
-            renderer(list, section, contentDiv);
+        if (!Array.isArray(list) || list.length === 0) {
+            const placeholder = (metaConfig && metaConfig.emptyStates && metaConfig.emptyStates[section.id]) || 'No records available.';
+            const p = document.createElement('p');
+            p.className = 'text-homepage-1';
+            p.textContent = placeholder;
+            contentDiv.appendChild(p);
+            return;
+        }
+
+        const type = section.itemType || section.id;
+
+        list.forEach(entry => {
+            const block = document.createElement('div');
+            block.className = 'section-text-block';
+            renderEntryIntoBlock(block, entry, type);
+            if (block.childElementCount > 0) {
+                contentDiv.appendChild(block);
+            }
+        });
+    }
+
+    function renderEntryIntoBlock(block, entry, type) {
+        appendSortMetadata(block, entry);
+        switch (type) {
+            case 'news':
+                appendParagraph(block, formatStrongLine(entry.date, entry.content));
+                break;
+            case 'publication':
+                appendParagraph(block, formatTitleLine(entry.title, entry.conference, entry.date));
+                appendParagraph(block, entry.authors);
+                appendParagraph(block, entry.description);
+                appendLinks(block, entry.links);
+                break;
+            case 'project':
+                appendParagraph(block, formatTitleLine(entry.title, entry.date));
+                appendParagraph(block, entry.authors);
+                appendParagraph(block, entry.description);
+                appendLinks(block, entry.links);
+                break;
+            case 'blog':
+                appendParagraph(block, formatTitleLine(entry.title, entry.date));
+                appendParagraph(block, entry.content);
+                appendLinks(block, entry.links);
+                break;
+            case 'timeline':
+                appendParagraph(block, formatTitleLine(entry.title, entry.org, entry.date));
+                appendParagraph(block, entry.description);
+                break;
+            default:
+                appendParagraph(block, stringifyEntry(entry));
+                appendLinks(block, entry.links);
+                break;
+        }
+    }
+
+    function appendParagraph(block, text) {
+        if (!text) return;
+        const p = document.createElement('p');
+        p.className = 'text-homepage-1';
+        if (text instanceof Node) {
+            p.appendChild(text);
+        } else {
+            p.innerHTML = text;
+        }
+        block.appendChild(p);
+    }
+
+    function appendLinks(block, links) {
+        if (!Array.isArray(links) || links.length === 0) return;
+        const p = document.createElement('p');
+        p.className = 'text-homepage-1';
+        links.forEach(link => {
+            if (!link || !link.url) return;
+            const anchor = document.createElement('a');
+            anchor.href = link.url;
+            anchor.target = '_blank';
+            anchor.rel = 'noopener noreferrer';
+            anchor.textContent = link.type ? `[${link.type}]` : '[Link]';
+            anchor.style.marginRight = '8px';
+            p.appendChild(anchor);
+        });
+        block.appendChild(p);
+    }
+
+    function appendSortMetadata(block, entry) {
+        if (!entry || typeof entry !== 'object') return;
+        if (entry.date) {
+            block.dataset.sortDate = entry.date;
+            const dateMarker = document.createElement('span');
+            dateMarker.dataset.sortDate = entry.date;
+            dateMarker.style.display = 'none';
+            dateMarker.textContent = entry.date;
+            block.appendChild(dateMarker);
+        }
+        if (entry.title) {
+            block.dataset.sortTitle = entry.title;
+            const titleMarker = document.createElement('span');
+            titleMarker.dataset.sortTitle = entry.title;
+            titleMarker.style.display = 'none';
+            titleMarker.textContent = entry.title;
+            block.appendChild(titleMarker);
+        }
+    }
+
+    function formatTitleLine(title, secondary, prefix) {
+        const parts = [];
+        if (title) {
+            parts.push(`<strong>${title}</strong>`);
+        }
+        if (secondary) {
+            parts.push(secondary);
+        }
+        if (prefix) {
+            parts.unshift(prefix);
+        }
+        return parts.join(' · ');
+    }
+
+    function formatStrongLine(primary, text) {
+        if (!primary && !text) return '';
+        if (!primary) return text || '';
+        if (!text) return `<strong>${primary}</strong>`;
+        return `<strong>${primary}</strong> ${text}`;
+    }
+
+    function stringifyEntry(entry) {
+        try {
+            return JSON.stringify(entry);
+        } catch (err) {
+            return '';
         }
     }
 

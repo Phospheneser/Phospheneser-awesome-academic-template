@@ -91,13 +91,22 @@
                 if (!sortValue || items.length === 0) return;
 
                 const getDateValue = (element) => {
+                    if (element.dataset && element.dataset.sortDate) {
+                        return element.dataset.sortDate;
+                    }
                     const dateEl = element.querySelector('[data-sort-date]') || element.querySelector('.paper-title span, time, .paper-conf, .paper-date');
                     return dateEl ? dateEl.getAttribute('data-sort-date') || dateEl.textContent || '' : '';
                 };
 
                 const getTitleValue = (element) => {
-                    const titleEl = element.querySelector('.paper-title, h2, h3, .timeline-item > div:first-child');
-                    return titleEl ? titleEl.textContent || '' : '';
+                    if (element.dataset && element.dataset.sortTitle) {
+                        return element.dataset.sortTitle;
+                    }
+                    const titleEl = element.querySelector('[data-sort-title], .paper-title, h2, h3, .timeline-item > div:first-child');
+                    if (titleEl) {
+                        return titleEl.getAttribute('data-sort-title') || titleEl.textContent || '';
+                    }
+                    return '';
                 };
 
                 const compareStrings = (a, b, direction = 1) => {

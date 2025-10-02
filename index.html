@@ -18,46 +18,6 @@
 
   <script>
     let metaConfig = null;
-    function loadWordCloud() {
-      const traits = [
-        ["Leader", 30],
-        ["Instructor", 15],
-        ["Connector", 25],
-        ["Smart", 15],
-        ["Mature", 20],
-        ["Impact-Driven", 40],
-        ["Resilience", 30],
-        ["Passionate", 20],
-        ["Faithful", 30],
-        ["Confident", 20]
-        ["Innovative", 15],
-        ["Questioner", 30],
-        ["Insightful", 40],
-        ["Visionary", 20],
-        ["Emotionally Stable", 25],
-      ];
-
-      const canvas = document.getElementById("word-cloud");
-
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-
-      WordCloud(canvas, {
-        list: traits, // 使用特性词语列表
-        gridSize: Math.round(16 * window.innerWidth / 1024), // 网格大小，随屏幕变化调整
-        weightFactor: window.innerWidth / 400, // 字体大小比例
-        fontFamily: "Times, serif", // 字体
-        color: function () {
-          const colors = ["#1E88E5", "#F4511E", "#43A047", "#FB8C00", "#5E35B1"];
-          return colors[Math.floor(Math.random() * colors.length)];
-        },
-        // backgroundColor: "#F0F4F8", // 柔和背景色
-        rotateRatio: 0., // 减少文字旋转
-        shuffle: true, // 随机排列单词
-        shape: "circle", // 圆形布局
-        drawOutOfBound: false,
-      });
-    }
   </script>
 
   <!-- 3D word cloud will be initialized dynamically -->
@@ -346,17 +306,6 @@
 
     applyBackground(getCurrentSectionId());
   }
-  function ensureSearchBar(sectionRoot) {
-    if (!sectionRoot) return;
-    if (sectionRoot.querySelector('.meta-search')) return;
-    const bar = document.createElement('input');
-    bar.className = 'input meta-search';
-    bar.placeholder = 'Search...';
-    bar.style.margin = '10px 0 20px 0';
-    sectionRoot.insertBefore(bar, sectionRoot.children[1] || null);
-    return bar;
-  }
-
   function getCurrentSectionId() {
     const hash = window.location.hash ? window.location.hash.replace('#', '') : '';
     return hash || 'home';
@@ -410,7 +359,7 @@
 
       const container = document.querySelector(`#${section.id}`);
       if (!container) return;
-      const contentDiv = container.children[1];
+      const contentDiv = container.querySelector('.about-texts');
       if (!contentDiv) return;
 
       updateElement(`#${section.id}-title`, data.title || section.id);
@@ -425,11 +374,139 @@
 
   function drawList(list, section, contentDiv) {
     contentDiv.innerHTML = '';
-    const type = section.itemType;
-    const templateName = (metaConfig && metaConfig.itemTypes && metaConfig.itemTypes[type] && metaConfig.itemTypes[type].template) || (type === 'news' ? 'list-inline' : 'paper-card');
-    const renderer = (window.TemplateRegistry && window.TemplateRegistry.get(templateName));
-    if (renderer) {
-      renderer(list, section, contentDiv);
+    if (!Array.isArray(list) || list.length === 0) {
+      const placeholder = (metaConfig && metaConfig.emptyStates && metaConfig.emptyStates[section.id]) || 'No records available.';
+      const p = document.createElement('p');
+      p.className = 'text-homepage-1';
+      p.textContent = placeholder;
+      contentDiv.appendChild(p);
+      return;
+    }
+
+    const type = section.itemType || section.id;
+
+    list.forEach(entry => {
+      const block = document.createElement('div');
+      block.className = 'section-text-block';
+
+      renderEntryIntoBlock(block, entry, type);
+
+      if (block.childElementCount > 0) {
+        contentDiv.appendChild(block);
+      }
+    });
+  }
+
+  function renderEntryIntoBlock(block, entry, type) {
+    appendSortMetadata(block, entry);
+
+    switch (type) {
+      case 'news':
+        appendParagraph(block, formatStrongLine(entry.date, entry.content));
+        break;
+      case 'publication':
+        appendParagraph(block, formatTitleLine(entry.title, entry.conference, entry.date));
+        appendParagraph(block, entry.authors);
+        appendParagraph(block, entry.description);
+        appendLinks(block, entry.links);
+        break;
+      case 'project':
+        appendParagraph(block, formatTitleLine(entry.title, entry.date));
+        appendParagraph(block, entry.authors);
+        appendParagraph(block, entry.description);
+        appendLinks(block, entry.links);
+        break;
+      case 'blog':
+        appendParagraph(block, formatTitleLine(entry.title, entry.date));
+        appendParagraph(block, entry.content);
+        appendLinks(block, entry.links);
+        break;
+      case 'timeline':
+        appendParagraph(block, formatTitleLine(entry.title, entry.org, entry.date));
+        appendParagraph(block, entry.description);
+        break;
+      default:
+        appendParagraph(block, stringifyEntry(entry));
+        appendLinks(block, entry.links);
+        break;
+    }
+  }
+
+  function appendParagraph(block, text) {
+    if (!text) return;
+    const p = document.createElement('p');
+    p.className = 'text-homepage-1';
+    if (text instanceof Node) {
+      p.appendChild(text);
+    } else {
+      p.innerHTML = text;
+    }
+    block.appendChild(p);
+  }
+
+  function appendLinks(block, links) {
+    if (!Array.isArray(links) || links.length === 0) return;
+    const p = document.createElement('p');
+    p.className = 'text-homepage-1';
+    links.forEach(link => {
+      if (!link || !link.url) return;
+      const anchor = document.createElement('a');
+      anchor.href = link.url;
+      anchor.target = '_blank';
+      anchor.rel = 'noopener noreferrer';
+      anchor.textContent = link.type ? `[${link.type}]` : '[Link]';
+      anchor.style.marginRight = '8px';
+      p.appendChild(anchor);
+    });
+    block.appendChild(p);
+  }
+
+  function appendSortMetadata(block, entry) {
+    if (!entry || typeof entry !== 'object') return;
+    if (entry.date) {
+      block.dataset.sortDate = entry.date;
+      const dateMarker = document.createElement('span');
+      dateMarker.dataset.sortDate = entry.date;
+      dateMarker.style.display = 'none';
+      dateMarker.textContent = entry.date;
+      block.appendChild(dateMarker);
+    }
+    if (entry.title) {
+      block.dataset.sortTitle = entry.title;
+      const titleMarker = document.createElement('span');
+      titleMarker.dataset.sortTitle = entry.title;
+      titleMarker.style.display = 'none';
+      titleMarker.textContent = entry.title;
+      block.appendChild(titleMarker);
+    }
+  }
+
+  function formatTitleLine(title, secondary, prefix) {
+    const parts = [];
+    if (title) {
+      parts.push(`<strong>${title}</strong>`);
+    }
+    if (secondary) {
+      parts.push(secondary);
+    }
+    if (prefix) {
+      parts.unshift(prefix);
+    }
+    return parts.join(' · ');
+  }
+
+  function formatStrongLine(primary, text) {
+    if (!primary && !text) return '';
+    if (!primary) return text || '';
+    if (!text) return `<strong>${primary}</strong>`;
+    return `<strong>${primary}</strong> ${text}`;
+  }
+
+  function stringifyEntry(entry) {
+    try {
+      return JSON.stringify(entry);
+    } catch (e) {
+      return '';
     }
   }
 
@@ -454,12 +531,12 @@
       return;
       }
       const wrap = document.createElement('section');
-      wrap.className = sec.id === 'blogs' ? 'blogs' : 'section';
+      wrap.className = 'section';
       wrap.innerHTML = `
         <div class="container is-max-desktop">
           <div id="${sec.id}">
             <h1 class="title is-3" id="${sec.id}-title" style="margin-top: 60px;"></h1>
-            <div></div>
+            <div class="about-texts" id="${sec.id}-texts"></div>
           </div>
         </div>`;
       root.appendChild(wrap);
@@ -528,214 +605,6 @@
       a.innerHTML = label;
       navbarEnd.insertBefore(a, document.getElementById('language-dropdown'));
     });
-  }
-
-  function generateNews(newsList) {
-    console.log('Generating news with data:', newsList);
-    const newsContainer = document.querySelector('#news');
-    if (!newsContainer) {
-      console.error('News container not found');
-      return;
-    }
-
-    // 直接选择 #news 的第二个子元素（内容容器）
-    const newsDiv = newsContainer.children[1];
-    if (!newsDiv) {
-      console.error('News content div not found');
-      console.log('News container children:', newsContainer.children);
-      return;
-    }
-    console.log('Found news div:', newsDiv);
-    newsDiv.innerHTML = '';
-    newsList.forEach(item => {
-      const div = document.createElement('div');
-      div.style.cssText = 'display: flex; justify-content: flex-start; align-items: center; margin-bottom: 15px;';
-      div.innerHTML = `
-      <span style="font-weight: bold; margin-right: 50px;">${item.date}</span>
-      <span style="font-family: Georgia">${item.content}</span>
-    `;
-      newsDiv.appendChild(div);
-    });
-    console.log('News generation completed');
-  }
-
-  function generatePublications(publicationsList) {
-    console.log('Generating publications with data:', publicationsList);
-    const publicationsSection = document.querySelector('#publications');
-    if (!publicationsSection) {
-      console.error('Publications section not found');
-      return;
-    }
-
-    // 直接选择 #publications 的第二个子元素（内容容器）
-    const contentDiv = publicationsSection.children[1];
-    if (!contentDiv) {
-      console.error('Publications content div not found');
-      console.log('Publications container children:', publicationsSection.children);
-      return;
-    }
-    console.log('Found publications div:', contentDiv);
-
-    // 移除现有 paper-container
-    const existingContainers = contentDiv.querySelectorAll('.paper-container');
-    existingContainers.forEach(c => c.remove());
-
-    publicationsList.forEach(pub => {
-      const paperContainer = document.createElement('div');
-      paperContainer.className = 'paper-container';
-      paperContainer.innerHTML = `
-      <img src="${pub.image}" alt="Overview" class="paper-image">
-      <div class="paper-content">
-        <h2 class="paper-title">${pub.title}</h2>
-        ${pub.conference ? `<p class="paper-conf">${pub.conference}</p>` : ''}
-        <p class="paper-authors">${pub.authors}</p>
-        <p class="paper-description">${pub.description}</p>
-        <p>
-          ${pub.links ? pub.links.map(link => `<a href="${link.url}" target="_blank" class="paper-link">[${link.type}]</a>`).join(' ') : ''}
-        </p>
-      </div>
-    `;
-      contentDiv.appendChild(paperContainer);
-    });
-    console.log('Publications generation completed');
-  }
-
-  function generateProjects(projectsList) {
-    console.log('Generating projects with data:', projectsList);
-    const projectsSection = document.querySelector('#projects');
-    if (!projectsSection) {
-      console.error('Projects section not found');
-      return;
-    }
-
-    // 直接选择 #projects 的第二个子元素（内容容器）
-    const contentDiv = projectsSection.children[1];
-    if (!contentDiv) {
-      console.error('Projects content div not found');
-      console.log('Projects container children:', projectsSection.children);
-      return;
-    }
-    console.log('Found projects div:', contentDiv);
-
-    // 移除现有 paper-container
-    const existingContainers = contentDiv.querySelectorAll('.paper-container');
-    existingContainers.forEach(c => c.remove());
-
-    projectsList.forEach(proj => {
-      const paperContainer = document.createElement('div');
-      paperContainer.className = 'paper-container';
-      const imageHtml = proj.image ? `<img src="${proj.image}" alt="Overview" class="paper-image">` : '<div class="paper-image" style="background: #f0f0f0; display: flex; align-items: center; justify-content: center; height: 150px;">No Image</div>';
-      paperContainer.innerHTML = `
-      ${imageHtml}
-      <div class="paper-content">
-        <h2 class="paper-title" style="display: flex; justify-content: space-between; align-items: center;">
-          ${proj.title}
-          <span style="margin-left: auto; font-size: 16px;">${proj.date}</span>
-        </h2>
-        <p class="paper-authors">${proj.authors}</p>
-        <p class="paper-description">${proj.description}</p>
-        ${proj.links ? `<p>${proj.links.map(link => `<a href="${link.url}" target="_blank" class="paper-link">[${link.type}]</a>`).join(' ')}</p>` : ''}
-      </div>
-    `;
-      contentDiv.appendChild(paperContainer);
-    });
-    console.log('Projects generation completed');
-  }
-
-  function generateBlogs(blogsList) {
-    console.log('Generating blogs with data:', blogsList);
-    const blogsSection = document.querySelector('#blogs');
-    if (!blogsSection) {
-      console.error('Blogs section not found');
-      return;
-    }
-
-    // 直接选择 #blogs 的第二个子元素（内容容器）
-    const contentDiv = blogsSection.children[1];
-    if (!contentDiv) {
-      console.error('Blogs content div not found');
-      console.log('Blogs container children:', blogsSection.children);
-      return;
-    }
-    console.log('Found blogs div:', contentDiv);
-
-    // 移除现有 paper-container
-    const existingContainers = contentDiv.querySelectorAll('.paper-container');
-    existingContainers.forEach(c => c.remove());
-
-    // 可以在这里生成博客内容，如果有的话
-    // 目前 blogs.json 是空的
-    if (blogsList.length === 0) {
-      contentDiv.innerHTML = '<p>No blog posts yet.</p>';
-    } else {
-      blogsList.forEach(blog => {
-        const blogContainer = document.createElement('div');
-        blogContainer.className = 'paper-container';
-
-        let linksHtml = '';
-        if (blog.links && blog.links.length > 0) {
-          linksHtml = blog.links.map(link => `
-          <a href="${link.url}" target="_blank" rel="noopener noreferrer" class="paper-link" style="margin-right: 10px;">
-            [${link.type}]
-          </a>
-        `).join('');
-        }
-
-        const imageHtml = blog.image
-          ? `<img src="${blog.image}" alt="${blog.title}" class="paper-image">`
-          : `<div class="paper-image" style="background: #f0f0f0; display: flex; align-items: center; justify-content: center; height: 150px; color: #666;">No Image</div>`;
-
-        blogContainer.innerHTML = `
-        ${imageHtml}
-        <div class="paper-content">
-          <h2 class="paper-title" style="display: flex; justify-content: space-between; align-items: center;">
-            ${blog.title}
-            <span style="margin-left: auto; font-size: 16px; color: #666;">${blog.date}</span>
-          </h2>
-          <p class="paper-description blog-description">${blog.content}</p>
-          <div>${linksHtml}</div>
-        </div>
-      `;
-        contentDiv.appendChild(blogContainer);
-      });
-    }
-    console.log('Blogs generation completed');
-  }
-
-  function generateAcademicService(academicServiceList) {
-    console.log('Generating academic service with data:', academicServiceList);
-    const academicServiceSection = document.querySelector('#academic-service');
-    if (!academicServiceSection) {
-      console.error('Academic service section not found');
-      return;
-    }
-
-    // 直接选择 #academic-service 的第二个子元素（内容容器）
-    const contentDiv = academicServiceSection.children[1];
-    if (!contentDiv) {
-      console.error('Academic service content div not found');
-      console.log('Academic service container children:', academicServiceSection.children);
-      return;
-    }
-    console.log('Found academic service div:', contentDiv);
-
-    // 清空现有内容
-    contentDiv.innerHTML = '';
-
-    if (academicServiceList.length === 0) {
-      contentDiv.innerHTML = '<p>No academic service records yet.</p>';
-    } else {
-      academicServiceList.forEach(service => {
-        const serviceDiv = document.createElement('div');
-        serviceDiv.style.cssText = 'display: flex; justify-content: flex-start; align-items: center; margin-bottom: 15px;';
-        serviceDiv.innerHTML = `
-        <span style="font-weight: bold; margin-right: 50px;">${service.type}</span>
-        <span>${service.description}</span>
-      `;
-        contentDiv.appendChild(serviceDiv);
-      });
-    }
-    console.log('Academic service generation completed');
   }
 
   function generateCards(cardsList) {
