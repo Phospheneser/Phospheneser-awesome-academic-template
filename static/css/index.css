@@ -525,6 +525,191 @@ html {
   line-height: 1.6;
 }
 
+.blog-card {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 16px;
+  padding: 24px;
+  margin: 24px 0;
+  box-shadow: 0 18px 42px rgba(15, 23, 42, 0.08);
+  border: 1px solid rgba(50, 115, 220, 0.12);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.blog-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 24px 56px rgba(15, 23, 42, 0.16);
+  border-color: rgba(50, 115, 220, 0.28);
+}
+
+.blog-card-header {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+@media screen and (min-width: 768px) {
+  .blog-card-header {
+    flex-direction: row;
+    align-items: baseline;
+    justify-content: space-between;
+  }
+}
+
+.blog-card-title {
+  font-size: 1.45rem;
+  font-weight: 700;
+  color: #1f2d3d;
+  text-decoration: none;
+  letter-spacing: 0.01em;
+}
+
+.blog-card-title:hover {
+  color: #275da8;
+}
+
+.blog-meta {
+  font-size: 0.95rem;
+  color: #607d8b;
+  letter-spacing: 0.02em;
+}
+
+.blog-summary {
+  font-size: 1.02rem;
+  line-height: 1.75;
+  color: #374151;
+  margin-bottom: 16px;
+}
+
+.blog-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.blog-tag {
+  background: rgba(50, 115, 220, 0.12);
+  color: #285196;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.blog-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  align-items: center;
+  margin-top: 8px;
+}
+
+.blog-read-more {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.98rem;
+  font-weight: 600;
+  color: #3273dc;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.blog-read-more i {
+  font-size: 0.9rem;
+  transition: transform 0.2s ease;
+}
+
+.blog-read-more:hover {
+  color: #275da8;
+}
+
+.blog-read-more:hover i {
+  transform: translateX(4px);
+}
+
+.blog-extra-link {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: rgba(99, 102, 241, 0.08);
+  color: #4f5b62;
+  font-size: 0.9rem;
+  text-decoration: none;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.blog-extra-link:hover {
+  background: rgba(99, 102, 241, 0.18);
+  color: #1f2933;
+}
+
+.blog-archive-callout {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 12px;
+}
+
+.blog-archive-link {
+  font-size: 0.95rem;
+}
+
+body.dark-mode .blog-card {
+  background: rgba(18, 25, 38, 0.92);
+  border: 1px solid rgba(129, 140, 248, 0.25);
+  box-shadow: 0 28px 60px rgba(2, 6, 23, 0.6);
+}
+
+body.dark-mode .blog-card:hover {
+  border-color: rgba(129, 140, 248, 0.42);
+}
+
+body.dark-mode .blog-card-title {
+  color: #f1f5f9;
+}
+
+body.dark-mode .blog-card-title:hover {
+  color: #9db6ff;
+}
+
+body.dark-mode .blog-meta {
+  color: #cbd5f5;
+}
+
+body.dark-mode .blog-summary {
+  color: #e2e8f0;
+}
+
+body.dark-mode .blog-tag {
+  background: rgba(129, 140, 248, 0.18);
+  color: #dbe2ff;
+}
+
+body.dark-mode .blog-read-more {
+  color: #8ab4f8;
+}
+
+body.dark-mode .blog-read-more:hover {
+  color: #c3d8ff;
+}
+
+body.dark-mode .blog-extra-link {
+  background: rgba(148, 163, 184, 0.18);
+  color: #d7deed;
+}
+
+body.dark-mode .blog-extra-link:hover {
+  background: rgba(148, 163, 184, 0.32);
+  color: #f8fafc;
+}
+
+body.dark-mode .blog-archive-callout {
+  justify-content: flex-end;
+}
+
 /* 返回顶部按钮样式 */
 .back-to-top {
   position: fixed;

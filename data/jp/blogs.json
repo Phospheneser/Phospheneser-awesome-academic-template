@@ -1,5 +1,32 @@
 {
   "nav_label": "ブログ",
-  "title": "ブログ",
-  "blogs": []
+  "title": "リサーチログ",
+  "subtitle": "進行中のプロジェクトや実験から得た学びを綴ります。",
+  "kicker": "Lab Notebook",
+  "blogs": [
+    {
+      "slug": "launching-the-research-blog",
+      "title": "このブログを始めた理由",
+      "summary": "長めのアップデートがサイト全体をどう補完するかを紹介します。",
+      "date": "2025-01-05",
+      "read_time": "約4分",
+      "author": "Joshua Xu",
+      "tags": [
+        "メモ",
+        "ライティング"
+      ]
+    },
+    {
+      "slug": "robotics-field-notes",
+      "title": "フィールドノート：屋内回避テスト第3週",
+      "summary": "制御のスムージングやGPU調整など、テストアリーナでの気づきを記録。",
+      "date": "2025-01-12",
+      "read_time": "約6分",
+      "author": "Joshua Xu",
+      "tags": [
+        "ロボティクス",
+        "フィールドノート"
+      ]
+    }
+  ]
 }

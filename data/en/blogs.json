@@ -1,5 +1,32 @@
 {
-  "nav_label": "Blogs",
-  "title": "Blogs",
-  "blogs": []
+  "nav_label": "Blog",
+  "title": "Research Log",
+  "subtitle": "Stories, experiments, and longer reflections from ongoing projects.",
+  "kicker": "Lab notebook",
+  "blogs": [
+    {
+      "slug": "launching-the-research-blog",
+      "title": "Why This Blog Exists",
+      "summary": "Setting the tone for longer-form updates and how they complement the rest of the site.",
+      "date": "2025-01-05",
+      "read_time": "4 min read",
+      "author": "Joshua Xu",
+      "tags": [
+        "Meta",
+        "Writing"
+      ]
+    },
+    {
+      "slug": "robotics-field-notes",
+      "title": "Field Notes: Indoor Avoidance Trials",
+      "summary": "Notes from week three inside the test arena, smoothing controllers and taming a moody GPU.",
+      "date": "2025-01-12",
+      "read_time": "6 min read",
+      "author": "Joshua Xu",
+      "tags": [
+        "Robotics",
+        "Field Notes"
+      ]
+    }
+  ]
 }

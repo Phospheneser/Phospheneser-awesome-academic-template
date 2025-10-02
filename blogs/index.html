@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blog</title>
+  <link rel="stylesheet" href="../static/css/bulma.min.css">
+  <link rel="stylesheet" href="../static/css/index.css">
+  <style>
+    body {
+      min-height: 100vh;
+      background: linear-gradient(135deg, rgba(239, 246, 255, 0.9), rgba(241, 245, 249, 0.95));
+      transition: background 0.3s ease;
+    }
+
+    body.dark-mode {
+      background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(30, 41, 59, 0.98));
+    }
+
+    .blog-topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      backdrop-filter: blur(12px);
+      background: rgba(255, 255, 255, 0.82);
+      border-bottom: 1px solid rgba(148, 163, 184, 0.24);
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    body.dark-mode .blog-topbar {
+      background: rgba(15, 23, 42, 0.82);
+      border-bottom-color: rgba(71, 85, 105, 0.5);
+    }
+
+    .blog-home-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 600;
+      color: #1f2d3d;
+      font-size: 0.98rem;
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .blog-home-link:hover {
+      color: #3273dc;
+    }
+
+    body.dark-mode .blog-home-link {
+      color: #e2e8f0;
+    }
+
+    body.dark-mode .blog-home-link:hover {
+      color: #9db6ff;
+    }
+
+    .blog-topbar-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .blog-dark-toggle {
+      border: none;
+      background: rgba(50, 115, 220, 0.12);
+      color: #1f2d3d;
+      border-radius: 999px;
+      width: 40px;
+      height: 40px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .blog-dark-toggle:hover {
+      background: rgba(50, 115, 220, 0.2);
+    }
+
+    body.dark-mode .blog-dark-toggle {
+      background: rgba(148, 163, 184, 0.18);
+      color: #f1f5f9;
+    }
+
+    body.dark-mode .blog-dark-toggle:hover {
+      background: rgba(148, 163, 184, 0.32);
+    }
+
+    .blog-language-switcher {
+      display: inline-flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .blog-lang-button {
+      border: 1px solid rgba(50, 115, 220, 0.3);
+      background: rgba(255, 255, 255, 0.9);
+      color: #275da8;
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .blog-lang-button.is-active {
+      background: #3273dc;
+      color: #fff;
+      border-color: transparent;
+      box-shadow: 0 10px 24px rgba(50, 115, 220, 0.28);
+    }
+
+    .blog-lang-button:hover {
+      background: rgba(50, 115, 220, 0.18);
+    }
+
+    body.dark-mode .blog-lang-button {
+      background: rgba(15, 23, 42, 0.92);
+      border-color: rgba(129, 140, 248, 0.45);
+      color: #c7d2fe;
+    }
+
+    body.dark-mode .blog-lang-button.is-active {
+      background: #7c9bff;
+      color: #0f172a;
+      border-color: transparent;
+    }
+
+    .blog-main {
+      padding: 40px 24px 80px;
+    }
+
+    .blog-hero {
+      max-width: 720px;
+      margin: 0 auto 32px;
+      text-align: center;
+    }
+
+    .blog-hero .blog-kicker {
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-size: 0.8rem;
+      color: #5b6c71;
+    }
+
+    body.dark-mode .blog-hero .blog-kicker {
+      color: #94a3b8;
+    }
+
+    .blog-hero h1 {
+      font-size: 2.6rem;
+      font-weight: 700;
+      margin: 12px 0;
+      color: #1e2734;
+    }
+
+    body.dark-mode .blog-hero h1 {
+      color: #f8fafc;
+    }
+
+    .blog-hero p {
+      color: #4a5568;
+      line-height: 1.7;
+      margin: 0;
+    }
+
+    body.dark-mode .blog-hero p {
+      color: #cbd5f5;
+    }
+
+    .blog-controls {
+      max-width: 960px;
+      margin: 0 auto 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    @media screen and (min-width: 768px) {
+      .blog-controls {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+      }
+    }
+
+    .blog-search {
+      flex: 1;
+      position: relative;
+    }
+
+    .blog-search input {
+      width: 100%;
+      padding: 12px 16px 12px 44px;
+      border-radius: 12px;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      font-size: 0.95rem;
+      box-shadow: 0 10px 24px rgba(148, 163, 184, 0.18);
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+      background: rgba(255, 255, 255, 0.96);
+      color: #1e293b;
+    }
+
+    .blog-search input:focus {
+      border-color: rgba(50, 115, 220, 0.45);
+      box-shadow: 0 16px 32px rgba(50, 115, 220, 0.22);
+      outline: none;
+    }
+
+    body.dark-mode .blog-search input {
+      background: rgba(15, 23, 42, 0.92);
+      color: #e2e8f0;
+      border-color: rgba(129, 140, 248, 0.35);
+      box-shadow: 0 14px 28px rgba(15, 23, 42, 0.55);
+    }
+
+    body.dark-mode .blog-search input:focus {
+      border-color: rgba(129, 140, 248, 0.6);
+      box-shadow: 0 18px 36px rgba(129, 140, 248, 0.25);
+    }
+
+    .blog-search i {
+      position: absolute;
+      top: 50%;
+      left: 16px;
+      transform: translateY(-50%);
+      color: #94a3b8;
+    }
+
+    .blog-tag-filter {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .blog-tag-chip {
+      border: none;
+      background: rgba(148, 163, 184, 0.18);
+      color: #475569;
+      padding: 7px 16px;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .blog-tag-chip.is-active {
+      background: #3273dc;
+      color: #fff;
+      box-shadow: 0 10px 24px rgba(50, 115, 220, 0.32);
+    }
+
+    .blog-tag-chip:hover {
+      transform: translateY(-2px);
+    }
+
+    body.dark-mode .blog-tag-chip {
+      background: rgba(51, 65, 85, 0.6);
+      color: #cbd5f5;
+    }
+
+    body.dark-mode .blog-tag-chip.is-active {
+      background: #93c5fd;
+      color: #0f172a;
+    }
+
+    .blog-empty {
+      margin: 48px auto;
+      max-width: 520px;
+      text-align: center;
+      color: #607d8b;
+      font-size: 1.05rem;
+    }
+
+    body.dark-mode .blog-empty {
+      color: #e2e8f0;
+    }
+
+    .blog-footer {
+      border-top: 1px solid rgba(148, 163, 184, 0.24);
+      padding: 32px 24px 48px;
+      text-align: center;
+      color: #64748b;
+      font-size: 0.9rem;
+      background: rgba(255, 255, 255, 0.85);
+    }
+
+    body.dark-mode .blog-footer {
+      background: rgba(15, 23, 42, 0.85);
+      color: #cbd5f5;
+      border-top-color: rgba(71, 85, 105, 0.5);
+    }
+  </style>
+</head>
+
+<body>
+  <header class="blog-topbar">
+    <a class="blog-home-link" id="blog-home-link" href="../index.html#blogs">
+      <i class="fas fa-arrow-left"></i>
+      <span id="blog-home-text">Back to site</span>
+    </a>
+    <div class="blog-topbar-actions">
+      <button class="blog-dark-toggle" id="blog-dark-toggle" aria-label="Toggle dark mode">
+        <i class="fas fa-moon"></i>
+      </button>
+      <div class="blog-language-switcher" id="blog-language-switcher"></div>
+    </div>
+  </header>
+
+  <main class="blog-main">
+    <section class="blog-hero">
+      <span class="blog-kicker" id="blog-kicker">Long-form writing</span>
+      <h1 id="blog-page-title">Blog</h1>
+      <p id="blog-page-subtitle">Latest updates and stories from the lab.</p>
+    </section>
+
+    <section class="blog-controls">
+      <div class="blog-search">
+        <i class="fas fa-search"></i>
+        <input id="blog-search" type="search" placeholder="Search posts…" aria-label="Search blog posts">
+      </div>
+      <div class="blog-tag-filter" id="blog-tag-filter"></div>
+    </section>
+
+    <section class="container is-max-desktop" id="blog-post-list"></section>
+  </main>
+
+  <footer class="blog-footer">
+    <div class="container is-max-desktop">
+      <p id="blog-footer-text"></p>
+    </div>
+  </footer>
+
+  <script defer src="../static/js/fontawesome.all.min.js"></script>
+  <script>
+    const BLOG_LABELS = {
+      readMore: {
+        en: 'Read more',
+        zh: '阅读全文',
+        jp: '続きを読む'
+      }
+    };
+
+    const BLOG_PAGE_LABELS = {
+      en: {
+        back: 'Back to site',
+        search: 'Search posts…',
+        allTags: 'All topics',
+        empty: 'No posts published yet.',
+        kicker: 'Long-form writing',
+        darkToLight: 'Switch to light mode',
+        lightToDark: 'Switch to dark mode'
+      },
+      zh: {
+        back: '返回主页',
+        search: '搜索文章…',
+        allTags: '全部主题',
+        empty: '暂时还没有发布文章。',
+        kicker: '深度思考',
+        darkToLight: '切换为浅色模式',
+        lightToDark: '切换为深色模式'
+      },
+      jp: {
+        back: 'サイトに戻る',
+        search: '記事を検索…',
+        allTags: 'すべてのトピック',
+        empty: 'まだ記事が公開されていません。',
+        kicker: '深い思索',
+        darkToLight: 'ライトモードへ切り替える',
+        lightToDark: 'ダークモードへ切り替える'
+      }
+    };
+
+    let currentLang = localStorage.getItem('lang') || 'en';
+    let availableLanguages = ['en', 'zh', 'jp'];
+    let metaConfig = null;
+    let posts = [];
+    const filters = {
+      search: '',
+      tag: 'all'
+    };
+
+    document.addEventListener('DOMContentLoaded', () => {
+      initializeDarkMode();
+      initializeBlogIndex();
+    });
+
+    async function initializeBlogIndex() {
+      await loadMeta();
+      await loadLanguage(currentLang);
+      renderLanguageSwitcher();
+      setupSearch();
+    }
+
+    async function loadMeta() {
+      try {
+        const res = await fetch('../data/meta.json');
+        metaConfig = await res.json();
+        if (metaConfig && Array.isArray(metaConfig.availableLanguages)) {
+          availableLanguages = metaConfig.availableLanguages;
+        }
+      } catch (err) {
+        console.error('Failed to load meta config:', err);
+      }
+    }
+
+    async function loadLanguage(lang) {
+      try {
+        const [blogsRes, webContentRes] = await Promise.all([
+          fetch(`../data/${lang}/blogs.json`),
+          fetch(`../data/${lang}/web_content.json`).catch(() => null)
+        ]);
+
+        const blogsData = blogsRes && blogsRes.ok ? await blogsRes.json() : { blogs: [] };
+        const webContent = webContentRes && webContentRes.ok ? await webContentRes.json() : null;
+
+        posts = Array.isArray(blogsData.blogs) ? blogsData.blogs.slice() : [];
+        sortPostsByDate();
+
+        const labels = BLOG_PAGE_LABELS[lang] || BLOG_PAGE_LABELS.en;
+        document.title = blogsData.title ? `${blogsData.title} | Blog` : 'Blog';
+        document.getElementById('blog-page-title').textContent = blogsData.title || 'Blog';
+        document.getElementById('blog-page-subtitle').textContent = blogsData.subtitle || blogsData.description || '';
+        document.getElementById('blog-kicker').textContent = blogsData.kicker || labels.kicker;
+        document.getElementById('blog-home-text').textContent = labels.back;
+        document.getElementById('blog-search').placeholder = labels.search;
+        document.getElementById('blog-footer-text').textContent = webContent && webContent.footer ? webContent.footer : '';
+
+        filters.search = '';
+        filters.tag = 'all';
+        const searchInput = document.getElementById('blog-search');
+        if (searchInput) searchInput.value = '';
+
+        renderLanguageSwitcher();
+        renderTagFilter();
+        renderPosts();
+        if (typeof window.__updateBlogDarkLabel === 'function') {
+          window.__updateBlogDarkLabel();
+        }
+      } catch (err) {
+        console.error(`Failed to load language data for ${lang}:`, err);
+      }
+    }
+
+    function sortPostsByDate() {
+      posts.sort((a, b) => {
+        const dateA = a.date || '';
+        const dateB = b.date || '';
+        return dateB.localeCompare(dateA);
+      });
+    }
+
+    function renderLanguageSwitcher() {
+      const container = document.getElementById('blog-language-switcher');
+      if (!container) return;
+      container.innerHTML = '';
+      availableLanguages.forEach(lang => {
+        const label = (metaConfig && metaConfig.languageLabels && metaConfig.languageLabels[lang]) || lang;
+        const button = document.createElement('button');
+        button.className = 'blog-lang-button' + (lang === currentLang ? ' is-active' : '');
+        button.type = 'button';
+        button.textContent = label;
+        button.addEventListener('click', () => {
+          if (lang === currentLang) return;
+          currentLang = lang;
+          localStorage.setItem('lang', lang);
+          loadLanguage(lang);
+        });
+        container.appendChild(button);
+      });
+    }
+
+    function setupSearch() {
+      const searchInput = document.getElementById('blog-search');
+      if (!searchInput) return;
+      let searchTimer = null;
+      searchInput.addEventListener('input', (event) => {
+        const value = event.target.value || '';
+        if (searchTimer) clearTimeout(searchTimer);
+        searchTimer = setTimeout(() => {
+          filters.search = value.trim().toLowerCase();
+          renderPosts();
+        }, 160);
+      });
+    }
+
+    function renderTagFilter() {
+      const container = document.getElementById('blog-tag-filter');
+      if (!container) return;
+      container.innerHTML = '';
+      const labels = BLOG_PAGE_LABELS[currentLang] || BLOG_PAGE_LABELS.en;
+
+      const tags = Array.from(new Set(posts.flatMap(post => Array.isArray(post.tags) ? post.tags : []))).sort((a, b) => a.localeCompare(b, currentLang));
+
+      const allButton = createTagChip('all', labels.allTags, filters.tag === 'all');
+      container.appendChild(allButton);
+
+      tags.forEach(tag => {
+        const chip = createTagChip(tag, tag, filters.tag === tag);
+        container.appendChild(chip);
+      });
+    }
+
+    function createTagChip(value, label, active) {
+      const chip = document.createElement('button');
+      chip.type = 'button';
+      chip.className = 'blog-tag-chip' + (active ? ' is-active' : '');
+      chip.textContent = label;
+      chip.addEventListener('click', () => {
+        filters.tag = value;
+        renderTagFilter();
+        renderPosts();
+      });
+      return chip;
+    }
+
+    function renderPosts() {
+      const container = document.getElementById('blog-post-list');
+      if (!container) return;
+      container.innerHTML = '';
+
+      const labels = BLOG_PAGE_LABELS[currentLang] || BLOG_PAGE_LABELS.en;
+      const filtered = posts.filter(post => {
+        const matchesTag = filters.tag === 'all' || (Array.isArray(post.tags) && post.tags.includes(filters.tag));
+        if (!matchesTag) return false;
+        if (!filters.search) return true;
+        const haystack = [post.title, post.summary, post.description, post.content, (post.tags || []).join(' ')].join(' ').toLowerCase();
+        return haystack.includes(filters.search);
+      });
+
+      if (!filtered.length) {
+        const empty = document.createElement('div');
+        empty.className = 'blog-empty';
+        empty.textContent = labels.empty;
+        container.appendChild(empty);
+        return;
+      }
+
+      filtered.forEach(entry => {
+        const block = document.createElement('article');
+        block.className = 'section-text-block';
+        renderBlogSummary(block, entry);
+        container.appendChild(block);
+      });
+    }
+
+    function renderBlogSummary(block, entry) {
+      if (!entry) return;
+      block.classList.add('blog-card');
+      const blogUrl = buildBlogUrl(entry);
+
+      const header = document.createElement('div');
+      header.className = 'blog-card-header';
+
+      const titleLink = document.createElement('a');
+      titleLink.className = 'blog-card-title';
+      titleLink.textContent = entry.title || 'Untitled';
+      titleLink.href = blogUrl || '#';
+      header.appendChild(titleLink);
+
+      const meta = buildBlogMeta(entry);
+      if (meta) header.appendChild(meta);
+
+      block.appendChild(header);
+
+      const summaryText = entry.summary || entry.excerpt || entry.description || entry.content;
+      if (summaryText) {
+        const summary = document.createElement('p');
+        summary.className = 'blog-summary';
+        summary.innerHTML = summaryText;
+        block.appendChild(summary);
+      }
+
+      const tags = buildBlogTags(entry);
+      if (tags) block.appendChild(tags);
+
+      const actions = buildBlogActions(entry, blogUrl);
+      if (actions) block.appendChild(actions);
+    }
+
+    function buildBlogUrl(entry, lang = currentLang) {
+      if (!entry) return '';
+      if (entry.url) return entry.url;
+      const slug = entry.slug;
+      if (!slug) {
+        const first = Array.isArray(entry.links) && entry.links.length ? entry.links[0].url : '';
+        return first || '';
+      }
+      const params = new URLSearchParams({ slug: slug, lang: lang || currentLang });
+      return `./post.html?${params.toString()}`;
+    }
+
+    function buildBlogMeta(entry) {
+      const parts = [];
+      if (entry.date) parts.push(entry.date);
+      if (entry.read_time) parts.push(entry.read_time);
+      if (entry.author && typeof entry.author === 'string') parts.push(entry.author);
+      if (!parts.length) return null;
+      const meta = document.createElement('div');
+      meta.className = 'blog-meta';
+      meta.textContent = parts.join(' · ');
+      return meta;
+    }
+
+    function buildBlogTags(entry) {
+      if (!entry || !Array.isArray(entry.tags) || entry.tags.length === 0) return null;
+      const wrapper = document.createElement('div');
+      wrapper.className = 'blog-tags';
+      entry.tags.forEach(tag => {
+        if (!tag) return;
+        const span = document.createElement('span');
+        span.className = 'blog-tag';
+        span.textContent = tag;
+        wrapper.appendChild(span);
+      });
+      return wrapper;
+    }
+
+    function buildBlogActions(entry, blogUrl) {
+      const actions = document.createElement('div');
+      actions.className = 'blog-actions';
+      const readMoreLabel = (entry && entry.read_more_label) || getBlogReadMoreLabel();
+      if (blogUrl) {
+        const readMore = document.createElement('a');
+        readMore.className = 'blog-read-more';
+        readMore.href = blogUrl;
+        readMore.innerHTML = `<span>${readMoreLabel}</span><i class="fas fa-arrow-right"></i>`;
+        actions.appendChild(readMore);
+      }
+      const extraLinks = buildBlogExtraLinks(entry, blogUrl);
+      extraLinks.forEach(link => actions.appendChild(link));
+      return actions.childElementCount ? actions : null;
+    }
+
+    function buildBlogExtraLinks(entry, blogUrl) {
+      if (!entry || !Array.isArray(entry.links)) return [];
+      return entry.links
+        .filter(link => link && link.url && link.url !== blogUrl)
+        .map(link => {
+          const anchor = document.createElement('a');
+          anchor.className = 'blog-extra-link';
+          anchor.href = link.url;
+          anchor.textContent = link.type || link.label || link.url;
+          if (link.external === false) {
+            anchor.target = '_self';
+          } else {
+            anchor.target = '_blank';
+            anchor.rel = 'noopener noreferrer';
+          }
+          return anchor;
+        });
+    }
+
+    function getBlogReadMoreLabel(lang = currentLang) {
+      const labels = BLOG_LABELS.readMore || {};
+      return labels[lang] || labels.en || 'Read more';
+    }
+
+    function initializeDarkMode() {
+      const toggle = document.getElementById('blog-dark-toggle');
+      const body = document.body;
+      const isDarkMode = localStorage.getItem('darkMode') === 'true';
+      if (isDarkMode) {
+        body.classList.add('dark-mode');
+        if (toggle) toggle.innerHTML = '<i class="fas fa-sun"></i>';
+      }
+
+      if (!toggle) return;
+      const updateLabel = () => {
+        const labels = BLOG_PAGE_LABELS[currentLang] || BLOG_PAGE_LABELS.en;
+        toggle.title = body.classList.contains('dark-mode') ? labels.darkToLight : labels.lightToDark;
+      };
+
+      updateLabel();
+      window.__updateBlogDarkLabel = updateLabel;
+
+      toggle.addEventListener('click', () => {
+        const currentlyDark = body.classList.contains('dark-mode');
+        if (currentlyDark) {
+          body.classList.remove('dark-mode');
+          localStorage.setItem('darkMode', 'false');
+          toggle.innerHTML = '<i class="fas fa-moon"></i>';
+        } else {
+          body.classList.add('dark-mode');
+          localStorage.setItem('darkMode', 'true');
+          toggle.innerHTML = '<i class="fas fa-sun"></i>';
+        }
+        updateLabel();
+      });
+    }
+  </script>
+</body>
+
+</html>

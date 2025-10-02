@@ -1,0 +1,20 @@
+<h2>室内试飞场的第三周</h2>
+<p>本周最大的进展是避障算法终于稳定了。我们把安全半径从 <code>0.7&nbsp;m</code> 收紧到 <code>0.45&nbsp;m</code> 后，控制器开始出现振荡，于是我在速度指令前加入了一个短时平滑项。下面的伪代码展示了这个小改动。</p>
+
+<pre>
+# 速度微调的伪代码
+smoothed_v = mix(prior_v, planner_v, alpha=0.35)
+cmd.linear = clamp(smoothed_v, min=-1.5, max=1.5)
+cmd.angular = yaw_controller(planner_heading)
+</pre>
+
+<p>当天的大部分时间都花在排查 GPU 的随机降频。原来是日志进程在镜像原始图像时占满了算力。把日志固定在伴随计算机上，并在传输前先压缩图像就解决了这个问题。</p>
+
+<h2>一些小的观察</h2>
+<ul>
+  <li><strong>感知链路。</strong> 深度补全依旧有约 60&nbsp;ms 的延迟，下一步准备试试上个月测过的轻量模型。</li>
+  <li><strong>操作体验。</strong> 新的 HUD 受到飞手欢迎，安全气泡的实时可视化降低了口头提醒的频率。</li>
+  <li><strong>后续实验。</strong> 计划在户外增加风干扰，验证控制器的鲁棒性。</li>
+</ul>
+
+<p>如果需要原始日志或者绘图脚本，欢迎随时联系我。</p>

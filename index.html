@@ -186,6 +186,18 @@
   }
 
   let layoutMode = getInitialLayoutMode();
+  const BLOG_LABELS = {
+    readMore: {
+      en: 'Read more',
+      zh: '阅读全文',
+      jp: '続きを読む'
+    },
+    archive: {
+      en: 'View all posts',
+      zh: '查看全部文章',
+      jp: 'すべての記事を見る'
+    }
+  };
 
   function goHome() {
     window.scrollTo({
@@ -395,6 +407,10 @@
         contentDiv.appendChild(block);
       }
     });
+
+    if (type === 'blog') {
+      appendBlogArchiveCallout(contentDiv);
+    }
   }
 
   function renderEntryIntoBlock(block, entry, type) {
@@ -417,9 +433,7 @@
         appendLinks(block, entry.links);
         break;
       case 'blog':
-        appendParagraph(block, formatTitleLine(entry.title, entry.date));
-        appendParagraph(block, entry.content);
-        appendLinks(block, entry.links);
+        renderBlogSummary(block, entry);
         break;
       case 'timeline':
         appendParagraph(block, formatTitleLine(entry.title, entry.org, entry.date));
@@ -459,6 +473,146 @@
       p.appendChild(anchor);
     });
     block.appendChild(p);
+  }
+
+  function renderBlogSummary(block, entry) {
+    if (!entry) return;
+    block.classList.add('blog-card');
+
+    const blogUrl = buildBlogUrl(entry);
+
+    const header = document.createElement('div');
+    header.className = 'blog-card-header';
+
+    const titleLink = document.createElement('a');
+    titleLink.className = 'blog-card-title';
+    titleLink.textContent = entry.title || 'Untitled';
+    if (blogUrl) {
+      titleLink.href = blogUrl;
+    } else {
+      titleLink.href = '#';
+    }
+    header.appendChild(titleLink);
+
+    const meta = buildBlogMeta(entry);
+    if (meta) header.appendChild(meta);
+
+    block.appendChild(header);
+
+    const summaryText = entry.summary || entry.excerpt || entry.description || entry.content;
+    if (summaryText) {
+      const summary = document.createElement('p');
+      summary.className = 'blog-summary';
+      summary.innerHTML = summaryText;
+      block.appendChild(summary);
+    }
+
+    const tags = buildBlogTags(entry);
+    if (tags) block.appendChild(tags);
+
+    const actions = buildBlogActions(entry, blogUrl);
+    if (actions) block.appendChild(actions);
+  }
+
+  function appendBlogArchiveCallout(container) {
+    if (!container || container.querySelector('.blog-archive-callout')) return;
+    const wrapper = document.createElement('div');
+    wrapper.className = 'blog-archive-callout';
+    const link = document.createElement('a');
+    link.className = 'blog-archive-link blog-read-more';
+    link.href = './blogs/index.html';
+    link.innerHTML = `<span>${getBlogArchiveLabel()}</span><i class="fas fa-arrow-right"></i>`;
+    wrapper.appendChild(link);
+    container.appendChild(wrapper);
+  }
+
+  function buildBlogUrl(entry, lang = currentLang) {
+    if (!entry) return '';
+    if (entry.url) return entry.url;
+    const slug = entry.slug;
+    if (!slug) {
+      const firstLink = Array.isArray(entry.links) && entry.links.length ? entry.links[0].url : '';
+      return firstLink || '';
+    }
+    const params = new URLSearchParams({
+      slug: slug,
+      lang: lang || currentLang
+    });
+    return `./blogs/post.html?${params.toString()}`;
+  }
+
+  function buildBlogMeta(entry) {
+    const parts = [];
+    if (entry.date) parts.push(entry.date);
+    if (entry.read_time) parts.push(entry.read_time);
+    if (entry.author && typeof entry.author === 'string') parts.push(entry.author);
+    if (!parts.length) return null;
+    const meta = document.createElement('div');
+    meta.className = 'blog-meta';
+    meta.textContent = parts.join(' · ');
+    return meta;
+  }
+
+  function buildBlogTags(entry) {
+    if (!entry || !Array.isArray(entry.tags) || entry.tags.length === 0) return null;
+    const wrapper = document.createElement('div');
+    wrapper.className = 'blog-tags';
+    entry.tags.forEach(tag => {
+      if (!tag) return;
+      const span = document.createElement('span');
+      span.className = 'blog-tag';
+      span.textContent = tag;
+      wrapper.appendChild(span);
+    });
+    return wrapper;
+  }
+
+  function buildBlogActions(entry, blogUrl) {
+    const actions = document.createElement('div');
+    actions.className = 'blog-actions';
+
+    const readMoreLabel = (entry && entry.read_more_label) || getBlogReadMoreLabel();
+    if (blogUrl) {
+      const readMore = document.createElement('a');
+      readMore.className = 'blog-read-more';
+      readMore.href = blogUrl;
+      readMore.innerHTML = `<span>${readMoreLabel}</span><i class="fas fa-arrow-right"></i>`;
+      actions.appendChild(readMore);
+    }
+
+    const extraLinks = buildBlogExtraLinks(entry, blogUrl);
+    extraLinks.forEach(link => actions.appendChild(link));
+
+    return actions.childElementCount ? actions : null;
+  }
+
+  function buildBlogExtraLinks(entry, blogUrl) {
+    if (!entry || !Array.isArray(entry.links)) return [];
+    return entry.links
+      .filter(link => link && link.url && link.url !== blogUrl)
+      .map(link => {
+        const anchor = document.createElement('a');
+        anchor.className = 'blog-extra-link';
+        anchor.href = link.url;
+        anchor.textContent = link.type || link.label || link.url;
+        if (link.external === false) {
+          anchor.target = '_self';
+        } else {
+          anchor.target = '_blank';
+          anchor.rel = 'noopener noreferrer';
+        }
+        return anchor;
+      });
+  }
+
+  function getBlogReadMoreLabel(lang = currentLang) {
+    const labels = BLOG_LABELS.readMore || {};
+    return labels[lang] || labels.en || 'Read more';
+  }
+
+  function getBlogArchiveLabel(lang = currentLang) {
+    const labels = BLOG_LABELS.archive || {};
+    return labels[lang] || labels.en || 'View all posts';
   }
 
   function appendSortMetadata(block, entry) {

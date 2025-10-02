@@ -1,0 +1,20 @@
+<h2>Week 3 in the indoor test arena</h2>
+<p>The quadrotor avoidance stack finally behaved after we relaxed the safety margin from <code>0.7&nbsp;m</code> to <code>0.45&nbsp;m</code>. The tighter corridor made the controller oscillate, so I added a short-term smoothing term to the velocity command. You can see the difference in the plot below.</p>
+
+<pre>
+# pseudo-code for the micro-adjustment
+smoothed_v = mix(prior_v, planner_v, alpha=0.35)
+cmd.linear = clamp(smoothed_v, min=-1.5, max=1.5)
+cmd.angular = yaw_controller(planner_heading)
+</pre>
+
+<p>Most of the day went into finding why the onboard GPU randomly throttled. The culprit: the logging process would spike usage whenever we mirrored raw frames. Pinning the logger to the companion computer and compressing frames before transfer solved the issue.</p>
+
+<h2>Quick observations</h2>
+<ul>
+  <li><strong>Perception pipeline.</strong> Depth completion still lags by ~60&nbsp;ms. Next step is to try the lightweight model we benchmarked last month.</li>
+  <li><strong>Operator UX.</strong> The new HUD layout was a hit with the pilots. Keeping the safety bubble visualization visible at all times reduced verbal callouts.</li>
+  <li><strong>Next experiment.</strong> Run the same avoidance routine outdoors with wind injection to benchmark controller robustness.</li>
+</ul>
+
+<p>If you want the raw logs or the plotting notebook, ping me—happy to share.</p>
