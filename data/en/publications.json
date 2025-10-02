@@ -1,56 +1,16 @@
 {
   "publications": [
     {
-      "title": "SpeechGPT 2.0 - Preview Version",
-      "conference": "<a href='https://www.open-moss.com/en/'>OpenMOSS</a>",
-      "authors": "<strong>OpenMOSS Team</strong>",
-      "description": "SpeechGPT 2.0-preview is the first anthropomorphic real-time interactive system we launched towards contextual intelligence. As an end-to-end speech large model trained on millions of hours of voice data, it features anthropomorphic spoken expression and sub-100ms low-latency response, supporting natural and fluent real-time interruption interaction.",
+      "title": "Placeholder Title",
+      "conference": "Placeholder Venue",
+      "authors": "Author A, Author B",
+      "description": "Placeholder description for a publication.",
       "links": [
         {
-          "type": "Blog",
-          "url": "https://www.open-moss.com/en/speechgpt2-preview/"
-        },
-        {
-          "type": "Code",
-          "url": "https://github.com/OpenMoss/SpeechGPT-2.0-preview"
+          "type": "Paper",
+          "url": "#"
         }
-      ],
-      "image": "./media/sgpt2p.png"
-    },
-    {
-      "title": "VLABench: A Large-Scale Benchmark for Language-Conditioned Robotics Manipulation with Long-Horizon Reasoning Tasks",
-      "conference": "CVPR'25 (But 1 of 19), ICCV'25",
-      "authors": "Shiduo Zhang <strong>Zhe Xu</strong>,, Peiju Liu, Xiaopeng Yu, Yuan Li, Qinghui Gao, Zhaoye Fei, Zhangyue Yin, Zuxuan Wu, Yu-Gang Jiang & Xipeng Qiu",
-      "description": "\"First benchmark for VLA. Not only for evaluation, definition matters most.\"",
-      "links": [
-        {"type": "Paper", "url": "https://arxiv.org/abs/2412.18194"},
-        {"type": "Project Page", "url": "https://vlabench.github.io/"},
-        {"type": "Code", "url": "https://github.com/OpenMOSS/VLABench"}
-      ],
-      "image": "./media/main_page.jpg"
-    },
-    {
-      "title": "LongSafety: Enhance Safety for Long-Context LLMs",
-      "authors": "Mianqiu Huang, Xiaoran Liu, Shaojun Zhou, Mozhi Zhang, Chenkun Tan, Pengyu Wang, Qipeng Guo, <strong>Zhe Xu</strong>, Linyang Li, Zhikai Lei, Linlin Li, Qun Liu, Yaqian Zhou, Xipeng Qiu, Xuanjing Huang",
-      "description": "This paper introduces LongSafety, a specialized safety alignment dataset for long-context LLMs (spanning 8 tasks, ~17K samples, ~40.9K tokens average) along with a benchmark LongSafetyBench, and shows that fine-tuning on it improves safety in long contexts without degrading general capabilities.",
-      "links": [
-        {"type": "Paper", "url": "https://arxiv.org/abs/2411.06899v1"},
-        {"type": "Hugging Face", "url": "https://huggingface.co/datasets/LutherXD/LongSafetyBench"},
-        {"type": "Code", "url": "https://github.com/OpenMOSS/LongSafety"}
-      ],
-      "image": "./media/LSB.jpg"
-    },
-    {
-      "title": "DetectiveQA: Evaluating Long-Context Reasoning on Detective Novels",
-      "conference": "ICLR2025",
-      "authors": "<strong>Zhe Xu</strong>, Jiasheng Ye, Xiaoran Liu, Xiangyang Liu, Tianxiang Sun, Zhigeng Liu, Qipeng Guo, Linlin Li, Qun Liu, Xuanjing Huang, Xipeng Qiu",
-      "description": "DetectiveQA is a narrative reasoning benchmark based on detective novels with very long contexts (on average over 100,000 tokens), offering 1,200 Chinese-English question-answer pairs with detailed reasoning chains, designed to test LLMs’ abilities in long-text comprehension, evidence retrieval, and reasoning, and demonstrating that current long-context LLMs still struggle significantly with dependency questions that truly require full context.",
-      "links": [
-        {"type": "Paper", "url": "https://arxiv.org/abs/2409.02465"},
-        {"type": "Code", "url": "https://github.com/Phospheneser/DetectiveQA"},
-        {"type": "Hugging Face", "url": "https://huggingface.co/datasets/Phospheneser/DetectiveQA"}
-      ],
-      "image": "./media/detectiveqa.jpg"
+      ]
     }
   ]
 }

@@ -1,20 +1,12 @@
 {
   "news": [
     {
-      "date": "2026.01.26",
-      "content": "SpeechGPT-2-preview 发布！"
+      "date": "2025.01.01",
+      "content": "占位新闻条目。"
     },
     {
-      "date": "2025.06.26",
-      "content": "VLABench 被 ICCV 2025 录用！"
-    },
-    {
-      "date": "2025.03.05",
-      "content": "DetectiveQA 被 Reasoning and Planning for LLMs @ ICLR 2025 录用！"
-    },
-    {
-      "date": "2024.12.25",
-      "content": "VLABench 预览版本已发布！"
+      "date": "2025.02.01",
+      "content": "另一个占位新闻条目。"
     }
   ]
 }

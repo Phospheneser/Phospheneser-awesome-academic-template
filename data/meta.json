@@ -1,0 +1,252 @@
+{
+    "defaultLanguage": "en",
+    "availableLanguages": [
+        "en",
+        "zh",
+        "jp"
+    ],
+    "navbar": {
+        "showLanguageDropdown": true
+    },
+    "home": {
+        "showHero": true,
+        "showWordCloud": true,
+        "avatar": "./media/personal.jpg"
+    },
+    "itemTypes": {
+        "news": {
+            "requiredKeys": [
+                "date",
+                "content"
+            ],
+            "template": "list-inline"
+        },
+        "publication": {
+            "requiredKeys": [
+                "title",
+                "conference",
+                "authors",
+                "description",
+                "links",
+                "image"
+            ],
+            "template": "paper-card"
+        },
+        "project": {
+            "requiredKeys": [
+                "title",
+                "date",
+                "authors",
+                "description",
+                "links",
+                "image"
+            ],
+            "template": "paper-card"
+        },
+        "blog": {
+            "requiredKeys": [
+                "title",
+                "date",
+                "content",
+                "links",
+                "image"
+            ],
+            "template": "paper-card"
+        },
+        "timeline": {
+            "requiredKeys": [
+                "date",
+                "title",
+                "org",
+                "description"
+            ],
+            "template": "timeline"
+        }
+    },
+    "sections": [
+        {
+            "id": "about",
+            "enabled": true,
+            "navLabelKey": "navbar_about",
+            "titleKey": "about_title",
+            "singlePage": {
+                "enabled": true,
+                "layout": "list",
+                "options": {
+                    "columns": 1,
+                    "gap": "normal"
+                }
+            },
+            "multiPage": {
+                "enabled": true,
+                "layout": "list",
+                "options": {
+                    "columns": 1,
+                    "gap": "normal"
+                }
+            }
+        },
+        {
+            "id": "news",
+            "enabled": true,
+            "navLabelKey": "navbar_news",
+            "titleKey": "news_title",
+            "itemType": "news",
+            "dataSource": "news",
+            "singlePage": {
+                "enabled": true,
+                "layout": "list",
+                "options": {
+                    "columns": 1,
+                    "gap": "normal"
+                }
+            },
+            "multiPage": {
+                "enabled": true,
+                "layout": "list",
+                "plugins": [
+                    "search"
+                ],
+                "options": {
+                    "columns": 1,
+                    "gap": "normal"
+                }
+            }
+        },
+        {
+            "id": "publications",
+            "enabled": true,
+            "navLabelKey": "navbar_publications",
+            "titleKey": "publications_title",
+            "itemType": "publication",
+            "dataSource": "publications",
+            "singlePage": {
+                "enabled": true,
+                "layout": "list",
+                "options": {
+                    "columns": 1,
+                    "gap": "normal"
+                }
+            },
+            "multiPage": {
+                "enabled": true,
+                "layout": "list",
+                "plugins": [
+                    "search",
+                    "sort"
+                ],
+                "options": {
+                    "columns": 1,
+                    "gap": "normal"
+                }
+            }
+        },
+        {
+            "id": "projects",
+            "enabled": true,
+            "navLabelKey": "navbar_projects",
+            "titleKey": "projects_title",
+            "itemType": "project",
+            "dataSource": "projects",
+            "singlePage": {
+                "enabled": true,
+                "layout": "list",
+                "options": {
+                    "columns": 1,
+                    "gap": "normal"
+                }
+            },
+            "multiPage": {
+                "enabled": true,
+                "layout": "list",
+                "plugins": [
+                    "search",
+                    "sort"
+                ],
+                "options": {
+                    "columns": 1,
+                    "gap": "normal"
+                }
+            }
+        },
+        {
+            "id": "academic-service",
+            "enabled": true,
+            "navLabelKey": "navbar_academic_service",
+            "titleKey": "academic_service_title",
+            "singlePage": {
+                "enabled": true,
+                "layout": "list",
+                "options": {
+                    "columns": 1,
+                    "gap": "normal"
+                }
+            },
+            "multiPage": {
+                "enabled": true,
+                "layout": "list",
+                "options": {
+                    "columns": 1,
+                    "gap": "normal"
+                }
+            }
+        },
+        {
+            "id": "blogs",
+            "enabled": true,
+            "navLabelKey": "navbar_blogs",
+            "titleKey": "blogs_title",
+            "itemType": "blog",
+            "dataSource": "blogs",
+            "singlePage": {
+                "enabled": true,
+                "layout": "list",
+                "options": {
+                    "columns": 1,
+                    "gap": "normal"
+                }
+            },
+            "multiPage": {
+                "enabled": true,
+                "layout": "list",
+                "plugins": [
+                    "search"
+                ],
+                "options": {
+                    "columns": 1,
+                    "gap": "normal"
+                }
+            }
+        }
+    ],
+    "socials": [
+        {
+            "icon": "fab fa-github",
+            "url": "#"
+        },
+        {
+            "icon": "fas fa-graduation-cap",
+            "url": "#"
+        },
+        {
+            "icon": "fab fa-twitter",
+            "url": "#"
+        },
+        {
+            "icon": "fas fa-envelope",
+            "url": "#"
+        }
+    ],
+    "emptyStates": {
+        "news": "No news available.",
+        "publications": "No publications yet.",
+        "projects": "No projects available.",
+        "blogs": "No blog posts yet.",
+        "academic-service": "No academic service records yet."
+    },
+    "themes": {
+        "primary": "#3273dc",
+        "secondary": "#23d160",
+        "accent": "#ff3860"
+    }
+}

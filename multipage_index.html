@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Multipage - Zhe Xu - Homepage</title>
+    <title>Multipage - Academic Template</title>
 
     <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Playfair+Display&display=swap"
@@ -20,6 +20,8 @@
     <script src="./static/js/bulma-carousel.min.js"></script>
     <script src="./static/js/bulma-slider.min.js"></script>
     <script src="./static/js/index.js"></script>
+    <script src="./static/js/templates.js"></script>
+    <script src="./static/js/plugins.js"></script>
 
     <style>
         /* 干掉 Bulma 默认箭头 */
@@ -60,11 +62,6 @@
 
             <div id="top-navbar" class="navbar-menu">
                 <div class="navbar-end">
-                    <a class="navbar-item" href="?page=about" id="navbar-about">About Me</a>
-                    <a class="navbar-item" href="?page=news" id="navbar-news">News</a>
-                    <a class="navbar-item" href="?page=publications" id="navbar-publications">Publications</a>
-                    <a class="navbar-item" href="?page=projects" id="navbar-projects">Projects</a>
-                    <a class="navbar-item" href="?page=blogs" id="navbar-blogs">Blogs</a>
                     <div class="navbar-item has-dropdown" id="language-dropdown">
                         <a class="navbar-link" id="navbar-language"><span id="lang-label">Language</span><i
                                 class="fas fa-chevron-left lang-arrow"></i></a>
@@ -100,6 +97,45 @@
 <script>
     let currentLang = localStorage.getItem('lang') || 'en';
     let availableLanguages = ['en', 'zh', 'jp'];
+    let metaConfig = null;
+
+    async function loadMeta() {
+        try {
+            const res = await fetch(`data/meta.json`);
+            metaConfig = await res.json();
+            if (Array.isArray(metaConfig.availableLanguages)) {
+                availableLanguages = metaConfig.availableLanguages;
+            }
+        } catch (e) { console.error('Failed to load meta.json', e); }
+    }
+
+    function applyMetaToNav(webContent) {
+        if (!metaConfig || !Array.isArray(metaConfig.sections)) return;
+        metaConfig.sections.forEach(sec => {
+            const id = sec.id;
+            const navId = `#navbar-${id.replace(/_/g, '-')}`;
+            const link = document.querySelector(navId);
+            if (link) {
+                link.style.display = sec.enabled ? '' : 'none';
+                if (webContent && sec.navLabelKey && webContent[sec.navLabelKey]) link.innerHTML = webContent[sec.navLabelKey];
+            }
+        });
+    }
+
+    function generateSocials(socials) {
+        const box = document.querySelector('.icon-box');
+        if (!box) return;
+        box.innerHTML = '';
+        (socials || []).forEach(s => {
+            const a = document.createElement('a');
+            a.href = s.url || '#';
+            a.target = '_blank';
+            const i = document.createElement('i');
+            i.className = s.icon || 'fas fa-link';
+            a.appendChild(i);
+            box.appendChild(a);
+        });
+    }
 
     function getPageKey() {
         const urlParams = new URLSearchParams(window.location.search);
@@ -112,8 +148,23 @@
     }
 
     function updateElement(selector, html) {
+        if (html === undefined || html === null) return;
         const element = document.querySelector(selector);
         if (element) element.innerHTML = html;
+    }
+
+    function renderTextList(selector, texts) {
+        const container = document.querySelector(selector);
+        if (!container) return;
+        container.innerHTML = '';
+        if (!Array.isArray(texts)) return;
+        texts.forEach((text, idx) => {
+            const p = document.createElement('p');
+            p.className = 'text-homepage-1';
+            p.innerHTML = text;
+            p.dataset.index = idx;
+            container.appendChild(p);
+        });
     }
 
     function generateLanguageButtons(webContent) {
@@ -168,12 +219,33 @@
         });
     }
 
+    function generateNavFromMeta(webContent) {
+        if (!metaConfig || !Array.isArray(metaConfig.sections)) return;
+        const navbarEnd = document.querySelector('.navbar-end');
+        if (!navbarEnd) return;
+        const items = Array.from(navbarEnd.querySelectorAll('.navbar-item'));
+        items.forEach(el => { if (!el.closest('#language-dropdown')) el.remove(); });
+        metaConfig.sections.forEach(sec => {
+            if (!sec.enabled) return;
+            const a = document.createElement('a');
+            a.className = 'navbar-item';
+            a.id = `navbar-${sec.id}`;
+            a.href = `?page=${sec.id}`;
+            const label = (webContent && sec.navLabelKey && webContent[sec.navLabelKey]) ? webContent[sec.navLabelKey] : sec.id;
+            a.innerHTML = label;
+            navbarEnd.insertBefore(a, document.getElementById('language-dropdown'));
+        });
+        wireNavLinks();
+    }
+
     async function renderPage() {
+        await loadMeta();
         // 确保使用最新语言
         currentLang = localStorage.getItem('lang') || currentLang || 'en';
         const page = getPageKey();
         const webContent = await loadWebContent(currentLang);
 
+        generateNavFromMeta(webContent);
         updateElement('#navbar-title', webContent.navbar_title);
         updateElement('#navbar-home', webContent.navbar_home);
         updateElement('#navbar-about', webContent.navbar_about);
@@ -181,6 +253,7 @@
         updateElement('#navbar-publications', webContent.navbar_publications);
         updateElement('#navbar-projects', webContent.navbar_projects);
         updateElement('#navbar-blogs', webContent.navbar_blogs);
+        updateElement('#navbar-academic-service', webContent.navbar_academic_service);
         // updateElement('#navbar-language', webContent.language);
         document.getElementById('lang-label').textContent = webContent.language;
         updateElement('#footer-text', webContent.footer);
@@ -218,157 +291,85 @@
             root.appendChild(container);
             updateElement('#main-title', webContent.title);
             updateElement('#main-subtitle', webContent.subtitle);
+            if (metaConfig && metaConfig.home && metaConfig.home.avatar) {
+                const avatar = container.querySelector('img.is-rounded');
+                if (avatar) avatar.src = metaConfig.home.avatar;
+            }
+            if (metaConfig && Array.isArray(metaConfig.socials)) {
+                generateSocials(metaConfig.socials);
+            }
         } else if (page === 'about') {
             // 其他页面保持滚动开启（已在开头处理）
-            const [academicServiceRes] = await Promise.all([
-                fetch(`data/${currentLang}/academic_service.json`)
-            ]);
-            const academicService = await academicServiceRes.json();
             const container = document.createElement('div');
             container.innerHTML = `
         <section class="section" name="sec-intro">
           <div id="about">
             <h1 class="title is-3" id="about-title" style="margin-top: 60px;">🎄 About Me</h1>
           </div>
-          <div>
-            <p class="text-homepage-1" id="about-text1"></p>
-            <p class="text-homepage-1" id="about-text2"></p>
-          </div>
+          <div id="about-texts" class="about-texts"></div>
         </section>`;
             root.appendChild(container);
             updateElement('#about-title', webContent.about_title);
-            updateElement('#about-text1', webContent.about_text1);
-            updateElement('#about-text2', webContent.about_text2);
-        } else if (page === 'news') {
-            const [newsRes] = await Promise.all([
-                fetch(`data/${currentLang}/news.json`)
-            ]);
-            const news = await newsRes.json();
-            const list = news.news || [];
-            const container = document.createElement('div');
-            container.innerHTML = `
-        <section class="section" name="sec-news">
-          <div id="news">
-            <h1 class="title is-3" style="margin-bottom: 1ex; margin-top: 60px;" id="news-title">🔥 News</h1>
-            <div></div>
+            renderTextList('#about-texts', webContent.about_texts);
+        } else {
+            // 使用配置驱动的渲染
+            const section = metaConfig.sections.find(s => s.id === page);
+            if (section && section.multiPage && section.multiPage.enabled) {
+                const multiPageConfig = section.multiPage;
+                let listData = [];
+
+                // 加载数据
+                if (section.dataSource) {
+                    const dataRes = await fetch(`data/${currentLang}/${section.dataSource}.json`);
+                    const data = await dataRes.json();
+                    listData = data[section.dataSource] || [];
+                }
+
+                // 创建容器
+                const container = document.createElement('div');
+                const sectionClass = page === 'blogs' ? 'blogs' : 'section';
+                container.innerHTML = `
+        <section class="${sectionClass}" name="sec-${page}">
+          <div id="${page}" class="mp-section">
+            <h1 class="title is-3" style="margin-bottom: 1ex; margin-top: 60px;" id="${page}-title"></h1>
+            <div class="mp-controls" id="${page}-controls"></div>
+            <div class="mp-list" id="${page}-content"></div>
           </div>
         </section>`;
-            root.appendChild(container);
-            updateElement('#news-title', webContent.news_title);
-            const newsContainer = container.querySelector('#news').children[1];
-            newsContainer.innerHTML = '';
-            list.forEach(item => {
-                const div = document.createElement('div');
-                div.style.cssText = 'display: flex; justify-content: flex-start; align-items: center; margin-bottom: 15px;';
-                div.innerHTML = `<span style="font-weight: bold; margin-right: 50px;">${item.date}</span><span style="font-family: Georgia">${item.content}</span>`;
-                newsContainer.appendChild(div);
-            });
-        } else if (page === 'publications') {
-            const [pubsRes] = await Promise.all([
-                fetch(`data/${currentLang}/publications.json`)
-            ]);
-            const publications = await pubsRes.json();
-            const pubs = publications.publications || [];
-            const container = document.createElement('div');
-            container.innerHTML = `
-        <section class="section" name="sec-publications">
-          <div id="publications">
-            <h1 class="title is-3" style="margin-bottom: 1ex; margin-top: 60px;" id="publications-title">📑 Publications</h1>
-            <div></div>
-          </div>
-        </section>`;
-            root.appendChild(container);
-            updateElement('#publications-title', webContent.publications_title);
-            const contentDiv = container.querySelector('#publications').children[1];
-            pubs.forEach(pub => {
-                const paper = document.createElement('div');
-                paper.className = 'paper-container';
-                paper.innerHTML = `
-          <img src="${pub.image}" alt="Overview" class="paper-image">
-          <div class="paper-content">
-            <h2 class="paper-title">${pub.title}</h2>
-            ${pub.conference ? `<p class="paper-conf">${pub.conference}</p>` : ''}
-            <p class="paper-authors">${pub.authors}</p>
-            <p class="paper-description">${pub.description}</p>
-            <p>${pub.links ? pub.links.map(l => `<a href="${l.url}" target="_blank" class="paper-link">[${l.type}]</a>`).join(' ') : ''}</p>
-          </div>`;
-                contentDiv.appendChild(paper);
-            });
-        } else if (page === 'projects') {
-            const [projRes] = await Promise.all([
-                fetch(`data/${currentLang}/projects.json`)
-            ]);
-            const projects = await projRes.json();
-            const list = projects.projects || [];
-            const container = document.createElement('div');
-            container.innerHTML = `
-        <section class="section" name="sec-projects">
-          <div id="projects">
-            <h1 class="title is-3" id="projects-title" style="margin-top: 60px;">⚙️ Projects</h1>
-            <div></div>
-          </div>
-        </section>`;
-            root.appendChild(container);
-            updateElement('#projects-title', webContent.projects_title);
-            const contentDiv = container.querySelector('#projects').children[1];
-            list.forEach(proj => {
-                const paper = document.createElement('div');
-                paper.className = 'paper-container';
-                const imageHtml = proj.image ? `<img src="${proj.image}" alt="Overview" class="paper-image">` : '<div class="paper-image" style="background: #f0f0f0; display: flex; align-items: center; justify-content: center; height: 150px;">No Image</div>';
-                paper.innerHTML = `
-          ${imageHtml}
-          <div class="paper-content">
-            <h2 class="paper-title" style="display: flex; justify-content: space-between; align-items: center;">
-              ${proj.title}
-              <span style="margin-left: auto; font-size: 16px;">${proj.date}</span>
-            </h2>
-            <p class="paper-authors">${proj.authors}</p>
-            <p class="paper-description">${proj.description}</p>
-            ${proj.links ? `<p>${proj.links.map(l => `<a href="${l.url}" target="_blank" class="paper-link">[${l.type}]</a>`).join(' ')}</p>` : ''}
-          </div>`;
-                contentDiv.appendChild(paper);
-            });
-        } else if (page === 'blogs') {
-            const [blogsRes] = await Promise.all([
-                fetch(`data/${currentLang}/blogs.json`)
-            ]);
-            const blogs = await blogsRes.json();
-            const list = blogs.blogs || [];
-            const container = document.createElement('div');
-            container.innerHTML = `
-        <section class="blogs">
-          <div id="blogs">
-            <h1 class="title is-3" style="margin-bottom: 1ex; margin-top: 60px;" id="blogs-title">Blogs</h1>
-            <div></div>
-          </div>
-        </section>`;
-            root.appendChild(container);
-            updateElement('#blogs-title', webContent.blogs_title);
-            const contentDiv = container.querySelector('#blogs').children[1];
-            if (list.length === 0) {
-                contentDiv.innerHTML = '<p>No blog posts yet.</p>';
-            } else {
-                list.forEach(blog => {
-                    const blogContainer = document.createElement('div');
-                    blogContainer.className = 'paper-container';
-                    let linksHtml = '';
-                    if (blog.links && blog.links.length > 0) {
-                        linksHtml = blog.links.map(link => `<a href="${link.url}" target="_blank" rel="noopener noreferrer" class="paper-link" style="margin-right: 10px;">[${link.type}]</a>`).join('');
-                    }
-                    const imageHtml = blog.image ? `<img src="${blog.image}" alt="${blog.title}" class="paper-image">` : `<div class=\"paper-image\" style=\"background: #f0f0f0; display: flex; align-items: center; justify-content: center; height: 150px; color: #666;\">No Image</div>`;
-                    blogContainer.innerHTML = `
-            ${imageHtml}
-            <div class="paper-content">
-              <h2 class="paper-title" style="display: flex; justify-content: space-between; align-items: center;">
-                ${blog.title}
-                <span style="margin-left: auto; font-size: 16px; color: #666;">${blog.date}</span>
-              </h2>
-              <p class="paper-description blog-description">${blog.content}</p>
-              <div>${linksHtml}</div>
-            </div>`;
-                    contentDiv.appendChild(blogContainer);
-                });
+                root.appendChild(container);
+
+                // 更新标题
+                updateElement(`#${page}-title`, webContent[section.titleKey]);
+
+                const sectionRoot = container.querySelector(`#${page}`);
+                const contentDiv = sectionRoot.querySelector('.mp-list');
+                if (!contentDiv) {
+                    console.warn(`Missing content container for section ${page}`);
+                    return;
+                }
+
+                // 应用插件（多页模式）
+                if (window.PluginRegistry && multiPageConfig.plugins) {
+                    window.PluginRegistry.applyPlugins({
+                        id: page,
+                        plugins: multiPageConfig.plugins
+                    }, sectionRoot, listData, webContent);
+                }
+
+                // 渲染内容
+                drawList(listData, section, contentDiv);
             }
+        }
+    }
+
+    function drawList(list, section, contentDiv) {
+        if (!contentDiv) return;
+        contentDiv.innerHTML = '';
+        const type = section.itemType;
+        const templateName = (metaConfig && metaConfig.itemTypes && metaConfig.itemTypes[type] && metaConfig.itemTypes[type].template) || (type === 'news' ? 'list-inline' : 'paper-card');
+        const renderer = (window.TemplateRegistry && window.TemplateRegistry.get(templateName));
+        if (renderer) {
+            renderer(list, section, contentDiv);
         }
     }
 

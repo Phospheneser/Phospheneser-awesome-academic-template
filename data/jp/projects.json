@@ -1,45 +1,15 @@
 {
   "projects": [
     {
-      "title": "RMシリーズ全自動照準コード",
-      "date": "2024.10-2024.12",
-      "authors": "<strong>徐 哲</strong>, 石 青雲, 蘇 城",
-      "description": "復旦大学RMチームEGA向けの全シリーズ自動照準コード。自動照準、予測、弾道補正を含み、<a href=\"https://github.com/HHgzs/TJURM-2024\">TJURM-2024</a> フレームワークを基に開発。最終的に当年の上海大会で1v1チャンピオンを獲得し、3v3血戦交龍ではベスト8進出後、非A級チームの中で1等賞を受賞。",
-      "image": "./media/ega.jpg",
+      "title": "プレースホルダーのプロジェクト",
+      "date": "2025.01",
+      "authors": "貢献者A, 貢献者B",
+      "description": "プロジェクトのプレースホルダー説明です。",
       "links": [
-        {"type": "ビリビリ", "url": "https://www.bilibili.com/video/BV12nZqYTERh/?spm_id_from=333.337.search-card.all.click"}
-      ]
-    },
-    {
-      "title": "LaCSR5：CSR5に基づく効率的なSpMV最適化",
-      "date": "2023.3-2023.9",
-      "authors": "<strong>徐 哲</strong>, 項 強, 銭 逸雲",
-      "description": "全国大学生計算機システム能力大会（オペレーティングシステム部門・機能チャレンジ）において、復旦大学の「これはチームだ」として参戦。LaCSR5-SpMVアルゴリズムを提案・実装し、龍芯3A5000向けにCSR5形式の疎行列ベクトル乗算を最適化。SIMD命令とマルチコア特性を活用し、23種類の疎行列で最大2.78倍の性能向上を達成。2等賞を受賞。",
-      "image": "./media/lacsr5.png",
-      "links": [
-        {"type": "プロジェクト文書", "url": "./media/TEAM.pdf"}
-      ]
-    },
-    {
-      "title": "ESP32とArduinoによるゲーム機開発",
-      "date": "2022.2-2022.3",
-      "authors": "黎 林, <strong>徐 哲</strong>",
-      "description": "ESP32とArduinoを用いたゲーム機。C言語で開発。デバイスと基板のはんだ付け、アクリルケースの設計に参加し、基板内ゲームプログラムの作成と書き込みを担当。8ボタンの簡易ゲーム機を完成させ、開発過程の説明書も共同執筆。その後、青志チームの簡易教育プロジェクトとして活用された。",
-      "image": "./media/ESP32.png",
-      "links": [
-        {"type": "OSHWHub", "url": "https://oshwhub.com/leannn/D0IV1JosLJSk4pbjqsTowlDQUOFQPWPc"},
-        {"type": "コード", "url": "https://github.com/Fudan-EGA/DisPlay/tree/dev?tab=readme-ov-file"}
-      ]
-    },
-    {
-      "title": "忘れられた詩：RPG独立探索ゲーム",
-      "date": "2021.10-2021.12",
-      "authors": "Hongdou, <strong>Zhe Xu</strong>, Kari.ah, 1nk, Jones",
-      "description": "Unityエンジンを使用し、C#言語で開発したRPG独立探索・ステージ攻略ゲーム。創造的なレベルデザイン。",
-      "image": "./media/ywzs.jpg",
-      "links": [
-        {"type": "bilibili", "url": "https://www.bilibili.com/video/BV1j44y1J784/?spm_id_from=333.337.search-card.all.click&vd_source=f1bbb79261d269b6cf918fcc7970de4c"},
-        {"type": "ダウンロードアドレス", "url": "https://pan.baidu.com/s/1mxoXLqZGeKSduD5YUDr2-Q "}
+        {
+          "type": "リポジトリ",
+          "url": "#"
+        }
       ]
     }
   ]

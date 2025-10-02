@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Zhe Xu - Homepage</title>
+  <title>Academic Template</title>
 
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-R2ZLMKHR2E"></script>
@@ -17,6 +17,7 @@
   </script>
 
   <script>
+    let metaConfig = null;
     function loadWordCloud() {
       const traits = [
         ["Leader", 30],
@@ -75,6 +76,8 @@
   <script src="./static/js/bulma-carousel.min.js"></script>
   <script src="./static/js/bulma-slider.min.js"></script>
   <script src="./static/js/index.js"></script>
+  <script src="./static/js/templates.js"></script>
+  <script src="./static/js/plugins.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/wordcloud2.js/1.0.6/wordcloud2.min.js"></script>
   <script src="https://www.goat1000.com/tagcanvas.min.js"></script>
   <style>
@@ -115,21 +118,6 @@
 
       <div id="top-navbar" class="navbar-menu">
         <div class="navbar-end">
-          <a class="navbar-item" href="#about" id="navbar-about">
-            About Me
-          </a>
-          <a class="navbar-item" href="#news" id="navbar-news">
-            News
-          </a>
-          <a class="navbar-item" href="#publications" id="navbar-publications">
-            Publications
-          </a>
-          <a class="navbar-item" href="#projects" id="navbar-projects">
-            Projects
-          </a>
-          <a class="navbar-item" href="#blogs" id="navbar-blogs">
-            Blogs
-          </a>
           <div class="navbar-item has-dropdown" id="language-dropdown">
             <a class="navbar-link" id="navbar-language"><span id="lang-label">
                 Language </span><i class="fas fa-chevron-left lang-arrow"></i>
@@ -196,75 +184,7 @@
   </div>
 
 
-  <section class="section" name="sec-intro">
-    <div class="container is-max-desktop">
-      <div id="about">
-        <h1 class="title is-3" id="about-title" style="margin-top: 60px;">🎄 About Me</h1>
-      </div>
-      <div>
-        <p class="text-homepage-1" id="about-text1"></p>
-        <p class="text-homepage-1" id="about-text2"></p>
-      </div>
-    </div>
-
-  </section>
-
-  <section class="section" name="sec-news">
-    <div class="container is-max-desktop">
-      <div id="news">
-        <h1 class="title is-3" style="margin-bottom: 1ex; margin-top: 60px;" id="news-title">🔥 News</h1>
-        <div>
-          <!-- 新闻内容将动态生成 -->
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="section" name="sec-publications">
-    <div class="container is-max-desktop">
-      <div id="publications">
-        <h1 class="title is-3" style="margin-bottom: 1ex; margin-top: 60px;" id="publications-title">📑 Publications
-        </h1>
-        <div>
-          <!-- 出版物内容将动态生成 -->
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="section" name="sec-projects">
-    <div class="container is-max-desktop">
-      <div id="projects">
-        <h1 class="title is-3" id="projects-title" style="margin-top: 60px;">⚙️ Projects</h1>
-        <div>
-          <!-- 项目内容将动态生成 -->
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="section">
-    <div class="container is-max-desktop">
-      <div id="academic-service">
-        <h1 class="title is-3" style="margin-bottom: 1em; margin-top: 60px;" id="academic-service-title">Academic
-          Service</h1>
-        <div>
-          <!-- 学术服务内容将动态生成 -->
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="blogs">
-    <div class="container is-max-desktop">
-      <div id="blogs">
-        <h1 class="title is-3" style="margin-bottom: 1ex; margin-top: 60px;" id="blogs-title">Blogs</h1>
-        <div>
-          <!-- 博客内容将动态生成 -->
-        </div>
-      </div>
-    </div>
-  </section>
+  <div id="meta-sections-root"></div>
 
 
   <footer class="footer">
@@ -291,7 +211,7 @@
 
 <script>
   let currentLang = localStorage.getItem('lang') || 'en';
-  let availableLanguages = ['en', 'zh', 'jp']; // 直接定义可用语言列表
+  let availableLanguages = ['en', 'zh', 'jp']; // 将在元配置加载后被覆盖
   // 根据当前页面和localStorage确定布局模式
   function getInitialLayoutMode() {
     const stored = localStorage.getItem('layoutMode');
@@ -312,6 +232,43 @@
       top: 0,
       behavior: 'smooth'
     })
+  }
+
+  async function loadMeta() {
+    try {
+      const res = await fetch(`data/meta.json`);
+      metaConfig = await res.json();
+      if (Array.isArray(metaConfig.availableLanguages)) {
+        availableLanguages = metaConfig.availableLanguages;
+      }
+    } catch (e) { console.error('Failed to load meta.json', e); }
+  }
+
+  function applyMetaVisibility() {
+    if (!metaConfig || !Array.isArray(metaConfig.sections)) return;
+    metaConfig.sections.forEach(sec => {
+      const navEl = document.querySelector(`#navbar-${sec.id.replace(/_/g, '-')}`) || document.querySelector(`#navbar-${sec.id}`);
+      if (navEl) navEl.style.display = sec.enabled ? '' : 'none';
+      const sectionEl = document.querySelector(`#${sec.id}`);
+      if (sectionEl && sectionEl.parentElement && sectionEl.parentElement.closest('section')) {
+        sectionEl.parentElement.closest('section').style.display = sec.enabled ? '' : 'none';
+      }
+    });
+  }
+
+  function generateSocials(socials) {
+    const box = document.querySelector('.icon-box');
+    if (!box) return;
+    box.innerHTML = '';
+    (socials || []).forEach(s => {
+      const a = document.createElement('a');
+      a.href = s.url || '#';
+      a.target = '_blank';
+      const i = document.createElement('i');
+      i.className = s.icon || 'fas fa-link';
+      a.appendChild(i);
+      box.appendChild(a);
+    });
   }
 
   async function loadContent(lang = currentLang) {
@@ -346,6 +303,7 @@
     const wordcloudList = wordcloud.wordcloud || [];
 
     // 更新导航栏
+    generateNavFromMeta(webContent);
     updateElement('#navbar-title', webContent.navbar_title);
     updateElement('#navbar-home', webContent.navbar_home);
     updateElement('#navbar-about', webContent.navbar_about);
@@ -353,6 +311,7 @@
     updateElement('#navbar-publications', webContent.navbar_publications);
     updateElement('#navbar-projects', webContent.navbar_projects);
     updateElement('#navbar-blogs', webContent.navbar_blogs);
+    updateElement('#navbar-academic-service', webContent.navbar_academic_service);
     // updateElement('#navbar-language', webContent.language);
     document.getElementById('lang-label').textContent = webContent.language;
 
@@ -360,14 +319,22 @@
     // 动态生成语言切换按钮
     generateLanguageButtons(webContent);
 
+    // 元配置：头像与社交
+    if (metaConfig && metaConfig.home && metaConfig.home.avatar) {
+      const avatar = document.querySelector('#background-container img.is-rounded');
+      if (avatar) avatar.src = metaConfig.home.avatar;
+    }
+    if (metaConfig && Array.isArray(metaConfig.socials)) {
+      generateSocials(metaConfig.socials);
+    }
+
     // 更新标题和副标题
     updateElement('#main-title', webContent.title);
     updateElement('#main-subtitle', webContent.subtitle);
 
     // 更新 About 部分
     updateElement('#about-title', webContent.about_title);
-    updateElement('#about-text1', webContent.about_text1);
-    updateElement('#about-text2', webContent.about_text2);
+    renderTextList('#about-texts', webContent.about_texts);
 
     // 更新其他部分标题
     updateElement('#news-title', webContent.news_title);
@@ -376,23 +343,20 @@
     updateElement('#academic-service-title', webContent.academic_service_title);
     updateElement('#blogs-title', webContent.blogs_title);
 
+    // 通用渲染：按 meta.sections 定义渲染数据
+    renderSections({
+      news: newsList,
+      publications: publicationsList,
+      projects: projectsList,
+      blogs: blogsList,
+      academicService: academicServiceList
+    }, webContent);
+
     // 更新页脚
     updateElement('#footer-text', webContent.footer);
 
-    // 动态生成新闻
-    generateNews(newsList);
-
-    // 动态生成出版物
-    generatePublications(publicationsList);
-
-    // 动态生成项目
-    generateProjects(projectsList);
-
-    // 动态生成学术服务
-    generateAcademicService(academicServiceList);
-
-    // 动态生成博客
-    generateBlogs(blogsList);
+    // 按元配置控制导航与区块显示
+    applyMetaVisibility();
 
     // 动态生成卡片
     generateCards(cardsList);
@@ -408,10 +372,110 @@
       generateWordCloud(wordcloudList);
     }, 100);
   }
+  function ensureSearchBar(sectionRoot) {
+    if (!sectionRoot) return;
+    if (sectionRoot.querySelector('.meta-search')) return;
+    const bar = document.createElement('input');
+    bar.className = 'input meta-search';
+    bar.placeholder = 'Search...';
+    bar.style.margin = '10px 0 20px 0';
+    sectionRoot.insertBefore(bar, sectionRoot.children[1] || null);
+    return bar;
+  }
+
+  function renderSections(datasetByKey, webContent) {
+    if (!metaConfig || !Array.isArray(metaConfig.sections)) return;
+    ensureSectionSkeleton(metaConfig.sections, webContent);
+    metaConfig.sections.forEach(section => {
+      if (!section.enabled) return;
+
+      // 获取单页模式配置
+      const singlePageConfig = section.singlePage;
+      if (!singlePageConfig || !singlePageConfig.enabled) return;
+
+      const container = document.querySelector(`#${section.id}`);
+      if (!container) return;
+      let listData = [];
+      if (section.dataSource === 'news') listData = datasetByKey.news;
+      if (section.dataSource === 'publications') listData = datasetByKey.publications;
+      if (section.dataSource === 'projects') listData = datasetByKey.projects;
+      if (section.dataSource === 'blogs') listData = datasetByKey.blogs;
+      // academic service 暂保持原逻辑
+      const contentDiv = container.children[1];
+      if (!contentDiv) return;
+      if (!Array.isArray(listData)) return;
+
+      // 单页模式不应用插件（搜索、排序等）
+      drawList(listData, section, contentDiv);
+    });
+  }
+
+  function drawList(list, section, contentDiv) {
+    contentDiv.innerHTML = '';
+    const type = section.itemType;
+    const templateName = (metaConfig && metaConfig.itemTypes && metaConfig.itemTypes[type] && metaConfig.itemTypes[type].template) || (type === 'news' ? 'list-inline' : 'paper-card');
+    const renderer = (window.TemplateRegistry && window.TemplateRegistry.get(templateName));
+    if (renderer) {
+      renderer(list, section, contentDiv);
+    }
+  }
+
+  function ensureSectionSkeleton(sections, webContent) {
+    const root = document.getElementById('meta-sections-root');
+    if (!root) return;
+    root.innerHTML = '';
+    sections.forEach(sec => {
+      if (!sec.enabled) return;
+      // about 特例：只用文案，不渲染列表
+      if (sec.id === 'about') {
+        const wrap = document.createElement('section');
+        wrap.className = 'section';
+      wrap.innerHTML = `
+          <div class="container is-max-desktop">
+            <div id="about">
+              <h1 class="title is-3" id="about-title" style="margin-top: 60px;"></h1>
+            </div>
+            <div id="about-texts" class="about-texts"></div>
+          </div>`;
+      root.appendChild(wrap);
+      updateElement('#about-title', webContent.about_title || 'About');
+      renderTextList('#about-texts', webContent.about_texts || []);
+      return;
+      }
+      const wrap = document.createElement('section');
+      wrap.className = sec.id === 'blogs' ? 'blogs' : 'section';
+      wrap.innerHTML = `
+        <div class="container is-max-desktop">
+          <div id="${sec.id}">
+            <h1 class="title is-3" id="${sec.id}-title" style="margin-top: 60px;"></h1>
+            <div></div>
+          </div>
+        </div>`;
+      root.appendChild(wrap);
+      if (sec.titleKey && webContent[sec.titleKey]) {
+        updateElement(`#${sec.id}-title`, webContent[sec.titleKey]);
+      }
+    });
+  }
 
   function updateElement(selector, html) {
+    if (html === undefined || html === null) return;
     const element = document.querySelector(selector);
     if (element) element.innerHTML = html;
+  }
+
+  function renderTextList(selector, texts) {
+    const container = document.querySelector(selector);
+    if (!container) return;
+    container.innerHTML = '';
+    if (!Array.isArray(texts)) return;
+    texts.forEach((text, idx) => {
+      const p = document.createElement('p');
+      p.className = 'text-homepage-1';
+      p.innerHTML = text;
+      p.dataset.index = idx;
+      container.appendChild(p);
+    });
   }
 
   function generateLanguageButtons(webContent) {
@@ -441,6 +505,28 @@
     if (langDropdown && wasOpen) {
       langDropdown.classList.add('is-active');
     }
+  }
+
+  function generateNavFromMeta(webContent) {
+    if (!metaConfig || !Array.isArray(metaConfig.sections)) return;
+    const navbarEnd = document.querySelector('.navbar-end');
+    if (!navbarEnd) return;
+    // 清理旧的导航项（除语言选择）
+    const items = Array.from(navbarEnd.querySelectorAll('.navbar-item'));
+    items.forEach(el => {
+      if (!el.closest('#language-dropdown')) el.remove();
+    });
+    // 按 sections 生成
+    metaConfig.sections.forEach(sec => {
+      if (!sec.enabled) return;
+      const a = document.createElement('a');
+      a.className = 'navbar-item';
+      a.id = `navbar-${sec.id}`;
+      a.href = `#${sec.id}`;
+      const label = (webContent && sec.navLabelKey && webContent[sec.navLabelKey]) ? webContent[sec.navLabelKey] : sec.id;
+      a.innerHTML = label;
+      navbarEnd.insertBefore(a, document.getElementById('language-dropdown'));
+    });
   }
 
   function generateNews(newsList) {
@@ -925,7 +1011,7 @@
 
     function toggleLayoutMode() {
       const oldMode = layoutMode;
-      layoutMode = layoutMode = 'multi';
+      layoutMode = 'multi';
       localStorage.setItem('layoutMode', layoutMode);
       updateLayoutButton();
 
@@ -1103,7 +1189,7 @@
   }
 
   document.addEventListener('DOMContentLoaded', () => {
-    loadContent();
+    (async () => { await loadMeta(); await loadContent(); })();
 
     // 检查是否需要滚动到顶部
     const urlParams = new URLSearchParams(window.location.search);

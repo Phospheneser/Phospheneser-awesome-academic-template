@@ -1,56 +1,16 @@
 {
   "publications": [
     {
-      "title": "SpeechGPT 2.0 - プレビュー版",
-      "conference": "<a href='https://www.open-moss.com/jp/'>OpenMOSS</a>",
-      "authors": "<strong>OpenMOSS Team</strong>",
-      "description": "SpeechGPT 2.0-previewは、コンテキストインテリジェンスに向けた最初の擬人化リアルタイム対話システムです。数百万時間の音声データで学習したエンドツーエンドの音声大規模モデルとして、擬人化された話し言葉表現と100ミリ秒未満の低遅延応答を特徴とし、自然で流暢なリアルタイム割り込み対話をサポートします。",
+      "title": "プレースホルダーのタイトル",
+      "conference": "プレースホルダーの会議",
+      "authors": "著者A, 著者B",
+      "description": "論文のプレースホルダー説明です。",
       "links": [
         {
-          "type": "ブログ",
-          "url": "https://www.open-moss.com/jp/speechgpt2-preview/"
-        },
-        {
-          "type": "コード",
-          "url": "https://github.com/OpenMOSS/SpeechGPT-2.0-preview"
+          "type": "論文",
+          "url": "#"
         }
-      ],
-      "image": "./media/sgpt2p.png"
-    },
-    {
-      "title": "VLABench: 言語条件付きロボット操作における長期推論課題のための大規模ベンチマーク",
-      "conference": "CVPR'25（全体のうち 1/19 採択）, ICCV'25",
-      "authors": "Shiduo Zhang, <strong>Zhe Xu</strong>, Peiju Liu, Xiaopeng Yu, Yuan Li, Qinghui Gao, Zhaoye Fei, Zhangyue Yin, Zuxuan Wu, Yu-Gang Jiang & Xipeng Qiu",
-      "description": "VLAのための初のベンチマーク。評価だけでなく、定義そのものが最も重要であることを示す。",
-      "links": [
-        {"type": "論文", "url": "https://arxiv.org/abs/2412.18194"},
-        {"type": "プロジェクトページ", "url": "https://vlabench.github.io/"},
-        {"type": "コード", "url": "https://github.com/OpenMOSS/VLABench"}
-      ],
-      "image": "./media/main_page.jpg"
-    },
-    {
-      "title": "LongSafety: 長文脈LLMの安全性を強化する",
-      "authors": "Mianqiu Huang, Xiaoran Liu, Shaojun Zhou, Mozhi Zhang, Chenkun Tan, Pengyu Wang, Qipeng Guo, <strong>Zhe Xu</strong>, Linyang Li, Zhikai Lei, Linlin Li, Qun Liu, Yaqian Zhou, Xipeng Qiu, Xuanjing Huang",
-      "description": "本論文はLongSafetyを紹介する。これは長文脈LLM向けに設計された安全性アラインメントデータセット（8つのタスク、約17Kサンプル、平均40.9Kトークン）とベンチマークLongSafetyBenchを含み、これを用いたファインチューニングが汎用能力を損なうことなく長文脈での安全性を改善することを示す。",
-      "links": [
-        {"type": "論文", "url": "https://arxiv.org/abs/2411.06899v1"},
-        {"type": "Hugging Face", "url": "https://huggingface.co/datasets/LutherXD/LongSafetyBench"},
-        {"type": "コード", "url": "https://github.com/OpenMOSS/LongSafety"}
-      ],
-      "image": "./media/LSB.jpg"
-    },
-    {
-      "title": "DetectiveQA: 推理小説に基づく長文脈推論の評価",
-      "conference": "ICLR2025",
-      "authors": "<strong>Zhe Xu</strong>, Jiasheng Ye, Xiaoran Liu, Xiangyang Liu, Tianxiang Sun, Zhigeng Liu, Qipeng Guo, Linlin Li, Qun Liu, Xuanjing Huang, Xipeng Qiu",
-      "description": "DetectiveQAは探偵小説に基づく長文脈叙述推論ベンチマークであり、平均10万トークン以上の文脈を含み、1,200件の中英質問応答ペアと詳細な推論チェーンを提供する。長文読解、証拠抽出、推論におけるLLMの能力を評価することを目的とし、現行の長文脈LLMが真に全コンテキスト依存の推論課題において依然として大きな課題を抱えていることを示している。",
-      "links": [
-        {"type": "論文", "url": "https://arxiv.org/abs/2409.02465"},
-        {"type": "コード", "url": "https://github.com/Phospheneser/DetectiveQA"},
-        {"type": "Hugging Face", "url": "https://huggingface.co/datasets/Phospheneser/DetectiveQA"}
-      ],
-      "image": "./media/detectiveqa.jpg"
+      ]
     }
   ]
 }

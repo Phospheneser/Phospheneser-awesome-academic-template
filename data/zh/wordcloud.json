@@ -1,20 +1,16 @@
 {
   "wordcloud": [
-    {"text": "领导者", "weight": 30, "title": "优秀的团队领导者"},
-    {"text": "导师", "weight": 15},
-    {"text": "连接者", "weight": 25},
-    {"text": "聪明", "weight": 15},
-    {"text": "成熟", "weight": 20},
-    {"text": "影响力驱动", "weight": 40},
-    {"text": "韧性", "weight": 30},
-    {"text": "热情", "weight": 20},
-    {"text": "忠诚", "weight": 30},
-    {"text": "自信", "weight": 20},
-    {"text": "创新", "weight": 15},
-    {"text": "质疑者", "weight": 30},
-    {"text": "洞察力", "weight": 40},
-    {"text": "远见者", "weight": 20},
-    {"text": "情绪稳定", "weight": 25},
-    {"text": "大胆尝试", "weight": 30}
+    {
+      "text": "创新",
+      "weight": 30
+    },
+    {
+      "text": "严谨",
+      "weight": 20
+    },
+    {
+      "text": "开放",
+      "weight": 25
+    }
   ]
 }

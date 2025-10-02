@@ -120,6 +120,27 @@ body {
   /* 仅 html 滚动 */
 }
 
+.mp-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 10px 0 20px;
+  align-items: center;
+}
+
+.mp-control {
+  display: flex;
+  align-items: center;
+}
+
+.mp-control .input {
+  min-width: 220px;
+}
+
+.mp-control.select select {
+  min-width: 180px;
+}
+
 
 .footer .icon-link {
   font-size: 25px;

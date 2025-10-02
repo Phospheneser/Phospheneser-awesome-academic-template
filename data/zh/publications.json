@@ -1,56 +1,16 @@
 {
   "publications": [
     {
-      "title": "SpeechGPT 2.0-预览版",
-      "conference": "<a href='https://www.open-moss.com/cn/'>OpenMOSS</a>",
-      "authors": "<strong>OpenMOSS Team</strong>",
-      "description": "SpeechGPT 2.0-preview 是我们在迈向情景智能推出的第一个拟人化实时交互系统。作为在百万小时级语音数据上训练的端到端语音大模型，它具有拟人口语化表达与百毫秒级低延迟响应，支持自然流畅的实时打断交互。",
+      "title": "占位标题",
+      "conference": "占位会议",
+      "authors": "作者甲, 作者乙",
+      "description": "这里是论文的占位描述。",
       "links": [
         {
-          "type": "博客",
-          "url": "https://www.open-moss.com/cn/speechgpt2-preview/"
-        },
-        {
-          "type": "代码",
-          "url": "https://github.com/OpenMOSS/SpeechGPT-2.0-preview"
+          "type": "论文",
+          "url": "#"
         }
-      ],
-      "image": "./media/sgpt2p.png"
-    },
-    {
-      "title": "VLABench：一个用于语言条件机器人操纵的长程推理任务的大规模基准",
-      "conference": "CVPR'25 (But 1 of 19),ICCV'25",
-      "authors": "Shiduo Zhang, <strong>Zhe Xu</strong>, Peiju Liu, Xiaopeng Yu, Yuan Li, Qinghui Gao, Zhaoye Fei, Zhangyue Yin, Zuxuan Wu, Yu-Gang Jiang & Xipeng Qiu",
-      "description": "\"VLA 的第一个基准。不仅用于评估，定义最重要。\"",
-      "links": [
-        {"type": "论文", "url": "https://arxiv.org/abs/2412.18194"},
-        {"type": "项目页面", "url": "https://vlabench.github.io/"},
-        {"type": "代码", "url": "https://github.com/OpenMOSS/VLABench"}
-      ],
-      "image": "./media/main_page.jpg"
-    },
-    {
-      "title": "LongSafetyBench: 长上下文大语言模型安全问题严重",
-      "authors": "Mianqiu Huang, Xiaoran Liu, Shaojun Zhou, Mozhi Zhang, Chenkun Tan, Pengyu Wang, Qipeng Guo, <strong>Zhe Xu</strong>, Linyang Li, Zhikai Lei, Linlin Li, Qun Liu, Yaqian Zhou, Xipeng Qiu, Xuanjing Huang",
-      "description": "一个专门用于长上下文安全对齐的数据集（8 个任务，约 17K 样本，平均 40.9K 令牌）和对应的评测基准 LongSafetyBench，实验证明在长上下文中进行安全微调可提升模型的安全性而不损失其通用能力。",
-      "links": [
-        {"type": "论文", "url": "https://arxiv.org/abs/2411.06899v1"},
-        {"type": "Hugging Face", "url": "https://huggingface.co/datasets/LutherXD/LongSafetyBench"},
-        {"type": "代码", "url": "https://github.com/OpenMOSS/LongSafety"}
-      ],
-      "image": "./media/LSB.jpg"
-    },
-    {
-      "title": "DetectiveQA: 在侦探小说中进行长上下文推理的评估基准",
-      "conference": "ICLR2025",
-      "authors": "<strong>Zhe Xu</strong>, Jiasheng Ye, Xiaoran Liu, Xiangyang Liu, Tianxiang Sun, Zhigeng Liu, Qipeng Guo, Linlin Li, Qun Liu, Xuanjing Huang, Xipeng Qiu",
-      "description": "这篇论文提出 <strong>DetectiveQA</strong> —— 一个以侦探小说为背景的长上下文叙述推理基准（平均上下文长度超 100K 令牌，含 1200 个中英问题与推理步骤标注），用于评估 LLM 在理解长篇文本、提取证据和按证据推理中表现出的能力，并发现现有模型在真正依赖长上下文的推理任务上仍有显著不足。",
-      "links": [
-        {"type": "论文", "url": "https://arxiv.org/abs/2409.02465"},
-        {"type": "代码", "url": "https://github.com/Phospheneser/DetectiveQA"},
-        {"type": "Hugging Face", "url": "https://huggingface.co/datasets/Phospheneser/DetectiveQA"}
-      ],
-      "image": "./media/detectiveqa.jpg"
+      ]
     }
   ]
 }

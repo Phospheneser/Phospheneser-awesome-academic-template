@@ -1,45 +1,15 @@
 {
   "projects": [
     {
-      "title": "RM Full-Series Auto-Aiming Code",
-      "date": "2024.10-2024.12",
-      "authors": "<strong>Zhe Xu</strong>, Qingyun Shi, Cheng Su",
-      "description": "Full-series auto-aiming code for Fudan University RM Team EGA, including auto-aiming, prediction, and ballistic compensation, developed based on the <a href=\"https://github.com/HHgzs/TJURM-2024\">TJURM-2024</a> framework. The team eventually won the 1v1 Championship at the Shanghai Regional that year, and secured the First Prize among non-top-tier teams in the 3v3 Battle Tournament after reaching the quarterfinals.",
-      "image": "./media/ega.jpg",
+      "title": "Placeholder Project",
+      "date": "2025.01",
+      "authors": "Contributor A, Contributor B",
+      "description": "Placeholder description for a project.",
       "links": [
-        {"type": "Bilibili", "url": "https://www.bilibili.com/video/BV12nZqYTERh/?spm_id_from=333.337.search-card.all.click"}
-      ]
-    },
-    {
-      "title": "LaCSR5: Efficient SpMV Optimization Based on CSR5",
-      "date": "2023.3-2023.9",
-      "authors": "<strong>Zhe Xu</strong>, Qiang Xiang, Yiyun Qian",
-      "description": "In the National Collegiate Computer Systems Ability Competition (Operating System Track – OS Function Challenge), the team, representing Fudan University as 'This is a Team', proposed and implemented the LaCSR5-SpMV algorithm. The project optimized CSR5-based Sparse Matrix-Vector Multiplication for the Loongson 3A5000 architecture, leveraging SIMD instructions and multi-core features. Tested on 23 sparse matrices, the algorithm achieved up to 2.78× performance improvement. Awarded Second Prize.",
-      "image": "./media/lacsr5.png",
-      "links": [
-        {"type": "Project Document", "url": "./media/TEAM.pdf"}
-      ]
-    },
-    {
-      "title": "Game Console Development Based on ESP32 and Arduino",
-      "date": "2022.2-2022.3",
-      "authors": "Lin Li, <strong>Zhe Xu</strong>",
-      "description": "A game console developed using ESP32 and Arduino, programmed in C. Contributed to soldering components and designing the acrylic case, wrote and flashed onboard game programs, successfully completed an 8-button simple game console, and co-authored the development process documentation. Later became a simplified teaching project for the Youth Volunteer Team.",
-      "image": "./media/ESP32.png",
-      "links": [
-        {"type": "OSHWHub", "url": "https://oshwhub.com/leannn/D0IV1JosLJSk4pbjqsTowlDQUOFQPWPc"},
-        {"type": "Code", "url": "https://github.com/Fudan-EGA/DisPlay/tree/dev?tab=readme-ov-file"}
-      ]
-    },
-    {
-      "title": "forgoten poem: RPG independent exploration game",
-      "date": "2021.10-2021.12",
-      "authors": "RedBean, <strong>Zhe Xu</strong>, Kari.ah, 1nk, Jones",
-      "description": "An RPG independent exploration闯关游戏， using Unity engine, using C# language. Creative level design",
-      "image": "./media/ywzs.jpg",
-      "links": [
-        {"type": "Bilibili", "url": "https://www.bilibili.com/video/BV1j44y1J784/?spm_id_from=333.337.search-card.all.click&vd_source=f1bbb79261d269b6cf918fcc7970de4c"},
-        {"type": "Download Address", "url": "https://pan.baidu.com/s/1mxoXLqZGeKSduD5YUDr2-Q "}
+        {
+          "type": "Repo",
+          "url": "#"
+        }
       ]
     }
   ]
