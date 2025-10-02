@@ -135,3 +135,4 @@
 
     global.PluginRegistry = PluginRegistry;
 })(window);
+
