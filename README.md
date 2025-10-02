@@ -1,130 +1,97 @@
 # Academic Template
 
-A configuration-first academic homepage template with dynamic sections, template registry, and plugin support.
+A configuration-first academic homepage template with unified section rendering, multi-language data, and plugin extensions.
 
 [中文文档](README_ZH.md)
 
 ## ✨ Features
-
-- 🎯 **Configuration-Driven** – Manage navigation, sections, and content types via JSON files.
-- 🧩 **Template Registry** – Extend rendering logic with custom templates (`static/js/templates.js`).
-- 🔌 **Plugin System** – Ship search/sort plugins or register your own (`static/js/plugins.js`).
-- 🌍 **Multi-language** – Per-language data folders with shared metadata for language labels.
-- 📱 **Responsive** – Built on Bulma; optimized for desktop, tablet, and mobile.
-- 🎨 **Theme Friendly** – Global theme settings in `data/meta.json`.
+- 🎯 **Config Driven** – Navigation, sections, and content live in JSON; no HTML edits for day-to-day updates.
+- 🧱 **Unified Layout** – All sections (except About) use the same paragraph-based renderer for consistent typography.
+- 🔌 **Plugin Ready** – Search/sort plugins are bundled via `static/js/plugins.js`; register your own with a single call.
+- 🌍 **Multi-language** – Per-language folders keep localized content while sharing the same metadata.
+- 📱 **Responsive** – Bulma-based layout tuned for desktop, tablet, and mobile.
+- 🎨 **Theming** – Configure backgrounds, hero avatar, socials, and theme colors in `data/meta.json`.
 
 ## 🚀 Quick Start
+1. **Clone & enter the project**
+   ```bash
+   git clone <your-repo-url>
+   cd academic-template
+   ```
+2. **Configure `data/meta.json`** – the global source of truth. Minimal sketch:
+   ```json
+   {
+     "defaultLanguage": "en",
+     "availableLanguages": ["en", "zh"],
+     "languageLabels": {"en": "English", "zh": "中文"},
+     "navbar": {"showLanguageDropdown": true},
+     "home": {"showHero": true, "avatar": "./media/personal.jpg"},
+     "backgrounds": {
+       "default": {"light": "./media/occupacy.jpg"}
+     },
+     "itemTypes": {
+       "news": {"requiredKeys": ["date", "content"]},
+       "publication": {"requiredKeys": ["title", "conference", "authors", "description", "links"]}
+     },
+     "sections": [
+       {
+         "id": "news",
+         "enabled": true,
+         "itemType": "news",
+         "dataSource": "news",
+         "background": "default",
+         "singlePage": {"enabled": true},
+         "multiPage": {"enabled": true, "plugins": ["search"]}
+       }
+     ],
+     "socials": [{"icon": "fab fa-github", "url": "https://github.com/your-name"}],
+     "emptyStates": {"news": "No news available."}
+   }
+   ```
+3. **Add per-language content** – each language uses `data/<lang>/`.
+   - `web_content.json` holds homepage copy (title, subtitle, footer, etc.).
+   - `<section>.json` mirrors the section `id`/`dataSource` in `meta.json`.
 
-### 1. Clone the Repository
-```bash
-git clone <your-repo-url>
-cd academic-template
-```
+   Example `data/en/news.json`:
+   ```json
+   {
+     "nav_label": "News",
+     "title": "🔥 News",
+     "news": [
+       {"date": "2025.01.01", "content": "Placeholder news item."}
+     ]
+   }
+   ```
 
-### 2. Configure Meta Information
-`data/meta.json` is the source of truth for global settings. Minimal example:
-```json
-{
-  "defaultLanguage": "en",
-  "availableLanguages": ["en", "zh", "jp"],
-  "languageLabels": {
-    "en": "English",
-    "zh": "中文",
-    "jp": "日本語"
-  },
-  "navbar": {
-    "showLanguageDropdown": true
-  },
-"home": {
-  "showHero": true,
-  "avatar": "./media/personal.jpg"
-},
-"backgrounds": {
-  "default": {
-    "light": "./media/occupacy.jpg",
-    "dark": "./media/occupacy_dark.jpg"
-  },
-  "news": {
-    "light": "./media/news_bg.jpg",
-    "dark": "./media/news_bg_dark.jpg"
-  }
-},
-"itemTypes": {
-  "news": {
-      "requiredKeys": ["date", "content"],
-      "template": "list-inline"
-    },
-    "publication": {
-      "requiredKeys": ["title", "conference", "authors", "description", "links"],
-      "template": "paper-card"
-    }
-  },
-  "sections": [
-    {
-      "id": "news",
-      "enabled": true,
-      "itemType": "news",
-      "dataSource": "news",
-      "background": "news",
-      "singlePage": {"enabled": true},
-      "multiPage": {"enabled": true, "plugins": ["search"]}
-    }
-  ],
-  "socials": [{"icon": "fab fa-github", "url": "https://github.com/your-name"}]
-}
-```
+   Example `data/en/about.json`:
+   ```json
+   {
+     "nav_label": "About Me",
+     "title": "🎄 About Me",
+     "texts": [
+       "<strong>About me placeholder:</strong> introduce yourself.",
+       "Add another paragraph with your interests or call-to-action."
+     ]
+   }
+   ```
+4. **Serve statically**
+   ```bash
+   python3 -m http.server 8000
+   # or
+   npx serve .
+   ```
+   Open `http://localhost:8000` (single-page) or `http://localhost:8000/multipage_index.html` (multi-page).
 
-### 3. Provide Content per Language
-Each language has its own folder under `data/<lang>/`.
-
-- `web_content.json` – homepage copy only (title, subtitle, footer, etc.).
-- `<section>.json` – each section keeps its navigation label, title, and payload.
-
-Example `data/en/news.json`:
-```json
-{
-  "nav_label": "News",
-  "title": "🔥 News",
-  "news": [
-    {"date": "2025.01.01", "content": "Placeholder news item."}
-  ]
-}
-```
-
-Example `data/en/about.json`:
-```json
-{
-  "nav_label": "About Me",
-  "title": "🎄 About Me",
-  "texts": [
-    "<strong>About me placeholder:</strong> introduce yourself.",
-    "Add another paragraph with your interests or call-to-action."
-  ]
-}
-```
-
-Other section files (`publications.json`, `projects.json`, `blogs.json`, `academic_service.json`) follow the same pattern: `nav_label`, `title`, and the section-specific array (`publications`, `projects`, `blogs`, `academic_service`, etc.).
-
-### 4. Run a Static Server
-```bash
-python3 -m http.server 8000
-# or
-npx serve .
-```
-Visit `http://localhost:8000` or `http://localhost:8000/multipage_index.html`.
-
-## 📖 Configuration Details
-
+## 🧩 Data & Rendering Model
 ### `data/meta.json`
-- **defaultLanguage / availableLanguages** – control the initial language and the language options.
-- **languageLabels** – shared human-readable names for language codes. UI always pulls labels from here.
-- **backgrounds** – declare reusable background sets (`light`/`dark`); sections reference them via `background` key.
-- *Tip*: the home page uses `backgrounds.home` when present, otherwise falls back to `backgrounds.default`.
-- **sections** – define enabled sections, their data sources, item types, backgrounds, and plugin usage.
-- **itemTypes** – map item types to template IDs (`static/js/templates.js`) and list required keys.
-- **themes / socials / home** – tweak theme colors, hero avatar, and social icons.
+- `availableLanguages` / `languageLabels` – configure language dropdown options.
+- `backgrounds` – reusable light/dark backgrounds; sections reference them via `background`.
+- `sections` – declarative section list with `id`, `dataSource`, `itemType`, backgrounds, and plugin usage.
+- `itemTypes` – optional checklist of expected fields per item type; handy for content QA.
+- `emptyStates` – per-section fallback text when a list has no items.
+- `themes`, `socials`, `home` – tweak palette, social icons, and hero avatar.
 
-### Section Data Contracts
+### Language Folders (`data/<lang>/`)
 Each section file must expose at least:
 ```json
 {
@@ -133,109 +100,41 @@ Each section file must expose at least:
   "<dataSource>": [ ... items ... ]
 }
 ```
-where `<dataSource>` matches `sections[].dataSource` in `meta.json`. For timeline-style sections you can use `items` instead.
+where `<dataSource>` matches `sections[].dataSource`. Omit a language file to hide the section for that locale.
 
-To assign a custom background to a page/section:
+### Unified Section Renderer
+`index.html` and `multipage_index.html` share the same text-first renderer:
+- **news** – `date` + `content`.
+- **publication** – `title`, `conference`, optional `date`, `authors`, `description`, `links`.
+- **project** – `title`, `date`, `authors`, `description`, `links`.
+- **blog** – `title`, `date`, `content`, `links`.
+- **timeline** – `title`, `org`, `date`, `description`.
 
-1. Add an entry under `backgrounds` in `data/meta.json` and provide `light`/`dark` image paths.
-2. Reference the background key in the section definition, e.g. `"background": "news"`.
-3. If omitted, the section (and home) fall back to the `default` background (`occupacy` images).
+Missing fields are skipped automatically. When no items exist, the renderer displays the localized `emptyStates` message.
 
-### Homepage Copy (`web_content.json`)
-```json
-{
-  "navbar_title": "Academic Template",
-  "navbar_home": "Home",
-  "language": "Language",
-  "title": "Add your homepage headline here.",
-  "subtitle": "Use this subtitle to share a short mission statement or tagline.",
-  "footer": "Powered by Academic Template"
-}
-```
-
-Only home-specific strings remain here; everything else lives in per-section files.
+### Background Tips
+1. Add images under `media/` (or any static directory).
+2. Register light/dark paths in `backgrounds`.
+3. Reference the key from the section definition. Home falls back to `backgrounds.home` → `backgrounds.default`.
 
 ## 🔧 Extending the Template
+### Add a Language
+1. Append the language code to `availableLanguages` and add a label under `languageLabels`.
+2. Create `data/<lang>/` with translated `web_content.json` and section files.
+3. Provide localized media if needed.
 
-### 1. Add a New Language
-1. Update `data/meta.json`:
-   - Append the language code to `availableLanguages`.
-   - Provide a label in `languageLabels` (e.g., `"de": "Deutsch"`).
-2. Create `data/<lang>/` folder with:
-   - `web_content.json` (homepage copy for the new language).
-   - `<section>.json` for each enabled section (copy an existing language file as a template).
-3. Add translated media if necessary.
+### Add a Section
+1. Describe the section in `meta.json.sections` (optionally add `emptyStates` text).
+2. Create `<lang>/<dataSource>.json` in every language folder.
+3. If you need new fields, adjust `renderEntryIntoBlock` in `index.html` / `multipage_index.html`.
 
-### 2. Add a New Section
-1. Register section in `data/meta.json`:
-```json
-{
-  "id": "education",
-  "enabled": true,
-  "itemType": "timeline",
-  "dataSource": "education",
-  "background": "education",
-  "singlePage": {"enabled": true},
-  "multiPage": {"enabled": true, "plugins": ["search"]}
-}
-```
-2. Define an item type if you need a new template:
-```json
-"itemTypes": {
-  "timeline": {
-    "requiredKeys": ["date", "title", "org", "description"],
-    "template": "timeline"
-  }
-}
-```
-3. For each language create `data/<lang>/education.json`:
-```json
-{
-  "nav_label": "Education",
-  "title": "🎓 Education",
-  "education": [
-    {"date": "2020–2024", "title": "BSc", "org": "University", "description": "Details"}
-  ]
-}
-```
-4. (Optional) Add a background preset in `data/meta.json.backgrounds` (e.g. `"education": {"light": "...", "dark": "..."}`).
-5. (Optional) Supply custom empty-state text in `meta.json.emptyStates` with the section id.
+### Customize Rendering or Plugins
+- Section layout lives inside `renderEntryIntoBlock` and helper functions; tailor them for bespoke markup.
+- Register plugins in `static/js/plugins.js` via `PluginRegistry.register` and add the plugin name to `multiPage.plugins`.
+- Tweak typography and spacing inside `static/css/index.css` (`.text-homepage-1`, `.section-text-block`, etc.).
 
-### 3. Customize Section Templates
-- Templates live in `static/js/templates.js`. Register a new template name and implement rendering.
-- Reference the template in `itemTypes[].template`.
-- Need extra behavior (filtering, sorting)? Register a plugin in `static/js/plugins.js` and list it under `sections[].multiPage.plugins`.
-
-### 4. Tailor Styles
-- Global styles: `static/css/index.css`.
-- Section-specific tweaks: add classes within section templates and target them in CSS.
-- Light/dark adjustments: see the bottom of `static/css/index.css` for dark-mode overrides.
-
-## 🧪 Development Tips
-- **Live Reload**: Pair with a local static server that supports livereload for rapid iteration.
-- **Data Validation**: Item types declare `requiredKeys`; use them as a checklist when authoring content.
-- **Fallbacks**: If a section file is missing in the current language, the UI will hide that section until data is provided.
-- **Testing Plugins**: Check search/sort on multipage sections after any data schema change.
-
-## 📁 Project Structure Overview
-```
-├── data/
-│   ├── meta.json              # global config (languages, sections, themes)
-│   ├── en/
-│   │   ├── web_content.json   # homepage copy (EN)
-│   │   ├── about.json         # section metadata + content
-│   │   ├── news.json
-│   │   └── ...
-│   ├── zh/
-│   └── jp/
-├── static/
-│   ├── css/index.css          # global styling
-│   ├── js/templates.js        # template registry
-│   ├── js/plugins.js          # plugin registry
-│   └── js/index.js            # shared UI helpers
-├── index.html                 # single-page mode entry
-└── multipage_index.html       # multi-page mode entry
-```
-
-## 📝 License
-MIT License. Feel free to use, remix, and share.
+## 🧪 Development Notes
+- Use a static server with live reload for faster iteration.
+- `itemTypes.requiredKeys` act as a checklist when preparing content PRs.
+- Multi-page mode exercises plugin hooks (search/sort); test both modes after changes.
+- If a language file is missing, the corresponding section hides automatically—useful during translation rollouts.
