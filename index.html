@@ -1270,6 +1270,7 @@
 
   function switchLanguage(lang) {
     localStorage.setItem('lang', lang);
+    currentLang = lang;
     // 记录切换前是否展开
     const dropdown = document.querySelector('#language-dropdown');
     const wasOpen = dropdown && dropdown.classList.contains('is-active');

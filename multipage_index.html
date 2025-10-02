@@ -684,6 +684,8 @@
         titleField: 'title',
         subtitleFields: [],
         badgeField: '',
+        badgeFields: [],
+        badgeSeparator: ' · ',
         metaFields: [],
         descriptionFields: ['description', 'content'],
         detailsField: '',
@@ -706,6 +708,8 @@
             titleField: opts.titleField !== undefined ? opts.titleField : CARD_DEFAULTS.titleField,
             subtitleFields: toArray(opts.subtitleFields !== undefined ? opts.subtitleFields : CARD_DEFAULTS.subtitleFields),
             badgeField: opts.badgeField !== undefined ? opts.badgeField : CARD_DEFAULTS.badgeField,
+            badgeFields: toArray(opts.badgeFields !== undefined ? opts.badgeFields : CARD_DEFAULTS.badgeFields),
+            badgeSeparator: opts.badgeSeparator !== undefined ? opts.badgeSeparator : CARD_DEFAULTS.badgeSeparator,
             metaFields: toArray(opts.metaFields !== undefined ? opts.metaFields : CARD_DEFAULTS.metaFields),
             descriptionFields: toArray(opts.descriptionFields !== undefined ? opts.descriptionFields : CARD_DEFAULTS.descriptionFields),
             detailsField: opts.detailsField !== undefined ? opts.detailsField : CARD_DEFAULTS.detailsField,
@@ -744,6 +748,10 @@
     }
 
     function gatherMetaFields(entry, fields) {
+        return toArray(fields).map(field => readField(entry, field)).filter(Boolean);
+    }
+
+    function gatherBadgeFields(entry, fields) {
         return toArray(fields).map(field => readField(entry, field)).filter(Boolean);
     }
 
@@ -856,8 +864,16 @@
             tags: getArrayField(entry, options.tagsField),
             url: resolvePrimaryLink(entry, type, options),
             image: readField(entry, options.mediaField),
-            topRight: readField(entry, options.badgeField)
+            topRight: ''
         };
+
+        const badgeValues = gatherBadgeFields(entry, options.badgeFields);
+        if (badgeValues.length) {
+            const separator = options.badgeSeparator || CARD_DEFAULTS.badgeSeparator;
+            data.topRight = badgeValues.join(separator);
+        } else if (options.badgeField) {
+            data.topRight = readField(entry, options.badgeField);
+        }
 
         return { data, options };
     }
