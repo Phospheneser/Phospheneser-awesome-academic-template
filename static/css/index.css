@@ -609,19 +609,8 @@ html {
   align-items: flex-start;
 }
 
-.meta-card-meta--inline {
-  flex-direction: row;
-  flex-wrap: wrap;
-  gap: 8px;
-  align-items: center;
-}
-
 .meta-card-meta-item {
   display: block;
-}
-
-.meta-card-meta--inline .meta-card-meta-item {
-  display: inline-flex;
 }
 
 .meta-card-separator {

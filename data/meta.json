@@ -40,7 +40,17 @@
                 "links",
                 "image"
             ],
-            "template": "paper-card"
+            "template": "paper-card",
+            "templateOptions": {
+                "mediaField": "image",
+                "titleField": "title",
+                "subtitleFields": ["conference"],
+                "metaFields": ["authors", "date"],
+                "descriptionFields": ["description", "abstract", "content"],
+                "detailsField": "highlights",
+                "tagsField": "tags",
+                "placeholderLabel": "Publication Preview"
+            }
         },
         "project": {
             "requiredKeys": [
@@ -51,7 +61,17 @@
                 "links",
                 "image"
             ],
-            "template": "paper-card"
+            "template": "paper-card",
+            "templateOptions": {
+                "mediaField": "image",
+                "titleField": "title",
+                "badgeField": "date",
+                "metaFields": ["authors"],
+                "descriptionFields": ["description", "summary", "content"],
+                "detailsField": "stack",
+                "tagsField": "tags",
+                "placeholderLabel": "Project Preview"
+            }
         },
         "blog": {
             "requiredKeys": [
@@ -61,7 +81,26 @@
                 "links",
                 "image"
             ],
-            "template": "paper-card"
+            "template": "paper-card",
+            "templateOptions": {
+                "mediaField": "image",
+                "titleField": "title",
+                "metaFields": ["date", "read_time", "author"],
+                "descriptionFields": ["summary", "excerpt", "description", "content"],
+                "tagsField": "tags",
+                "placeholderLabel": "Media Placeholder",
+                "primaryLink": { "type": "blogSlug" },
+                "actions": [
+                    {
+                        "type": "readMore",
+                        "label": {
+                            "en": "Read more",
+                            "zh": "阅读全文",
+                            "jp": "続きを読む"
+                        }
+                    }
+                ]
+            }
         },
         "timeline": {
             "requiredKeys": [

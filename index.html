@@ -431,12 +431,6 @@
 
   function renderEntryByTemplate(block, entry, section, template, type) {
     appendSortMetadata(block, entry);
-
-    if (type === 'blog') {
-      renderBlogSummary(block, entry, template);
-      return;
-    }
-
     switch ((template || '').toLowerCase()) {
       case 'paper-card':
       case 'meta-card':
@@ -504,12 +498,105 @@
     block.appendChild(p);
   }
 
+  const CARD_DEFAULTS = {
+    mediaField: 'image',
+    titleField: 'title',
+    subtitleFields: [],
+    badgeField: '',
+    metaFields: [],
+    descriptionFields: ['description', 'content'],
+    detailsField: '',
+    tagsField: 'tags',
+    placeholderLabel: 'Media Placeholder',
+    actions: [],
+    primaryLink: { type: 'auto' }
+  };
+
+  function toArray(value) {
+    if (!value) return [];
+    return Array.isArray(value) ? value : [value];
+  }
+
+  function getTemplateOptions(type) {
+    const definition = (metaConfig && metaConfig.itemTypes && metaConfig.itemTypes[type]) || {};
+    const opts = definition.templateOptions || {};
+    return {
+      mediaField: opts.mediaField !== undefined ? opts.mediaField : CARD_DEFAULTS.mediaField,
+      titleField: opts.titleField !== undefined ? opts.titleField : CARD_DEFAULTS.titleField,
+      subtitleFields: toArray(opts.subtitleFields !== undefined ? opts.subtitleFields : CARD_DEFAULTS.subtitleFields),
+      badgeField: opts.badgeField !== undefined ? opts.badgeField : CARD_DEFAULTS.badgeField,
+      metaFields: toArray(opts.metaFields !== undefined ? opts.metaFields : CARD_DEFAULTS.metaFields),
+      descriptionFields: toArray(opts.descriptionFields !== undefined ? opts.descriptionFields : CARD_DEFAULTS.descriptionFields),
+      detailsField: opts.detailsField !== undefined ? opts.detailsField : CARD_DEFAULTS.detailsField,
+      tagsField: opts.tagsField !== undefined ? opts.tagsField : CARD_DEFAULTS.tagsField,
+      placeholderLabel: opts.placeholderLabel !== undefined ? opts.placeholderLabel : CARD_DEFAULTS.placeholderLabel,
+      actions: Array.isArray(opts.actions) ? opts.actions : CARD_DEFAULTS.actions,
+      primaryLink: opts.primaryLink || CARD_DEFAULTS.primaryLink
+    };
+  }
+
+  function readField(entry, path) {
+    if (!entry || !path) return '';
+    if (path === '@lang') return currentLang;
+    if (typeof path !== 'string') return '';
+    if (path.includes('.')) {
+      return path.split('.').reduce((acc, key) => (acc && acc[key] !== undefined ? acc[key] : ''), entry) || '';
+    }
+    return entry[path] !== undefined ? entry[path] : '';
+  }
+
+  function readFirstField(entry, fields) {
+    const list = toArray(fields);
+    for (let i = 0; i < list.length; i++) {
+      const value = readField(entry, list[i]);
+      if (value) return value;
+    }
+    return '';
+  }
+
+  function getArrayField(entry, field) {
+    if (!field) return [];
+    const value = readField(entry, field);
+    if (Array.isArray(value)) return value.filter(Boolean);
+    if (typeof value === 'string' && value.trim()) return [value.trim()];
+    return [];
+  }
+
+  function gatherMetaFields(entry, fields) {
+    return toArray(fields).map(field => readField(entry, field)).filter(Boolean);
+  }
+
+  function buildTemplateUrl(template, entry) {
+    if (!template) return '';
+    return template.replace(/{{(.*?)}}/g, (_, token) => {
+      const key = token.trim();
+      if (key === '@lang') return currentLang;
+      const value = readField(entry, key);
+      return value || '';
+    });
+  }
+
+  function resolvePrimaryLink(entry, type, options) {
+    const cfg = options.primaryLink || CARD_DEFAULTS.primaryLink;
+    if (!cfg || !cfg.type || cfg.type === 'auto') return resolveEntryUrl(entry);
+    switch (cfg.type) {
+      case 'field':
+        return isValidUrl(readField(entry, cfg.field)) ? readField(entry, cfg.field) : '';
+      case 'template':
+        return buildTemplateUrl(cfg.template, entry);
+      case 'blogSlug':
+        return buildBlogUrl(entry);
+      default:
+        return resolveEntryUrl(entry);
+    }
+  }
+
   function renderMetaCard(block, entry, type) {
     if (!entry) return;
-    const data = buildMetaCardData(entry, type);
+    const { data, options } = buildMetaCardData(entry, type);
     block.classList.add('meta-card', `meta-card--${type}`);
 
-    const media = createMediaSlot(data.image, data.title);
+    const media = createMediaSlot(data.image, data.title, options.placeholderLabel);
     if (media) block.appendChild(media);
 
     const content = document.createElement('div');
@@ -537,7 +624,7 @@
       header.appendChild(subtitle);
     }
 
-    if (data.meta && data.meta.length) {
+    if (data.meta.length) {
       const meta = buildMetaLine(data.meta);
       if (meta) header.appendChild(meta);
     }
@@ -551,7 +638,7 @@
       content.appendChild(summary);
     }
 
-    if (data.details && data.details.length) {
+    if (data.details.length) {
       const list = document.createElement('ul');
       list.className = 'meta-card-list';
       data.details.forEach(item => {
@@ -563,7 +650,7 @@
       if (list.childElementCount) content.appendChild(list);
     }
 
-    if (data.tags && data.tags.length) {
+    if (data.tags.length) {
       const tags = createTagList(data.tags);
       if (tags) {
         tags.classList.add('meta-card-tags');
@@ -571,72 +658,27 @@
       }
     }
 
-    const extraLinks = buildBlogExtraLinks(entry, data.url);
-    if (extraLinks.length) {
-      const actions = document.createElement('div');
-      actions.className = 'blog-actions meta-card-actions';
-      extraLinks.forEach(link => {
-        link.classList.add('meta-card-extra-link');
-        actions.appendChild(link);
-      });
-      content.appendChild(actions);
-    }
+    const actions = buildCardActions(entry, data, type, options);
+    if (actions) content.appendChild(actions);
 
     block.appendChild(content);
   }
 
   function buildMetaCardData(entry, type) {
+    const options = getTemplateOptions(type);
     const data = {
-      title: entry && entry.title ? entry.title : '',
-      subtitle: '',
-      meta: [],
-      description: '',
-      details: [],
-      tags: Array.isArray(entry && entry.tags) ? entry.tags : [],
-      url: resolveEntryUrl(entry),
-      image: entry && entry.image ? entry.image : '',
-      topRight: ''
+      title: readField(entry, options.titleField) || 'Untitled',
+      subtitle: readFirstField(entry, options.subtitleFields),
+      meta: gatherMetaFields(entry, options.metaFields),
+      description: readFirstField(entry, options.descriptionFields),
+      details: getArrayField(entry, options.detailsField),
+      tags: getArrayField(entry, options.tagsField),
+      url: resolvePrimaryLink(entry, type, options),
+      image: readField(entry, options.mediaField),
+      topRight: readField(entry, options.badgeField)
     };
 
-    switch (type) {
-      case 'news':
-        data.title = entry.title || entry.content || 'News update';
-        data.description = entry.description || (entry.title ? entry.content : '');
-        if (!entry.title && !data.description) data.description = '';
-        if (entry.date) data.meta.push(entry.date);
-        break;
-      case 'publication':
-        data.title = entry.title || 'Publication';
-        if (entry.conference) data.subtitle = entry.conference;
-        if (entry.date) data.meta.push(entry.date);
-        if (entry.authors) data.meta.push(entry.authors);
-        data.description = entry.description || entry.abstract || entry.content || '';
-        if (entry.highlights && Array.isArray(entry.highlights)) {
-          data.details = entry.highlights;
-        }
-        break;
-      case 'project':
-        data.title = entry.title || 'Project';
-        if (entry.date) data.topRight = entry.date;
-        if (entry.authors) data.meta.push(entry.authors);
-        data.description = entry.description || entry.summary || entry.content || '';
-        if (entry.stack && Array.isArray(entry.stack)) data.details = entry.stack;
-        break;
-      case 'timeline':
-        data.title = entry.title || 'Record';
-        if (entry.org) data.subtitle = entry.org;
-        if (entry.date) data.meta.push(entry.date);
-        data.description = entry.description || '';
-        break;
-      default:
-        data.description = entry.description || entry.content || '';
-        if (entry.date) data.meta.push(entry.date);
-        if (entry.subtitle) data.subtitle = entry.subtitle;
-        break;
-    }
-
-    if (!data.title) data.title = 'Untitled';
-    return data;
+    return { data, options };
   }
 
   function createMetaCardTitle(title, url) {
@@ -654,19 +696,80 @@
     return element;
   }
 
-  function buildMetaLine(values, options = {}) {
-    const inline = options.inline || false;
+  function buildMetaLine(values) {
     const filtered = values.filter(Boolean);
     if (!filtered.length) return null;
     const meta = document.createElement('div');
-    meta.className = 'blog-meta meta-card-meta' + (inline ? ' meta-card-meta--inline' : '');
-    filtered.forEach((text) => {
+    meta.className = 'blog-meta meta-card-meta';
+    filtered.forEach(text => {
       const span = document.createElement('span');
       span.className = 'meta-card-meta-item';
       span.textContent = text;
       meta.appendChild(span);
     });
     return meta;
+  }
+
+  function buildCardActions(entry, data, type, options) {
+    const extraLinks = buildExtraLinks(entry, data.url);
+    const actionsConfig = Array.isArray(options.actions) ? options.actions : [];
+    if (!extraLinks.length && !actionsConfig.length) return null;
+    const container = document.createElement('div');
+    container.className = 'blog-actions meta-card-actions';
+
+    extraLinks.forEach(link => {
+      link.classList.add('meta-card-extra-link');
+      container.appendChild(link);
+    });
+
+    actionsConfig.forEach(action => {
+      if (!action || !action.type) return;
+      switch (action.type) {
+        case 'readMore': {
+          const url = data.url || resolvePrimaryLink(entry, type, options);
+          if (!isValidUrl(url)) break;
+          const readMore = document.createElement('a');
+          readMore.className = 'blog-read-more meta-card-read-more';
+          readMore.href = url;
+          const label = resolveActionLabel(action.label) || entry && entry.read_more_label || getBlogReadMoreLabel();
+          readMore.innerHTML = `<span>${label}</span><i class="fas fa-arrow-right"></i>`;
+          container.appendChild(readMore);
+          break;
+        }
+        default:
+          break;
+      }
+    });
+
+    return container.childElementCount ? container : null;
+  }
+
+  function resolveActionLabel(labelConfig) {
+    if (!labelConfig) return '';
+    if (typeof labelConfig === 'string') return labelConfig;
+    if (typeof labelConfig === 'object') {
+      return labelConfig[currentLang] || labelConfig.en || '';
+    }
+    return '';
+  }
+
+  function buildExtraLinks(entry, primaryUrl) {
+    if (!entry || !Array.isArray(entry.links)) return [];
+    return entry.links
+      .filter(link => link && link.url && link.url !== primaryUrl && isValidUrl(link.url))
+      .map(link => {
+        const anchor = document.createElement('a');
+        anchor.className = 'blog-extra-link';
+        anchor.href = link.url;
+        anchor.textContent = link.type || link.label || link.url;
+        if (link.external === false) {
+          anchor.target = '_self';
+        } else {
+          anchor.target = '_blank';
+          anchor.rel = 'noopener noreferrer';
+        }
+        return anchor;
+      });
   }
 
   function resolveEntryUrl(entry) {
@@ -689,58 +792,6 @@
 
   function isExternalUrl(url) {
     return /^https?:\/\//i.test(url);
-  }
-
-  function renderBlogSummary(block, entry, template) {
-    if (!entry) return;
-    block.classList.add('meta-card', 'blog-card');
-
-    const blogUrl = buildBlogUrl(entry);
-
-    const media = createMediaSlot(entry.image || entry.hero_image || '', entry.title);
-    if (media) block.appendChild(media);
-
-    const content = document.createElement('div');
-    content.className = 'meta-card-content';
-
-    const header = document.createElement('div');
-    header.className = 'blog-card-header meta-card-header';
-
-    const titleRow = document.createElement('div');
-    titleRow.className = 'meta-card-title-row';
-    const titleEl = createMetaCardTitle(entry.title || 'Untitled', blogUrl);
-    titleRow.appendChild(titleEl);
-    header.appendChild(titleRow);
-
-    const meta = buildBlogMeta(entry);
-    if (meta) header.appendChild(meta);
-
-    content.appendChild(header);
-
-    const summaryText = entry.summary || entry.excerpt || entry.description || entry.content;
-    if (summaryText) {
-      const summary = document.createElement('p');
-      summary.className = 'blog-summary meta-card-summary';
-      summary.innerHTML = summaryText;
-      content.appendChild(summary);
-    }
-
-    const tags = buildBlogTags(entry);
-    if (tags) {
-      tags.classList.add('meta-card-tags');
-      content.appendChild(tags);
-    }
-
-    const actions = buildBlogActions(entry, blogUrl);
-    if (actions) {
-      actions.classList.add('meta-card-actions');
-      const readMore = actions.querySelector('.blog-read-more');
-      if (readMore) readMore.classList.add('meta-card-read-more');
-      actions.querySelectorAll('a').forEach(link => link.classList.add('meta-card-extra-link'));
-      content.appendChild(actions);
-    }
-
-    block.appendChild(content);
   }
 
   function appendBlogArchiveCallout(container) {
@@ -770,19 +821,6 @@
     return `./blogs/post.html?${params.toString()}`;
   }
 
-  function buildBlogMeta(entry) {
-    const parts = [];
-    if (entry.date) parts.push(entry.date);
-    if (entry.read_time) parts.push(entry.read_time);
-    if (entry.author && typeof entry.author === 'string') parts.push(entry.author);
-    return buildMetaLine(parts, { inline: true });
-  }
-
-  function buildBlogTags(entry) {
-    if (!entry) return null;
-    return createTagList(entry.tags);
-  }
-
   function createTagList(tags) {
     if (!Array.isArray(tags) || tags.length === 0) return null;
     const wrapper = document.createElement('div');
@@ -797,44 +835,6 @@
     return wrapper;
   }
 
-  function buildBlogActions(entry, blogUrl) {
-    const actions = document.createElement('div');
-    actions.className = 'blog-actions';
-
-    const readMoreLabel = (entry && entry.read_more_label) || getBlogReadMoreLabel();
-    if (blogUrl) {
-      const readMore = document.createElement('a');
-      readMore.className = 'blog-read-more';
-      readMore.href = blogUrl;
-      readMore.innerHTML = `<span>${readMoreLabel}</span><i class="fas fa-arrow-right"></i>`;
-      actions.appendChild(readMore);
-    }
-
-    const extraLinks = buildBlogExtraLinks(entry, blogUrl);
-    extraLinks.forEach(link => actions.appendChild(link));
-
-    return actions.childElementCount ? actions : null;
-  }
-
-  function buildBlogExtraLinks(entry, blogUrl) {
-    if (!entry || !Array.isArray(entry.links)) return [];
-    return entry.links
-      .filter(link => link && link.url && link.url !== blogUrl && isValidUrl(link.url))
-      .map(link => {
-        const anchor = document.createElement('a');
-        anchor.className = 'blog-extra-link';
-        anchor.href = link.url;
-        anchor.textContent = link.type || link.label || link.url;
-        if (link.external === false) {
-          anchor.target = '_self';
-        } else {
-          anchor.target = '_blank';
-          anchor.rel = 'noopener noreferrer';
-        }
-        return anchor;
-      });
-  }
-
   function getBlogReadMoreLabel(lang = currentLang) {
     const labels = BLOG_LABELS.readMore || {};
     return labels[lang] || labels.en || 'Read more';
@@ -845,7 +845,7 @@
     return labels[lang] || labels.en || 'View all posts';
   }
 
-  function createMediaSlot(src, title) {
+  function createMediaSlot(src, title, placeholderLabel = 'Media Placeholder') {
     const wrapper = document.createElement('div');
     wrapper.className = 'meta-card-media';
     const hasImage = typeof src === 'string' && src.trim();
@@ -858,7 +858,7 @@
     } else {
       wrapper.classList.add('meta-card-media--placeholder');
       const span = document.createElement('span');
-      span.textContent = 'Media Placeholder';
+      span.textContent = placeholderLabel || 'Media Placeholder';
       wrapper.appendChild(span);
     }
     return wrapper;

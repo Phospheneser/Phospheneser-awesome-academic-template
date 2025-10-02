@@ -7,6 +7,13 @@
       "date": "2025.01",
       "authors": "Contributor A, Contributor B",
       "description": "Placeholder description for a project.",
+      "stack": [
+        "Python",
+        "React"
+      ],
+      "tags": [
+        "Demo"
+      ],
       "links": [
         {
           "type": "Repo",

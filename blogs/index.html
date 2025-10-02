@@ -350,6 +350,14 @@
       }
     };
 
+    const BLOG_CARD_DEFAULTS = {
+      placeholderLabel: 'Media Placeholder',
+      metaFields: ['date', 'read_time', 'author'],
+      actions: [{ type: 'readMore' }],
+      primaryLink: { type: 'blogSlug' },
+      tagsField: 'tags'
+    };
+
     const BLOG_PAGE_LABELS = {
       en: {
         back: 'Back to site',
@@ -384,10 +392,68 @@
     let availableLanguages = ['en', 'zh', 'jp'];
     let metaConfig = null;
     let posts = [];
+    let blogTemplateOptions = BLOG_CARD_DEFAULTS;
     const filters = {
       search: '',
       tag: 'all'
     };
+
+    function hydrateBlogTemplateOptions(raw) {
+      const opts = raw || {};
+      return {
+        placeholderLabel: opts.placeholderLabel !== undefined ? opts.placeholderLabel : BLOG_CARD_DEFAULTS.placeholderLabel,
+        metaFields: Array.isArray(opts.metaFields) ? opts.metaFields : BLOG_CARD_DEFAULTS.metaFields,
+        actions: Array.isArray(opts.actions) ? opts.actions : BLOG_CARD_DEFAULTS.actions,
+        primaryLink: opts.primaryLink || BLOG_CARD_DEFAULTS.primaryLink,
+        tagsField: opts.tagsField || BLOG_CARD_DEFAULTS.tagsField
+      };
+    }
+
+    function readEntryField(entry, path) {
+      if (!entry || !path) return '';
+      if (path === '@lang') return currentLang;
+      if (typeof path !== 'string') return '';
+      if (path.includes('.')) {
+        return path.split('.').reduce((acc, key) => (acc && acc[key] !== undefined ? acc[key] : ''), entry) || '';
+      }
+      return entry[path] !== undefined ? entry[path] : '';
+    }
+
+    function readFirstEntryField(entry, fields) {
+      if (!fields) return '';
+      const list = Array.isArray(fields) ? fields : [fields];
+      for (let i = 0; i < list.length; i++) {
+        const value = readEntryField(entry, list[i]);
+        if (value) return value;
+      }
+      return '';
+    }
+
+    function resolveBlogPrimaryUrl(entry, options) {
+      const cfg = options.primaryLink || BLOG_CARD_DEFAULTS.primaryLink;
+      if (!cfg || !cfg.type || cfg.type === 'blogSlug') return buildBlogUrl(entry);
+      switch (cfg.type) {
+        case 'field':
+          return readEntryField(entry, cfg.field);
+        case 'template':
+          return (cfg.template || '').replace(/{{(.*?)}}/g, (_, token) => {
+            const key = token.trim();
+            if (key === '@lang') return currentLang;
+            return readEntryField(entry, key) || '';
+          });
+        default:
+          return buildBlogUrl(entry);
+      }
+    }
+
+    function resolveBlogActionLabel(labelConfig) {
+      if (!labelConfig) return '';
+      if (typeof labelConfig === 'string') return labelConfig;
+      if (typeof labelConfig === 'object') {
+        return labelConfig[currentLang] || labelConfig.en || '';
+      }
+      return '';
+    }
 
     document.addEventListener('DOMContentLoaded', () => {
       initializeDarkMode();
@@ -408,6 +474,8 @@
         if (metaConfig && Array.isArray(metaConfig.availableLanguages)) {
           availableLanguages = metaConfig.availableLanguages;
         }
+        const rawOptions = metaConfig && metaConfig.itemTypes && metaConfig.itemTypes.blog && metaConfig.itemTypes.blog.templateOptions;
+        blogTemplateOptions = hydrateBlogTemplateOptions(rawOptions);
       } catch (err) {
         console.error('Failed to load meta config:', err);
       }
@@ -556,9 +624,10 @@
     function renderBlogSummary(block, entry) {
       if (!entry) return;
       block.classList.add('meta-card', 'blog-card');
-      const blogUrl = buildBlogUrl(entry);
+      const options = blogTemplateOptions;
+      const blogUrl = resolveBlogPrimaryUrl(entry, options);
 
-      const media = createMediaSlot(entry.image || entry.hero_image || '', entry.title);
+      const media = createMediaSlot(entry.image || entry.hero_image || '', entry.title, options.placeholderLabel);
       if (media) block.appendChild(media);
 
       const content = document.createElement('div');
@@ -629,21 +698,33 @@
     }
 
     function buildBlogMeta(entry) {
-      const parts = [];
-      if (entry.date) parts.push(entry.date);
-      if (entry.read_time) parts.push(entry.read_time);
-      if (entry.author && typeof entry.author === 'string') parts.push(entry.author);
-      return buildMetaLine(parts, { inline: true });
+      const fields = Array.isArray(blogTemplateOptions.metaFields) ? blogTemplateOptions.metaFields : BLOG_CARD_DEFAULTS.metaFields;
+      const values = fields.map(field => readEntryField(entry, field)).filter(Boolean);
+      return buildMetaLine(values);
     }
 
     function buildBlogTags(entry) {
-      if (!entry || !Array.isArray(entry.tags) || entry.tags.length === 0) return null;
+      if (!entry) return null;
+      const field = blogTemplateOptions.tagsField || BLOG_CARD_DEFAULTS.tagsField;
+      const value = readEntryField(entry, field);
+      let tags = [];
+      if (Array.isArray(value)) {
+        tags = value.filter(Boolean);
+      } else if (typeof value === 'string' && value.trim()) {
+        tags = [value.trim()];
+      }
+      if (!tags.length) return null;
+      return createTagList(tags);
+    }
+
+    function createTagList(tags) {
+      if (!Array.isArray(tags) || tags.length === 0) return null;
       const wrapper = document.createElement('div');
       wrapper.className = 'blog-tags';
-      entry.tags.forEach(tag => {
+      tags.forEach(tag => {
         if (!tag) return;
         const span = document.createElement('span');
-        span.className = 'blog-tag';
+        span.className = 'blog-tag meta-card-tag';
         span.textContent = tag;
         wrapper.appendChild(span);
       });
@@ -653,16 +734,32 @@
     function buildBlogActions(entry, blogUrl) {
       const actions = document.createElement('div');
       actions.className = 'blog-actions';
-      const readMoreLabel = (entry && entry.read_more_label) || getBlogReadMoreLabel();
-      if (blogUrl) {
-        const readMore = document.createElement('a');
-        readMore.className = 'blog-read-more';
-        readMore.href = blogUrl;
-        readMore.innerHTML = `<span>${readMoreLabel}</span><i class="fas fa-arrow-right"></i>`;
-        actions.appendChild(readMore);
-      }
-      const extraLinks = buildBlogExtraLinks(entry, blogUrl);
+      const options = blogTemplateOptions;
+      const configs = Array.isArray(options.actions) ? options.actions : BLOG_CARD_DEFAULTS.actions;
+      const primaryUrl = blogUrl || resolveBlogPrimaryUrl(entry, options);
+
+      configs.forEach(action => {
+        if (!action || !action.type) return;
+        switch (action.type) {
+          case 'readMore': {
+            const url = primaryUrl;
+            if (!isValidUrl(url)) break;
+            const readMore = document.createElement('a');
+            readMore.className = 'blog-read-more';
+            readMore.href = url;
+          const label = resolveBlogActionLabel(action.label) || entry.read_more_label || getBlogReadMoreLabel();
+            readMore.innerHTML = `<span>${label}</span><i class="fas fa-arrow-right"></i>`;
+            actions.appendChild(readMore);
+            break;
+          }
+          default:
+            break;
+        }
+      });
+
+      const extraLinks = buildBlogExtraLinks(entry, primaryUrl);
       extraLinks.forEach(link => actions.appendChild(link));
+
       return actions.childElementCount ? actions : null;
     }
 
@@ -690,12 +787,11 @@
       return labels[lang] || labels.en || 'Read more';
     }
 
-    function buildMetaLine(values, options = {}) {
-      const inline = options.inline || false;
+    function buildMetaLine(values) {
       const filtered = values.filter(Boolean);
       if (!filtered.length) return null;
       const meta = document.createElement('div');
-      meta.className = 'blog-meta meta-card-meta' + (inline ? ' meta-card-meta--inline' : '');
+      meta.className = 'blog-meta meta-card-meta';
       filtered.forEach((text) => {
         const span = document.createElement('span');
         span.className = 'meta-card-meta-item';
@@ -705,7 +801,7 @@
       return meta;
     }
 
-    function createMediaSlot(src, title) {
+    function createMediaSlot(src, title, placeholderLabel = 'Media Placeholder') {
       const wrapper = document.createElement('div');
       wrapper.className = 'meta-card-media';
       const hasImage = typeof src === 'string' && src.trim();
@@ -718,7 +814,7 @@
       } else {
         wrapper.classList.add('meta-card-media--placeholder');
         const span = document.createElement('span');
-        span.textContent = 'Media Placeholder';
+        span.textContent = placeholderLabel || 'Media Placeholder';
         wrapper.appendChild(span);
       }
       return wrapper;
