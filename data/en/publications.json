@@ -19,6 +19,14 @@
         {
           "type": "Paper",
           "url": "#"
+        },
+        {
+          "type": "arXiv",
+          "url": "https://arxiv.org/abs/1234.5678"
+        },
+        {
+          "type": "Video",
+          "url": "https://youtube.com/watch?v=placeholder"
         }
       ]
     }

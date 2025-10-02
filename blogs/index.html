@@ -353,6 +353,9 @@
     const BLOG_CARD_DEFAULTS = {
       placeholderLabel: 'Media Placeholder',
       metaFields: ['date', 'read_time', 'author'],
+      badgeField: '',
+      badgeFields: ['date', 'read_time', 'author'],
+      badgeSeparator: ' · ',
       actions: [{ type: 'readMore' }],
       primaryLink: { type: 'blogSlug' },
       tagsField: 'tags'
@@ -403,6 +406,9 @@
       return {
         placeholderLabel: opts.placeholderLabel !== undefined ? opts.placeholderLabel : BLOG_CARD_DEFAULTS.placeholderLabel,
         metaFields: Array.isArray(opts.metaFields) ? opts.metaFields : BLOG_CARD_DEFAULTS.metaFields,
+        badgeField: opts.badgeField || BLOG_CARD_DEFAULTS.badgeField,
+        badgeFields: Array.isArray(opts.badgeFields) ? opts.badgeFields : BLOG_CARD_DEFAULTS.badgeFields,
+        badgeSeparator: opts.badgeSeparator || BLOG_CARD_DEFAULTS.badgeSeparator,
         actions: Array.isArray(opts.actions) ? opts.actions : BLOG_CARD_DEFAULTS.actions,
         primaryLink: opts.primaryLink || BLOG_CARD_DEFAULTS.primaryLink,
         tagsField: opts.tagsField || BLOG_CARD_DEFAULTS.tagsField
@@ -645,6 +651,23 @@
         titleEl.href = blogUrl;
       }
       titleRow.appendChild(titleEl);
+
+      const badgeValues = (blogTemplateOptions.badgeFields || BLOG_CARD_DEFAULTS.badgeFields || [])
+        .map(field => readEntryField(entry, field))
+        .filter(Boolean);
+      let badgeText = '';
+      if (badgeValues.length) {
+        badgeText = badgeValues.join(blogTemplateOptions.badgeSeparator || BLOG_CARD_DEFAULTS.badgeSeparator || ' · ');
+      } else if (blogTemplateOptions.badgeField) {
+        badgeText = readEntryField(entry, blogTemplateOptions.badgeField);
+      }
+      if (badgeText) {
+        const badge = document.createElement('span');
+        badge.className = 'meta-card-top-right';
+        badge.textContent = badgeText;
+        titleRow.appendChild(badge);
+      }
+
       header.appendChild(titleRow);
 
       const meta = buildBlogMeta(entry);

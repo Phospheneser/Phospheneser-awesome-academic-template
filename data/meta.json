@@ -85,7 +85,10 @@
             "templateOptions": {
                 "mediaField": "image",
                 "titleField": "title",
-                "metaFields": ["date", "read_time", "author"],
+                "subtitleFields": ["subtitle"],
+                "metaFields": [],
+                "badgeFields": ["date", "read_time", "author"],
+                "badgeSeparator": " · ",
                 "descriptionFields": ["summary", "excerpt", "description", "content"],
                 "tagsField": "tags",
                 "placeholderLabel": "Media Placeholder",

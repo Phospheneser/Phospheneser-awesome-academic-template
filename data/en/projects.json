@@ -18,6 +18,14 @@
         {
           "type": "Repo",
           "url": "#"
+        },
+        {
+          "type": "Demo",
+          "url": "https://example.com/project-demo"
+        },
+        {
+          "type": "Docs",
+          "url": "https://docs.example.com/project"
         }
       ]
     }
