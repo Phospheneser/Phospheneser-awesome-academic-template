@@ -771,21 +771,31 @@
 
   function buildExtraLinks(entry, primaryUrl) {
     if (!entry || !Array.isArray(entry.links)) return [];
-    return entry.links
-      .filter(link => link && link.url && link.url !== primaryUrl && isValidUrl(link.url))
-      .map(link => {
-        const anchor = document.createElement('a');
-        anchor.className = 'blog-extra-link';
-        anchor.href = link.url;
-        anchor.textContent = link.type || link.label || link.url;
-        if (link.external === false) {
-          anchor.target = '_self';
-        } else {
-          anchor.target = '_blank';
-          anchor.rel = 'noopener noreferrer';
-        }
-        return anchor;
-      });
+    const seen = new Set();
+    const primary = typeof primaryUrl === 'string' ? primaryUrl.trim() : '';
+    return entry.links.reduce((acc, link) => {
+      if (!link || !link.url || !isValidUrl(link.url)) return acc;
+      const url = link.url.trim();
+      if (!url || seen.has(url)) return acc;
+      seen.add(url);
+      const anchor = document.createElement('a');
+      anchor.className = 'blog-extra-link';
+      anchor.href = url;
+      anchor.textContent = link.type || link.label || url;
+      if (link.external === false) {
+        anchor.target = '_self';
+      } else if (isExternalUrl(url)) {
+        anchor.target = '_blank';
+        anchor.rel = 'noopener noreferrer';
+      } else {
+        anchor.target = '_self';
+      }
+      if (primary && url === primary) {
+        anchor.classList.add('meta-card-extra-link--primary');
+      }
+      acc.push(anchor);
+      return acc;
+    }, []);
   }
 
   function resolveEntryUrl(entry) {
