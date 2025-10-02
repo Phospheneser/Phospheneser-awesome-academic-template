@@ -1,86 +1,61 @@
 # Academic Template
 
-A highly extensible academic personal homepage template with configuration-driven page generation, featuring template registry, plugin system, multi-language support, and more.
+A configuration-first academic homepage template with dynamic sections, template registry, and plugin support.
 
-[中文文档](README_ZH.md) | [English Documentation](README.md)
+[中文文档](README_ZH.md)
 
 ## ✨ Features
 
-- 🎯 **Configuration-driven**: Control page structure, navigation, and content types via `data/meta.json`
-- 🧩 **Template System**: Register custom rendering templates (list-inline, paper-card, timeline)
-- 🔌 **Plugin System**: Built-in search and sort plugins with extensibility support
-- 🌍 **Multi-language**: Support for English, Chinese, and Japanese switching
-- 📱 **Responsive**: Based on Bulma CSS framework, adapts to various devices
-- 🎨 **Theme Support**: Configurable theme colors and styles
+- 🎯 **Configuration-Driven** – Manage navigation, sections, and content types via JSON files.
+- 🧩 **Template Registry** – Extend rendering logic with custom templates (`static/js/templates.js`).
+- 🔌 **Plugin System** – Ship search/sort plugins or register your own (`static/js/plugins.js`).
+- 🌍 **Multi-language** – Per-language data folders with shared metadata for language labels.
+- 📱 **Responsive** – Built on Bulma; optimized for desktop, tablet, and mobile.
+- 🎨 **Theme Friendly** – Global theme settings in `data/meta.json`.
 
 ## 🚀 Quick Start
 
-### 1. Clone the Template
+### 1. Clone the Repository
 ```bash
 git clone <your-repo-url>
 cd academic-template
 ```
 
-### 2. Configure Personal Information
-Edit `data/meta.json` to configure basic information:
+### 2. Configure Meta Information
+`data/meta.json` is the source of truth for global settings. Minimal example:
 ```json
 {
   "defaultLanguage": "en",
   "availableLanguages": ["en", "zh", "jp"],
-  "home": {
-    "avatar": "./media/your-photo.jpg"
+  "languageLabels": {
+    "en": "English",
+    "zh": "中文",
+    "jp": "日本語"
   },
-  "socials": [
-    {"icon": "fab fa-github", "url": "https://github.com/yourusername"},
-    {"icon": "fas fa-envelope", "url": "mailto:your@email.com"}
-  ]
-}
-```
-
-### 3. Configure Page Content
-Edit content files in `data/{lang}/` directories:
-- `web_content.json`: Page text content
-- `news.json`: News and updates
-- `publications.json`: Academic papers
-- `projects.json`: Project experiences
-- `blogs.json`: Blog posts
-
-### 4. Start the Server
-```bash
-# Using Python simple server
-python -m http.server 8000
-
-# Or using Node.js
-npx serve .
-
-# Or using any static file server
-```
-
-Visit `http://localhost:8000` to see the result.
-
-## 📖 Detailed Configuration
-
-### Meta Configuration Structure
-
-```json
-{
-  "defaultLanguage": "en",
-  "availableLanguages": ["en", "zh", "jp"],
   "navbar": {
     "showLanguageDropdown": true
   },
-  "home": {
-    "showHero": true,
-    "showWordCloud": true,
-    "avatar": "./media/avatar.jpg"
+"home": {
+  "showHero": true,
+  "avatar": "./media/personal.jpg"
+},
+"backgrounds": {
+  "default": {
+    "light": "./media/occupacy.jpg",
+    "dark": "./media/occupacy_dark.jpg"
   },
-  "itemTypes": {
-    "news": {
+  "news": {
+    "light": "./media/news_bg.jpg",
+    "dark": "./media/news_bg_dark.jpg"
+  }
+},
+"itemTypes": {
+  "news": {
       "requiredKeys": ["date", "content"],
       "template": "list-inline"
     },
     "publication": {
-      "requiredKeys": ["title", "conference", "authors", "description", "links", "image"],
+      "requiredKeys": ["title", "conference", "authors", "description", "links"],
       "template": "paper-card"
     }
   },
@@ -88,213 +63,179 @@ Visit `http://localhost:8000` to see the result.
     {
       "id": "news",
       "enabled": true,
-      "navLabelKey": "navbar_news",
-      "titleKey": "news_title",
       "itemType": "news",
-      "plugins": ["search"],
       "dataSource": "news",
-      "layout": "list",
-      "options": {
-        "columns": 1,
-        "gap": "normal"
-      }
+      "background": "news",
+      "singlePage": {"enabled": true},
+      "multiPage": {"enabled": true, "plugins": ["search"]}
     }
   ],
-  "socials": [...],
-  "emptyStates": {...},
-  "themes": {...}
+  "socials": [{"icon": "fab fa-github", "url": "https://github.com/your-name"}]
 }
 ```
 
-### Content Type Definitions
+### 3. Provide Content per Language
+Each language has its own folder under `data/<lang>/`.
 
-#### News
+- `web_content.json` – homepage copy only (title, subtitle, footer, etc.).
+- `<section>.json` – each section keeps its navigation label, title, and payload.
+
+Example `data/en/news.json`:
 ```json
 {
+  "nav_label": "News",
+  "title": "🔥 News",
   "news": [
-    {
-      "date": "2025.01.01",
-      "content": "Your news content here"
-    }
+    {"date": "2025.01.01", "content": "Placeholder news item."}
   ]
 }
 ```
 
-#### Publications
+Example `data/en/about.json`:
 ```json
 {
-  "publications": [
-    {
-      "title": "Paper Title",
-      "conference": "Conference Name",
-      "authors": "Author A, Author B",
-      "description": "Paper description",
-      "links": [
-        {"type": "Paper", "url": "https://example.com/paper"},
-        {"type": "Code", "url": "https://github.com/repo"}
-      ],
-      "image": "./media/paper-image.jpg"
-    }
+  "nav_label": "About Me",
+  "title": "🎄 About Me",
+  "texts": [
+    "<strong>About me placeholder:</strong> introduce yourself.",
+    "Add another paragraph with your interests or call-to-action."
   ]
 }
 ```
 
-#### Projects
+Other section files (`publications.json`, `projects.json`, `blogs.json`, `academic_service.json`) follow the same pattern: `nav_label`, `title`, and the section-specific array (`publications`, `projects`, `blogs`, `academic_service`, etc.).
+
+### 4. Run a Static Server
+```bash
+python3 -m http.server 8000
+# or
+npx serve .
+```
+Visit `http://localhost:8000` or `http://localhost:8000/multipage_index.html`.
+
+## 📖 Configuration Details
+
+### `data/meta.json`
+- **defaultLanguage / availableLanguages** – control the initial language and the language options.
+- **languageLabels** – shared human-readable names for language codes. UI always pulls labels from here.
+- **backgrounds** – declare reusable background sets (`light`/`dark`); sections reference them via `background` key.
+- *Tip*: the home page uses `backgrounds.home` when present, otherwise falls back to `backgrounds.default`.
+- **sections** – define enabled sections, their data sources, item types, backgrounds, and plugin usage.
+- **itemTypes** – map item types to template IDs (`static/js/templates.js`) and list required keys.
+- **themes / socials / home** – tweak theme colors, hero avatar, and social icons.
+
+### Section Data Contracts
+Each section file must expose at least:
 ```json
 {
-  "projects": [
-    {
-      "title": "Project Name",
-      "date": "2025.01",
-      "authors": "Contributor A, Contributor B",
-      "description": "Project description",
-      "links": [
-        {"type": "Demo", "url": "https://example.com/demo"},
-        {"type": "Code", "url": "https://github.com/project"}
-      ],
-      "image": "./media/project-image.jpg"
-    }
-  ]
+  "nav_label": "...",
+  "title": "...",
+  "<dataSource>": [ ... items ... ]
+}
+```
+where `<dataSource>` matches `sections[].dataSource` in `meta.json`. For timeline-style sections you can use `items` instead.
+
+To assign a custom background to a page/section:
+
+1. Add an entry under `backgrounds` in `data/meta.json` and provide `light`/`dark` image paths.
+2. Reference the background key in the section definition, e.g. `"background": "news"`.
+3. If omitted, the section (and home) fall back to the `default` background (`occupacy` images).
+
+### Homepage Copy (`web_content.json`)
+```json
+{
+  "navbar_title": "Academic Template",
+  "navbar_home": "Home",
+  "language": "Language",
+  "title": "Add your homepage headline here.",
+  "subtitle": "Use this subtitle to share a short mission statement or tagline.",
+  "footer": "Powered by Academic Template"
 }
 ```
 
-## 🔧 Extension Development
+Only home-specific strings remain here; everything else lives in per-section files.
 
-### Adding New Content Types
+## 🔧 Extending the Template
 
-1. **Define ItemType**:
+### 1. Add a New Language
+1. Update `data/meta.json`:
+   - Append the language code to `availableLanguages`.
+   - Provide a label in `languageLabels` (e.g., `"de": "Deutsch"`).
+2. Create `data/<lang>/` folder with:
+   - `web_content.json` (homepage copy for the new language).
+   - `<section>.json` for each enabled section (copy an existing language file as a template).
+3. Add translated media if necessary.
+
+### 2. Add a New Section
+1. Register section in `data/meta.json`:
 ```json
 {
-  "itemTypes": {
-    "education": {
-      "requiredKeys": ["date", "title", "org", "description"],
-      "template": "timeline"
-    }
+  "id": "education",
+  "enabled": true,
+  "itemType": "timeline",
+  "dataSource": "education",
+  "background": "education",
+  "singlePage": {"enabled": true},
+  "multiPage": {"enabled": true, "plugins": ["search"]}
+}
+```
+2. Define an item type if you need a new template:
+```json
+"itemTypes": {
+  "timeline": {
+    "requiredKeys": ["date", "title", "org", "description"],
+    "template": "timeline"
   }
 }
 ```
-
-2. **Add Section**:
+3. For each language create `data/<lang>/education.json`:
 ```json
 {
-  "sections": [
-    {
-      "id": "education",
-      "enabled": true,
-      "navLabelKey": "navbar_education",
-      "titleKey": "education_title",
-      "itemType": "education",
-      "plugins": ["search"],
-      "dataSource": "education"
-    }
-  ]
-}
-```
-
-3. **Create Data Files**:
-```json
-// data/en/education.json
-{
+  "nav_label": "Education",
+  "title": "🎓 Education",
   "education": [
-    {
-      "date": "2020-2024",
-      "title": "Bachelor of Science",
-      "org": "University Name",
-      "description": "Major in Computer Science"
-    }
+    {"date": "2020–2024", "title": "BSc", "org": "University", "description": "Details"}
   ]
 }
 ```
+4. (Optional) Add a background preset in `data/meta.json.backgrounds` (e.g. `"education": {"light": "...", "dark": "..."}`).
+5. (Optional) Supply custom empty-state text in `meta.json.emptyStates` with the section id.
 
-### Registering Custom Templates
+### 3. Customize Section Templates
+- Templates live in `static/js/templates.js`. Register a new template name and implement rendering.
+- Reference the template in `itemTypes[].template`.
+- Need extra behavior (filtering, sorting)? Register a plugin in `static/js/plugins.js` and list it under `sections[].multiPage.plugins`.
 
-```javascript
-// static/js/templates.js
-TemplateRegistry.register('custom-grid', function(items, section, contentDiv) {
-  items.forEach(item => {
-    const card = document.createElement('div');
-    card.className = 'custom-card';
-    card.innerHTML = `
-      <h3>${item.title}</h3>
-      <p>${item.description}</p>
-    `;
-    contentDiv.appendChild(card);
-  });
-});
+### 4. Tailor Styles
+- Global styles: `static/css/index.css`.
+- Section-specific tweaks: add classes within section templates and target them in CSS.
+- Light/dark adjustments: see the bottom of `static/css/index.css` for dark-mode overrides.
+
+## 🧪 Development Tips
+- **Live Reload**: Pair with a local static server that supports livereload for rapid iteration.
+- **Data Validation**: Item types declare `requiredKeys`; use them as a checklist when authoring content.
+- **Fallbacks**: If a section file is missing in the current language, the UI will hide that section until data is provided.
+- **Testing Plugins**: Check search/sort on multipage sections after any data schema change.
+
+## 📁 Project Structure Overview
 ```
-
-### Developing Plugins
-
-```javascript
-// static/js/plugins.js
-PluginRegistry.register('pagination', {
-  apply(section, container, data, webContent) {
-    // Pagination plugin logic
-    const pagination = document.createElement('div');
-    pagination.className = 'pagination';
-    // ... implement pagination functionality
-    container.appendChild(pagination);
-  }
-});
-```
-
-## 🎨 Style Customization
-
-### Theme Colors
-Configure in `data/meta.json`:
-```json
-{
-  "themes": {
-    "primary": "#3273dc",
-    "secondary": "#23d160",
-    "accent": "#ff3860"
-  }
-}
-```
-
-### CSS Variables
-The template supports CSS variables, which can be overridden in `static/css/index.css`:
-```css
-:root {
-  --primary-color: #3273dc;
-  --secondary-color: #23d160;
-  --accent-color: #ff3860;
-}
-```
-
-## 📁 Project Structure
-
-```
-academic-template/
 ├── data/
-│   ├── meta.json              # Main configuration file
-│   ├── en/                    # English content
-│   ├── zh/                    # Chinese content
-│   └── jp/                    # Japanese content
+│   ├── meta.json              # global config (languages, sections, themes)
+│   ├── en/
+│   │   ├── web_content.json   # homepage copy (EN)
+│   │   ├── about.json         # section metadata + content
+│   │   ├── news.json
+│   │   └── ...
+│   ├── zh/
+│   └── jp/
 ├── static/
-│   ├── css/
-│   │   └── index.css          # Main stylesheet
-│   └── js/
-│       ├── templates.js       # Template registry
-│       ├── plugins.js         # Plugin system
-│       └── index.js           # Core logic
-├── media/                     # Media files
-├── index.html                 # Single-page mode
-├── multipage_index.html       # Multi-page mode
-├── README.md                  # English documentation
-└── README_ZH.md              # Chinese documentation
+│   ├── css/index.css          # global styling
+│   ├── js/templates.js        # template registry
+│   ├── js/plugins.js          # plugin registry
+│   └── js/index.js            # shared UI helpers
+├── index.html                 # single-page mode entry
+└── multipage_index.html       # multi-page mode entry
 ```
 
-## 🤝 Contributing
-
-Issues and Pull Requests are welcome!
-
-## 📄 License
-
-MIT License
-
-## 🙏 Acknowledgments
-
-- [Bulma CSS Framework](https://bulma.io/)
-- [Font Awesome](https://fontawesome.com/)
-- [WordCloud2.js](https://github.com/timdream/wordcloud2.js)
+## 📝 License
+MIT License. Feel free to use, remix, and share.

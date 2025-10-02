@@ -18,6 +18,11 @@
         "showWordCloud": true,
         "avatar": "./media/personal.jpg"
     },
+    "backgrounds": {
+        "default": {
+            "light": "./media/occupacy.jpg"
+        }
+    },
     "itemTypes": {
         "news": {
             "requiredKeys": [
@@ -73,6 +78,7 @@
             "id": "about",
             "enabled": true,
             "dataSource": "about",
+            "background": "default",
             "singlePage": {
                 "enabled": true,
                 "layout": "list",
@@ -95,6 +101,7 @@
             "enabled": true,
             "itemType": "news",
             "dataSource": "news",
+            "background": "default",
             "singlePage": {
                 "enabled": true,
                 "layout": "list",
@@ -120,6 +127,7 @@
             "enabled": true,
             "itemType": "publication",
             "dataSource": "publications",
+            "background": "default",
             "singlePage": {
                 "enabled": true,
                 "layout": "list",
@@ -146,6 +154,7 @@
             "enabled": true,
             "itemType": "project",
             "dataSource": "projects",
+            "background": "default",
             "singlePage": {
                 "enabled": true,
                 "layout": "list",
@@ -172,6 +181,7 @@
             "enabled": true,
             "dataSource": "academic_service",
             "itemType": "timeline",
+            "background": "default",
             "singlePage": {
                 "enabled": true,
                 "layout": "list",
@@ -194,6 +204,7 @@
             "enabled": true,
             "itemType": "blog",
             "dataSource": "blogs",
+            "background": "default",
             "singlePage": {
                 "enabled": true,
                 "layout": "list",

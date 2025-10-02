@@ -343,6 +343,8 @@
     setTimeout(() => {
       generateWordCloud(wordcloudList);
     }, 100);
+
+    applyBackground(getCurrentSectionId());
   }
   function ensureSearchBar(sectionRoot) {
     if (!sectionRoot) return;
@@ -353,6 +355,39 @@
     bar.style.margin = '10px 0 20px 0';
     sectionRoot.insertBefore(bar, sectionRoot.children[1] || null);
     return bar;
+  }
+
+  function getCurrentSectionId() {
+    const hash = window.location.hash ? window.location.hash.replace('#', '') : '';
+    return hash || 'home';
+  }
+
+  function applyBackground(sectionId) {
+    const container = document.getElementById('background-container');
+    if (!container || !metaConfig) return;
+
+    const darkMode = document.body.classList.contains('dark-mode');
+    const backgrounds = metaConfig.backgrounds || {};
+    const section = metaConfig.sections ? metaConfig.sections.find(s => s.id === sectionId) : null;
+    let key = (section && section.background) || (sectionId === 'home' ? (backgrounds.home ? 'home' : 'default') : null);
+    if (!key || !backgrounds[key]) key = 'default';
+    const defaultBg = backgrounds.default || {};
+    const bgConfig = backgrounds[key] || {};
+    const lightImage = bgConfig.light || defaultBg.light || './media/occupacy.jpg';
+    const darkImage = bgConfig.dark || defaultBg.dark || '';
+
+    let background;
+    if (darkMode) {
+      if (darkImage) {
+        background = `linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)),url('${darkImage}')`;
+      } else {
+        background = `linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),url('${lightImage}')`;
+      }
+    } else {
+      background = `linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)),url('${lightImage}')`;
+    }
+
+    container.style.backgroundImage = background;
   }
 
   function renderSections(sectionDataMap) {
@@ -956,6 +991,7 @@
       if (dd && wasOpen) {
         dd.classList.add('is-active');
       }
+      applyBackground(getCurrentSectionId());
     });
   }
 
@@ -1145,28 +1181,16 @@
 
     function toggleDarkMode() {
       const isCurrentlyDark = body.classList.contains('dark-mode');
-      const backgroundContainer = document.getElementById('background-container');
       if (isCurrentlyDark) {
         body.classList.remove('dark-mode');
         localStorage.setItem('darkMode', 'false');
-
-        if (backgroundContainer) {
-          backgroundContainer.style.backgroundImage = "linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)),url('./media/occupacy.jpg')";
-        }
         if (darkModeToggleMobile) darkModeToggleMobile.innerHTML = '<i class="fas fa-moon"></i>';
       } else {
         body.classList.add('dark-mode');
         localStorage.setItem('darkMode', 'true');
-        const darkImage = new Image();
-        darkImage.onload = function () {
-          if (backgroundContainer) {
-            backgroundContainer.style.backgroundImage = "linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)),url('./media/occupacy_dark.jpg')";
-          }
-        };
-        darkImage.onerror = function () { };
-        darkImage.src = './media/occupacy_dark.jpg';
         if (darkModeToggleMobile) darkModeToggleMobile.innerHTML = '<i class="fas fa-sun"></i>';
       }
+      applyBackground(getCurrentSectionId());
     }
 
     if (darkModeToggleMobile) {
@@ -1229,6 +1253,11 @@
         behavior: 'smooth'
       });
     });
+    applyBackground(getCurrentSectionId());
+  });
+
+  window.addEventListener('hashchange', () => {
+    applyBackground(getCurrentSectionId());
   });
 </script>
 

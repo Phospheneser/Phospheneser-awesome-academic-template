@@ -175,6 +175,34 @@
         return map;
     }
 
+    function applyBackground(pageId) {
+        const container = document.getElementById('background-container');
+        if (!container || !metaConfig) return;
+
+        const darkMode = document.body.classList.contains('dark-mode');
+        const backgrounds = metaConfig.backgrounds || {};
+        const section = metaConfig.sections ? metaConfig.sections.find(s => s.id === pageId) : null;
+        let key = (section && section.background) || (pageId === 'home' ? (backgrounds.home ? 'home' : 'default') : null);
+        if (!key || !backgrounds[key]) key = 'default';
+        const defaultBg = backgrounds.default || {};
+        const bgConfig = backgrounds[key] || {};
+        const lightImage = bgConfig.light || defaultBg.light || './media/occupacy.jpg';
+        const darkImage = bgConfig.dark || defaultBg.dark || '';
+
+        let background;
+        if (darkMode) {
+            if (darkImage) {
+                background = `linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)),url('${darkImage}')`;
+            } else {
+                background = `linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),url('${lightImage}')`;
+            }
+        } else {
+            background = `linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)),url('${lightImage}')`;
+        }
+
+        container.style.backgroundImage = background;
+    }
+
     async function loadHomeWidgets() {
         try {
             const [cardsRes, wordcloudRes] = await Promise.all([
@@ -350,6 +378,7 @@
         renderPage().then(() => {
             const dd = document.querySelector('#language-dropdown');
             if (dd && wasOpen) dd.classList.add('is-active');
+            applyBackground(getPageKey());
         });
     }
 
@@ -357,7 +386,7 @@
         const url = new URL(window.location.href);
         url.searchParams.set('page', page);
         window.history.pushState({}, '', url.toString());
-        renderPage();
+        renderPage().then(() => applyBackground(getPageKey()));
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
@@ -462,6 +491,7 @@
                 generateSocials(metaConfig.socials);
             }
             await loadHomeWidgets();
+            applyBackground('home');
             return;
         }
 
@@ -478,6 +508,7 @@
             root.appendChild(container);
             updateElement('#about-title', aboutData.title || 'About');
             renderTextList('#about-texts', aboutData.texts || aboutData.paragraphs || []);
+            applyBackground('about');
             return;
         }
 
@@ -520,6 +551,7 @@
         }
 
         drawList(listData, section, contentDiv);
+        applyBackground(page);
     }
 
     function drawList(list, section, contentDiv) {
@@ -590,23 +622,16 @@
         }
         function toggleDarkMode() {
             const isCurrentlyDark = body.classList.contains('dark-mode');
-            const backgroundContainer = document.getElementById('background-container');
             if (isCurrentlyDark) {
                 body.classList.remove('dark-mode');
                 localStorage.setItem('darkMode', 'false');
-                backgroundContainer.style.backgroundImage = "linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)),url('./media/occupacy.jpg')";
                 if (darkModeToggleMobile) darkModeToggleMobile.innerHTML = '<i class="fas fa-moon"></i>';
             } else {
                 body.classList.add('dark-mode');
                 localStorage.setItem('darkMode', 'true');
-                const darkImage = new Image();
-                darkImage.onload = function () {
-                    backgroundContainer.style.backgroundImage = "linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)),url('./media/occupacy_dark.jpg')";
-                };
-                darkImage.onerror = function () { };
-                darkImage.src = './media/occupacy_dark.jpg';
                 if (darkModeToggleMobile) darkModeToggleMobile.innerHTML = '<i class="fas fa-sun"></i>';
             }
+            applyBackground(getPageKey());
         }
 
         if (darkModeToggleMobile) {
@@ -675,11 +700,11 @@
         }
     }
 
-    window.addEventListener('popstate', () => renderPage());
+    window.addEventListener('popstate', () => renderPage().then(() => applyBackground(getPageKey())));
 
     document.addEventListener('DOMContentLoaded', () => {
         // 多页容器
-        renderPage();
+        renderPage().then(() => applyBackground(getPageKey()));
         initializeLanguageDropdown();
         initializeLayoutMode();
         initializeDarkMode();
