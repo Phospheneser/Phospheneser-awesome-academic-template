@@ -1,27 +1,8 @@
 {
   "navbar_title": "こんにちは、世界！",
   "navbar_home": "ホーム",
-  "navbar_about": "私について",
-  "navbar_news": "ニュース",
-  "navbar_publications": "出版物",
-  "navbar_projects": "プロジェクト",
-  "navbar_academic_service": "学術サービス",
-  "navbar_blogs": "ブログ",
   "language": "言語",
-  "english": "English",
-  "chinese": "中文",
-  "japanese": "日本語",
-  "title": "大きな夢を持ち、懸命に働き、謙虚に。",
-  "subtitle": "——多才多能で偉大になる。",
-  "about_title": "🎄 私について",
-  "about_texts": [
-    "<strong>自己紹介のプレースホルダー：</strong>ここに所属・研究分野・活動内容などの概要を記入してください。",
-    "興味・目標・連絡先への案内など、訪問者へのメッセージをもう一段落追加しましょう。"
-  ],
-  "news_title": "🔥 ニュース",
-  "publications_title": "📑 出版物",
-  "projects_title": "⚙️ プロジェクト",
-  "academic_service_title": "学術サービス",
-  "blogs_title": "ブログ",
+  "title": "ここにホームページのタイトルを入力してください。",
+  "subtitle": "短い紹介文やスローガンをここに記入してください。",
   "footer": "Joshua@2025.9.27 編集"
 }

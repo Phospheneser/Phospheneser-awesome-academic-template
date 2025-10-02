@@ -247,7 +247,7 @@
   function applyMetaVisibility() {
     if (!metaConfig || !Array.isArray(metaConfig.sections)) return;
     metaConfig.sections.forEach(sec => {
-      const navEl = document.querySelector(`#navbar-${sec.id.replace(/_/g, '-')}`) || document.querySelector(`#navbar-${sec.id}`);
+      const navEl = document.querySelector(`#navbar-${sec.id}`);
       if (navEl) navEl.style.display = sec.enabled ? '' : 'none';
       const sectionEl = document.querySelector(`#${sec.id}`);
       if (sectionEl && sectionEl.parentElement && sectionEl.parentElement.closest('section')) {
@@ -271,50 +271,45 @@
     });
   }
 
-  async function loadContent(lang = currentLang) {
+  async function loadSectionDataMap(lang) {
+    const map = {};
+    if (!metaConfig || !Array.isArray(metaConfig.sections)) return map;
+    const fetchTasks = metaConfig.sections.map(async (section) => {
+      if (!section.enabled) return;
+      const source = section.dataSource || section.id;
+      try {
+        const res = await fetch(`data/${lang}/${source}.json`);
+        if (!res.ok) return;
+        const data = await res.json();
+        map[section.id] = data;
+      } catch (err) {
+        console.error(`Failed to load section data for ${section.id}`, err);
+      }
+    });
+    await Promise.all(fetchTasks);
+    return map;
+  }
 
-    // 加载所有数据文件
-    const [webContentRes, projectsRes, publicationsRes, newsRes, blogsRes, academicServiceRes, cardsRes, wordcloudRes] = await Promise.all([
+  async function loadContent(lang = currentLang) {
+    const [webContentRes, cardsRes, wordcloudRes, sectionDataMap] = await Promise.all([
       fetch(`data/${lang}/web_content.json`),
-      fetch(`data/${lang}/projects.json`),
-      fetch(`data/${lang}/publications.json`),
-      fetch(`data/${lang}/news.json`),
-      fetch(`data/${lang}/blogs.json`),
-      fetch(`data/${lang}/academic_service.json`),
       fetch(`data/${lang}/cards.json`),
-      fetch(`data/${lang}/wordcloud.json`)
+      fetch(`data/${lang}/wordcloud.json`),
+      loadSectionDataMap(lang)
     ]);
 
     const webContent = await webContentRes.json();
-    const projects = await projectsRes.json();
-    const publications = await publicationsRes.json();
-    const news = await newsRes.json();
-    const blogs = await blogsRes.json();
-    const academicService = await academicServiceRes.json();
     const cards = await cardsRes.json();
     const wordcloud = await wordcloudRes.json();
 
-    const projectsList = projects.projects || [];
-    const publicationsList = publications.publications || [];
-    const newsList = news.news || [];
-    const blogsList = blogs.blogs || [];
-    const academicServiceList = academicService.academic_services || [];
     const cardsList = cards.cards || [];
     const wordcloudList = wordcloud.wordcloud || [];
 
     // 更新导航栏
-    generateNavFromMeta(webContent);
+    generateNavFromMeta(sectionDataMap);
     updateElement('#navbar-title', webContent.navbar_title);
     updateElement('#navbar-home', webContent.navbar_home);
-    updateElement('#navbar-about', webContent.navbar_about);
-    updateElement('#navbar-news', webContent.navbar_news);
-    updateElement('#navbar-publications', webContent.navbar_publications);
-    updateElement('#navbar-projects', webContent.navbar_projects);
-    updateElement('#navbar-blogs', webContent.navbar_blogs);
-    updateElement('#navbar-academic-service', webContent.navbar_academic_service);
-    // updateElement('#navbar-language', webContent.language);
     document.getElementById('lang-label').textContent = webContent.language;
-
 
     // 动态生成语言切换按钮
     generateLanguageButtons(webContent);
@@ -328,29 +323,12 @@
       generateSocials(metaConfig.socials);
     }
 
-    // 更新标题和副标题
+    // 更新主页标题
     updateElement('#main-title', webContent.title);
     updateElement('#main-subtitle', webContent.subtitle);
 
-    // 更新 About 部分
-    updateElement('#about-title', webContent.about_title);
-    renderTextList('#about-texts', webContent.about_texts);
-
-    // 更新其他部分标题
-    updateElement('#news-title', webContent.news_title);
-    updateElement('#publications-title', webContent.publications_title);
-    updateElement('#projects-title', webContent.projects_title);
-    updateElement('#academic-service-title', webContent.academic_service_title);
-    updateElement('#blogs-title', webContent.blogs_title);
-
-    // 通用渲染：按 meta.sections 定义渲染数据
-    renderSections({
-      news: newsList,
-      publications: publicationsList,
-      projects: projectsList,
-      blogs: blogsList,
-      academicService: academicServiceList
-    }, webContent);
+    // 渲染 section
+    renderSections(sectionDataMap);
 
     // 更新页脚
     updateElement('#footer-text', webContent.footer);
@@ -358,16 +336,10 @@
     // 按元配置控制导航与区块显示
     applyMetaVisibility();
 
-    // 动态生成卡片
+    // 动态生成卡片与词云
     generateCards(cardsList);
-
-    // 初始化卡片切换功能
     initializeCardSlider();
-
-    // 动态生成词云
     generateWordCloud(wordcloudList);
-
-    // 确保词云正确初始化（首次加载或语言切换）
     setTimeout(() => {
       generateWordCloud(wordcloudList);
     }, 100);
@@ -383,29 +355,35 @@
     return bar;
   }
 
-  function renderSections(datasetByKey, webContent) {
+  function renderSections(sectionDataMap) {
     if (!metaConfig || !Array.isArray(metaConfig.sections)) return;
-    ensureSectionSkeleton(metaConfig.sections, webContent);
+    ensureSectionSkeleton(metaConfig.sections, sectionDataMap);
     metaConfig.sections.forEach(section => {
       if (!section.enabled) return;
 
-      // 获取单页模式配置
       const singlePageConfig = section.singlePage;
       if (!singlePageConfig || !singlePageConfig.enabled) return;
 
+      const data = sectionDataMap[section.id];
+      if (!data) return;
+
+      if (section.id === 'about') {
+        updateElement('#about-title', data.title || 'About');
+        renderTextList('#about-texts', data.texts || data.paragraphs || []);
+        return;
+      }
+
       const container = document.querySelector(`#${section.id}`);
       if (!container) return;
-      let listData = [];
-      if (section.dataSource === 'news') listData = datasetByKey.news;
-      if (section.dataSource === 'publications') listData = datasetByKey.publications;
-      if (section.dataSource === 'projects') listData = datasetByKey.projects;
-      if (section.dataSource === 'blogs') listData = datasetByKey.blogs;
-      // academic service 暂保持原逻辑
       const contentDiv = container.children[1];
       if (!contentDiv) return;
-      if (!Array.isArray(listData)) return;
 
-      // 单页模式不应用插件（搜索、排序等）
+      updateElement(`#${section.id}-title`, data.title || section.id);
+
+      if (!section.itemType) return;
+      const key = section.dataSource;
+      const listData = (key && Array.isArray(data[key])) ? data[key] : (Array.isArray(data.items) ? data.items : []);
+      if (!Array.isArray(listData)) return;
       drawList(listData, section, contentDiv);
     });
   }
@@ -420,7 +398,7 @@
     }
   }
 
-  function ensureSectionSkeleton(sections, webContent) {
+  function ensureSectionSkeleton(sections, sectionDataMap) {
     const root = document.getElementById('meta-sections-root');
     if (!root) return;
     root.innerHTML = '';
@@ -438,8 +416,6 @@
             <div id="about-texts" class="about-texts"></div>
           </div>`;
       root.appendChild(wrap);
-      updateElement('#about-title', webContent.about_title || 'About');
-      renderTextList('#about-texts', webContent.about_texts || []);
       return;
       }
       const wrap = document.createElement('section');
@@ -452,9 +428,6 @@
           </div>
         </div>`;
       root.appendChild(wrap);
-      if (sec.titleKey && webContent[sec.titleKey]) {
-        updateElement(`#${sec.id}-title`, webContent[sec.titleKey]);
-      }
     });
   }
 
@@ -484,14 +457,7 @@
     const wasOpen = langDropdown && langDropdown.classList.contains('is-active');
     dropdown.innerHTML = '';
     availableLanguages.forEach(lang => {
-      // 从当前语言的 webContent 中获取语言名称
-      const langKeyMap = {
-        'en': 'english',
-        'zh': 'chinese',
-        'jp': 'japanese'
-      };
-      const langKey = langKeyMap[lang];
-      const langName = webContent[langKey] || lang;
+      const langName = (metaConfig && metaConfig.languageLabels && metaConfig.languageLabels[lang]) || lang;
       const button = document.createElement('a');
       button.className = 'navbar-item';
       button.onclick = (e) => {
@@ -507,7 +473,7 @@
     }
   }
 
-  function generateNavFromMeta(webContent) {
+  function generateNavFromMeta(sectionDataMap) {
     if (!metaConfig || !Array.isArray(metaConfig.sections)) return;
     const navbarEnd = document.querySelector('.navbar-end');
     if (!navbarEnd) return;
@@ -523,7 +489,7 @@
       a.className = 'navbar-item';
       a.id = `navbar-${sec.id}`;
       a.href = `#${sec.id}`;
-      const label = (webContent && sec.navLabelKey && webContent[sec.navLabelKey]) ? webContent[sec.navLabelKey] : sec.id;
+      const label = (sectionDataMap && sectionDataMap[sec.id] && sectionDataMap[sec.id].nav_label) ? sectionDataMap[sec.id].nav_label : sec.id;
       a.innerHTML = label;
       navbarEnd.insertBefore(a, document.getElementById('language-dropdown'));
     });
@@ -1091,6 +1057,29 @@
     });
   }
 
+  function initializeNavbarResizeReset() {
+    const navbarMenu = document.querySelector('.navbar-menu');
+    const navbarBurger = document.querySelector('.navbar-burger');
+    if (!navbarMenu || !navbarBurger) return;
+
+    let wasDesktop = window.innerWidth >= 1024;
+
+    function resetState() {
+      navbarMenu.classList.remove('is-active', 'is-closing');
+      navbarBurger.classList.remove('is-active');
+    }
+
+    if (wasDesktop) resetState();
+
+    window.addEventListener('resize', () => {
+      const isDesktop = window.innerWidth >= 1024;
+      if (isDesktop && !wasDesktop) {
+        resetState();
+      }
+      wasDesktop = isDesktop;
+    });
+  }
+
   // 初始化卡片切换功能
   function initializeCardSlider() {
     const cards = document.querySelectorAll('.card');
@@ -1217,6 +1206,7 @@
 
     // 初始化汉堡菜单外部点击收起
     initializeHamburgerAutoClose();
+    initializeNavbarResizeReset();
 
     // 汉堡菜单功能已由jQuery处理
 

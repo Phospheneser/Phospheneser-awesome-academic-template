@@ -5,6 +5,11 @@
         "zh",
         "jp"
     ],
+    "languageLabels": {
+        "en": "English",
+        "zh": "中文",
+        "jp": "日本語"
+    },
     "navbar": {
         "showLanguageDropdown": true
     },
@@ -67,8 +72,7 @@
         {
             "id": "about",
             "enabled": true,
-            "navLabelKey": "navbar_about",
-            "titleKey": "about_title",
+            "dataSource": "about",
             "singlePage": {
                 "enabled": true,
                 "layout": "list",
@@ -89,8 +93,6 @@
         {
             "id": "news",
             "enabled": true,
-            "navLabelKey": "navbar_news",
-            "titleKey": "news_title",
             "itemType": "news",
             "dataSource": "news",
             "singlePage": {
@@ -116,8 +118,6 @@
         {
             "id": "publications",
             "enabled": true,
-            "navLabelKey": "navbar_publications",
-            "titleKey": "publications_title",
             "itemType": "publication",
             "dataSource": "publications",
             "singlePage": {
@@ -144,8 +144,6 @@
         {
             "id": "projects",
             "enabled": true,
-            "navLabelKey": "navbar_projects",
-            "titleKey": "projects_title",
             "itemType": "project",
             "dataSource": "projects",
             "singlePage": {
@@ -172,8 +170,8 @@
         {
             "id": "academic-service",
             "enabled": true,
-            "navLabelKey": "navbar_academic_service",
-            "titleKey": "academic_service_title",
+            "dataSource": "academic_service",
+            "itemType": "timeline",
             "singlePage": {
                 "enabled": true,
                 "layout": "list",
@@ -194,8 +192,6 @@
         {
             "id": "blogs",
             "enabled": true,
-            "navLabelKey": "navbar_blogs",
-            "titleKey": "blogs_title",
             "itemType": "blog",
             "dataSource": "blogs",
             "singlePage": {

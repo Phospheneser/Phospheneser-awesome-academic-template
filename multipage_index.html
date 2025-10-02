@@ -111,19 +111,6 @@
         } catch (e) { console.error('Failed to load meta.json', e); }
     }
 
-    function applyMetaToNav(webContent) {
-        if (!metaConfig || !Array.isArray(metaConfig.sections)) return;
-        metaConfig.sections.forEach(sec => {
-            const id = sec.id;
-            const navId = `#navbar-${id.replace(/_/g, '-')}`;
-            const link = document.querySelector(navId);
-            if (link) {
-                link.style.display = sec.enabled ? '' : 'none';
-                if (webContent && sec.navLabelKey && webContent[sec.navLabelKey]) link.innerHTML = webContent[sec.navLabelKey];
-            }
-        });
-    }
-
     function generateSocials(socials) {
         const box = document.querySelector('.icon-box');
         if (!box) return;
@@ -167,6 +154,25 @@
             p.dataset.index = idx;
             container.appendChild(p);
         });
+    }
+
+    async function loadSectionDataMap(lang) {
+        const map = {};
+        if (!metaConfig || !Array.isArray(metaConfig.sections)) return map;
+        const tasks = metaConfig.sections.map(async (section) => {
+            if (!section.enabled) return;
+            const source = section.dataSource || section.id;
+            try {
+                const res = await fetch(`data/${lang}/${source}.json`);
+                if (!res.ok) return;
+                const data = await res.json();
+                map[section.id] = data;
+            } catch (err) {
+                console.error(`Failed to load section data for ${section.id}`, err);
+            }
+        });
+        await Promise.all(tasks);
+        return map;
     }
 
     async function loadHomeWidgets() {
@@ -323,9 +329,7 @@
         const dropdown = document.querySelector('#language-dropdown-menu');
         dropdown.innerHTML = '';
         availableLanguages.forEach(lang => {
-            const langKeyMap = { 'en': 'english', 'zh': 'chinese', 'jp': 'japanese' };
-            const langKey = langKeyMap[lang];
-            const langName = webContent[langKey] || lang;
+            const langName = (metaConfig && metaConfig.languageLabels && metaConfig.languageLabels[lang]) || lang;
             const button = document.createElement('a');
             button.className = 'navbar-item';
             button.onclick = (e) => { e.stopPropagation(); switchLanguage(lang); };
@@ -369,7 +373,7 @@
         });
     }
 
-    function generateNavFromMeta(webContent) {
+    function generateNavFromMeta(sectionDataMap) {
         if (!metaConfig || !Array.isArray(metaConfig.sections)) return;
         const navbarEnd = document.querySelector('.navbar-end');
         if (!navbarEnd) return;
@@ -381,7 +385,7 @@
             a.className = 'navbar-item';
             a.id = `navbar-${sec.id}`;
             a.href = `?page=${sec.id}`;
-            const label = (webContent && sec.navLabelKey && webContent[sec.navLabelKey]) ? webContent[sec.navLabelKey] : sec.id;
+            const label = (sectionDataMap && sectionDataMap[sec.id] && sectionDataMap[sec.id].nav_label) ? sectionDataMap[sec.id].nav_label : sec.id;
             a.innerHTML = label;
             navbarEnd.insertBefore(a, document.getElementById('language-dropdown'));
         });
@@ -390,21 +394,17 @@
 
     async function renderPage() {
         await loadMeta();
-        // 确保使用最新语言
         currentLang = localStorage.getItem('lang') || currentLang || 'en';
         const page = getPageKey();
-        const webContent = await loadWebContent(currentLang);
 
-        generateNavFromMeta(webContent);
+        const [webContent, sectionDataMap] = await Promise.all([
+            loadWebContent(currentLang),
+            loadSectionDataMap(currentLang)
+        ]);
+
+        generateNavFromMeta(sectionDataMap);
         updateElement('#navbar-title', webContent.navbar_title);
         updateElement('#navbar-home', webContent.navbar_home);
-        updateElement('#navbar-about', webContent.navbar_about);
-        updateElement('#navbar-news', webContent.navbar_news);
-        updateElement('#navbar-publications', webContent.navbar_publications);
-        updateElement('#navbar-projects', webContent.navbar_projects);
-        updateElement('#navbar-blogs', webContent.navbar_blogs);
-        updateElement('#navbar-academic-service', webContent.navbar_academic_service);
-        // updateElement('#navbar-language', webContent.language);
         document.getElementById('lang-label').textContent = webContent.language;
         updateElement('#footer-text', webContent.footer);
         generateLanguageButtons(webContent);
@@ -462,8 +462,11 @@
                 generateSocials(metaConfig.socials);
             }
             await loadHomeWidgets();
-        } else if (page === 'about') {
-            // 其他页面保持滚动开启（已在开头处理）
+            return;
+        }
+
+        if (page === 'about') {
+            const aboutData = sectionDataMap['about'] || {};
             const container = document.createElement('div');
             container.innerHTML = `
         <section class="section" name="sec-intro">
@@ -473,26 +476,25 @@
           <div id="about-texts" class="about-texts"></div>
         </section>`;
             root.appendChild(container);
-            updateElement('#about-title', webContent.about_title);
-            renderTextList('#about-texts', webContent.about_texts);
-        } else {
-            // 使用配置驱动的渲染
-            const section = metaConfig.sections.find(s => s.id === page);
-            if (section && section.multiPage && section.multiPage.enabled) {
-                const multiPageConfig = section.multiPage;
-                let listData = [];
+            updateElement('#about-title', aboutData.title || 'About');
+            renderTextList('#about-texts', aboutData.texts || aboutData.paragraphs || []);
+            return;
+        }
 
-                // 加载数据
-                if (section.dataSource) {
-                    const dataRes = await fetch(`data/${currentLang}/${section.dataSource}.json`);
-                    const data = await dataRes.json();
-                    listData = data[section.dataSource] || [];
-                }
+        const section = metaConfig.sections.find(s => s.id === page);
+        if (!section || !section.multiPage || !section.multiPage.enabled) return;
+        const data = sectionDataMap[page] || {};
+        const multiPageConfig = section.multiPage;
+        let listData = [];
+        if (section.dataSource && Array.isArray(data[section.dataSource])) {
+            listData = data[section.dataSource];
+        } else if (Array.isArray(data.items)) {
+            listData = data.items;
+        }
 
-                // 创建容器
-                const container = document.createElement('div');
-                const sectionClass = page === 'blogs' ? 'blogs' : 'section';
-                container.innerHTML = `
+        const container = document.createElement('div');
+        const sectionClass = page === 'blogs' ? 'blogs' : 'section';
+        container.innerHTML = `
         <section class="${sectionClass}" name="sec-${page}">
           <div id="${page}" class="mp-section">
             <h1 class="title is-3" style="margin-bottom: 1ex; margin-top: 60px;" id="${page}-title"></h1>
@@ -500,30 +502,24 @@
             <div class="mp-list" id="${page}-content"></div>
           </div>
         </section>`;
-                root.appendChild(container);
+        root.appendChild(container);
 
-                // 更新标题
-                updateElement(`#${page}-title`, webContent[section.titleKey]);
-
-                const sectionRoot = container.querySelector(`#${page}`);
-                const contentDiv = sectionRoot.querySelector('.mp-list');
-                if (!contentDiv) {
-                    console.warn(`Missing content container for section ${page}`);
-                    return;
-                }
-
-                // 应用插件（多页模式）
-                if (window.PluginRegistry && multiPageConfig.plugins) {
-                    window.PluginRegistry.applyPlugins({
-                        id: page,
-                        plugins: multiPageConfig.plugins
-                    }, sectionRoot, listData, webContent);
-                }
-
-                // 渲染内容
-                drawList(listData, section, contentDiv);
-            }
+        const sectionRoot = container.querySelector(`#${page}`);
+        const contentDiv = sectionRoot.querySelector('.mp-list');
+        updateElement(`#${page}-title`, data.title || page);
+        if (!contentDiv) {
+            console.warn(`Missing content container for section ${page}`);
+            return;
         }
+
+        if (window.PluginRegistry && multiPageConfig.plugins) {
+            window.PluginRegistry.applyPlugins({
+                id: page,
+                plugins: multiPageConfig.plugins
+            }, sectionRoot, listData, data);
+        }
+
+        drawList(listData, section, contentDiv);
     }
 
     function drawList(list, section, contentDiv) {
@@ -646,6 +642,29 @@
             }
         });
     }
+
+    function initializeNavbarResizeReset() {
+        const navbarMenu = document.querySelector('.navbar-menu');
+        const navbarBurger = document.querySelector('.navbar-burger');
+        if (!navbarMenu || !navbarBurger) return;
+
+        let wasDesktop = window.innerWidth >= 1024;
+
+        function resetState() {
+            navbarMenu.classList.remove('is-active', 'is-closing');
+            navbarBurger.classList.remove('is-active');
+        }
+
+        if (wasDesktop) resetState();
+
+        window.addEventListener('resize', () => {
+            const isDesktop = window.innerWidth >= 1024;
+            if (isDesktop && !wasDesktop) {
+                resetState();
+            }
+            wasDesktop = isDesktop;
+        });
+    }
     function initializeHomeLink() {
         const home = document.getElementById('navbar-home');
         if (home) {
@@ -668,6 +687,7 @@
         initializeHomeLink();
         wireNavLinks();
         initializeHamburgerAutoClose();
+        initializeNavbarResizeReset();
     });
 </script>
 

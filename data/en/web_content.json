@@ -1,27 +1,8 @@
 {
   "navbar_title": "Hello World!",
   "navbar_home": "Home",
-  "navbar_about": "About Me",
-  "navbar_news": "News",
-  "navbar_publications": "Publications",
-  "navbar_projects": "Projects",
-  "navbar_academic_service": "Academic Service",
-  "navbar_blogs": "Blogs",
   "language": "Language",
-  "english": "English",
-  "chinese": "中文",
-  "japanese": "日本語",
-  "title": "Dream Big, Work Hard, Stay Humble.",
-  "subtitle": "——Be Versatile, Be Great.",
-  "about_title": "🎄 About Me",
-  "about_texts": [
-    "<strong>About me placeholder:</strong> briefly introduce yourself, your affiliation, and the focus of your research or work.",
-    "Add another short paragraph here to highlight your interests, goals, or any call-to-action for visitors."
-  ],
-  "news_title": "🔥 News",
-  "publications_title": "📑 Publications",
-  "projects_title": "⚙️ Projects",
-  "academic_service_title": "Academic Service",
-  "blogs_title": "Blogs",
+  "title": "Add your homepage headline here.",
+  "subtitle": "Use this subtitle to share a short mission statement or tagline.",
   "footer": "Edit by Joshua@2025.9.27"
 }
