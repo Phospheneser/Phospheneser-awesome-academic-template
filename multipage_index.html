@@ -22,6 +22,8 @@
     <script src="./static/js/index.js"></script>
     <script src="./static/js/templates.js"></script>
     <script src="./static/js/plugins.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/wordcloud2.js/1.0.6/wordcloud2.min.js"></script>
+    <script src="https://www.goat1000.com/tagcanvas.min.js"></script>
 
     <style>
         /* 干掉 Bulma 默认箭头 */
@@ -167,6 +169,154 @@
         });
     }
 
+    async function loadHomeWidgets() {
+        try {
+            const [cardsRes, wordcloudRes] = await Promise.all([
+                fetch(`data/${currentLang}/cards.json`),
+                fetch(`data/${currentLang}/wordcloud.json`)
+            ]);
+
+            const cardsData = cardsRes.ok ? await cardsRes.json() : { cards: [] };
+            const wordcloudData = wordcloudRes.ok ? await wordcloudRes.json() : { wordcloud: [] };
+
+            generateCards(cardsData.cards || []);
+            generateWordCloud(wordcloudData.wordcloud || []);
+            initializeCardSlider();
+        } catch (err) {
+            console.error('Failed to load home widgets:', err);
+        }
+    }
+
+    function generateCards(cardsList) {
+        const cardContainer = document.querySelector('.card-container');
+        if (!cardContainer) return;
+
+        cardContainer.querySelectorAll('.card').forEach(card => card.remove());
+
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+
+        if (!Array.isArray(cardsList) || cardsList.length === 0) {
+            if (prevBtn) prevBtn.style.display = 'none';
+            if (nextBtn) nextBtn.style.display = 'none';
+            return;
+        }
+
+        if (prevBtn) prevBtn.style.display = '';
+        if (nextBtn) nextBtn.style.display = '';
+
+        const insertBeforeNode = nextBtn || null;
+        cardsList.slice(0, 5).forEach(card => {
+            const cardDiv = document.createElement('div');
+            cardDiv.className = 'card';
+            cardDiv.innerHTML = `
+      <div class="card-title">${card.title || ''}</div>
+      <div class="card-description">${card.description || ''}</div>`;
+            cardContainer.insertBefore(cardDiv, insertBeforeNode);
+        });
+    }
+
+    function initializeCardSlider() {
+        const cardContainer = document.querySelector('.card-container');
+        if (!cardContainer) return;
+
+        const cards = Array.from(cardContainer.querySelectorAll('.card'));
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+
+        if (!cards.length) {
+            if (prevBtn) prevBtn.style.display = 'none';
+            if (nextBtn) nextBtn.style.display = 'none';
+            return;
+        }
+
+        let currentIndex = Math.floor(Math.random() * cards.length);
+        if (!Number.isFinite(currentIndex)) currentIndex = 0;
+
+        function showCard(index) {
+            cards.forEach((card, i) => {
+                if (i === index) card.classList.add('active'); else card.classList.remove('active');
+            });
+        }
+
+        const showPrev = () => {
+            currentIndex = (currentIndex - 1 + cards.length) % cards.length;
+            showCard(currentIndex);
+        };
+
+        const showNext = () => {
+            currentIndex = (currentIndex + 1) % cards.length;
+            showCard(currentIndex);
+        };
+
+        if (prevBtn) {
+            prevBtn.style.display = '';
+            prevBtn.onclick = showPrev;
+        }
+
+        if (nextBtn) {
+            nextBtn.style.display = '';
+            nextBtn.onclick = showNext;
+        }
+
+        if (window.__cardSliderTimer) {
+            clearInterval(window.__cardSliderTimer);
+        }
+        window.__cardSliderTimer = setInterval(showNext, 5000);
+
+        showCard(currentIndex);
+    }
+
+    function generateWordCloud(wordcloudList) {
+        const tagsContainer = document.querySelector('#tags');
+        const canvas = document.getElementById('word-cloud');
+        if (!tagsContainer || !canvas) return;
+
+        tagsContainer.innerHTML = '';
+
+        if (!Array.isArray(wordcloudList) || wordcloudList.length === 0) {
+            canvas.style.display = 'none';
+            return;
+        }
+
+        canvas.style.display = '';
+
+        wordcloudList.forEach(item => {
+            const li = document.createElement('li');
+            const a = document.createElement('a');
+            a.href = '#';
+            if (item && item.title) a.title = item.title;
+            a.textContent = item && item.text ? item.text : '';
+            li.appendChild(a);
+            tagsContainer.appendChild(li);
+        });
+
+        try {
+            if (typeof TagCanvas !== 'undefined') {
+                if (typeof TagCanvas.Delete === 'function') {
+                    try { TagCanvas.Delete('word-cloud'); } catch (e) { /* ignore */ }
+                }
+                TagCanvas.Start('word-cloud', 'tags', {
+                    textColour: '#FFFFFF',
+                    outlineColour: 'rgba(255, 255, 255, 0.5)',
+                    reverse: true,
+                    depth: 0.8,
+                    maxSpeed: 0.01,
+                    textFont: 'Papyrus, Arial, sans-serif',
+                    textHeight: 20,
+                    shuffleTags: true,
+                    initial: [0.3, 0.3],
+                    decel: 0.98,
+                    dragControl: true,
+                    weight: true,
+                    shape: 'spiral'
+                });
+            }
+        } catch (err) {
+            console.error('Failed to initialize word cloud:', err);
+        }
+    }
+
     function generateLanguageButtons(webContent) {
         const langDropdown = document.querySelector('#language-dropdown');
         const wasOpen = langDropdown && langDropdown.classList.contains('is-active');
@@ -262,31 +412,44 @@
         const root = document.getElementById('content-root');
         root.innerHTML = '';
 
-        // 切换前，先恢复滚动，避免禁用遗留
-        document.documentElement.classList.remove('mp-home-fixed');
-        document.body.classList.remove('mp-home-fixed');
-
         if (page === 'home') {
-            // 首页在所有端禁用滚动
-            document.documentElement.classList.add('mp-home-fixed');
-            document.body.classList.add('mp-home-fixed');
             const container = document.createElement('div');
             container.className = 'container has-text-centered';
             container.innerHTML = `
-        <div style="display: flex; justify-content: center; align-items: center; height: 300px;">
-          <div style="flex: 1; display: flex; justify-content: center; align-items: center;">
-            <figure class="image is-128x128 is-inline-block" style="width: 200px; height: 200px; margin: 0;">
+        <div class="mp-home-hero">
+          <div class="mp-home-cards">
+            <div class="card-container">
+              <button class="arrow-btn arrow-left" id="prev-btn">
+                <i class="fas fa-arrow-left"></i>
+              </button>
+              <button class="arrow-btn arrow-right" id="next-btn">
+                <i class="fas fa-arrow-right"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="mp-home-avatar">
+            <figure class="image is-128x128 is-inline-block">
               <img class="is-rounded" src="./media/personal.jpg" alt="Avatar" style="width: 100%; height: 100%;">
             </figure>
           </div>
+
+          <div class="mp-home-cloud">
+            <div id="canvas-container">
+              <canvas id="word-cloud" width="400" height="300"></canvas>
+              <ul id="tags"></ul>
+            </div>
+          </div>
         </div>
-        <h1 class="title is-size-3-tablet is-size-4-mobile" style="font-family: Futura;" id="main-title"></h1>
-        <p class="subtitle is-size-4-tablet is-size-5-mobile" style="font-family: Brush Script MT;" id="main-subtitle"></p>
-        <div class="icon-box">
-          <a href="https://github.com/Phospheneser" target="_blank"><i class="fab fa-github"></i></a>
-          <a href="https://scholar.google.com/citations?user=TSUlagkAAAAJ&hl=zh-CN" target="_blank"><i class="fas fa-graduation-cap"></i></a>
-          <a href="https://x.com/PhospheneserXu" target="_blank"><i class="fab fa-twitter"></i></a>
-          <a href="mailto:zxu24@m.fudan.edu.cn"><i class="fas fa-envelope"></i></a>
+        <div class="mp-home-meta">
+          <h1 class="title is-size-3-tablet is-size-4-mobile" style="font-family: Futura;" id="main-title"></h1>
+          <p class="subtitle is-size-4-tablet is-size-5-mobile" style="font-family: Brush Script MT;" id="main-subtitle"></p>
+          <div class="icon-box">
+            <a href="https://github.com/Phospheneser" target="_blank"><i class="fab fa-github"></i></a>
+            <a href="https://scholar.google.com/citations?user=TSUlagkAAAAJ&hl=zh-CN" target="_blank"><i class="fas fa-graduation-cap"></i></a>
+            <a href="https://x.com/PhospheneserXu" target="_blank"><i class="fab fa-twitter"></i></a>
+            <a href="mailto:zxu24@m.fudan.edu.cn"><i class="fas fa-envelope"></i></a>
+          </div>
         </div>`;
             root.appendChild(container);
             updateElement('#main-title', webContent.title);
@@ -298,6 +461,7 @@
             if (metaConfig && Array.isArray(metaConfig.socials)) {
                 generateSocials(metaConfig.socials);
             }
+            await loadHomeWidgets();
         } else if (page === 'about') {
             // 其他页面保持滚动开启（已在开头处理）
             const container = document.createElement('div');
@@ -497,16 +661,6 @@
     document.addEventListener('DOMContentLoaded', () => {
         // 多页容器
         renderPage();
-        // 监听窗口尺寸变化：先恢复，再按需禁用
-        window.addEventListener('resize', () => {
-            const page = getPageKey();
-            document.documentElement.classList.remove('mp-home-fixed');
-            document.body.classList.remove('mp-home-fixed');
-            if (page === 'home') {
-                document.documentElement.classList.add('mp-home-fixed');
-                document.body.classList.add('mp-home-fixed');
-            }
-        });
         initializeLanguageDropdown();
         initializeLayoutMode();
         initializeDarkMode();

@@ -141,6 +141,84 @@ body {
   min-width: 180px;
 }
 
+.mp-home-hero {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+  height: 300px;
+}
+
+.mp-home-cards,
+.mp-home-avatar,
+.mp-home-cloud {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.mp-home-avatar figure {
+  width: 200px;
+  height: 200px;
+  margin: 0;
+}
+
+.mp-home-meta {
+  margin-top: 48px;
+}
+
+.mp-home-meta .title {
+  margin-top: 36px;
+  margin-bottom: 34px;
+}
+
+.mp-home-meta .subtitle {
+  margin-top: 38px;
+  margin-bottom: 40px;
+}
+
+.mp-home-meta .icon-box {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  padding: 8px 12px;
+  margin: 12px auto 0;
+}
+
+.mp-home-meta .icon-box a {
+  font-size: 1.5rem;
+}
+
+@media screen and (max-width: 768px) {
+  .mp-home-hero {
+    flex-direction: column;
+    height: auto;
+    padding: 20px 0;
+  }
+
+  .mp-home-avatar figure {
+    width: 160px;
+    height: 160px;
+  }
+
+  .mp-home-meta .title {
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+
+  .mp-home-meta .subtitle {
+    margin-top: 22px;
+    margin-bottom: 22px;
+  }
+
+  .mp-home-meta .icon-box {
+    margin-top: 10px;
+    gap: 12px;
+    padding: 6px 10px;
+  }
+}
+
 
 .footer .icon-link {
   font-size: 25px;
