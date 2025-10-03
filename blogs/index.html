@@ -686,7 +686,7 @@
       titleRow.className = 'meta-card-title-row';
       const titleEl = document.createElement(isValidUrl(blogUrl) ? 'a' : 'span');
       titleEl.className = 'blog-card-title meta-card-title';
-      titleEl.textContent = entry.title || 'Untitled';
+      titleEl.innerHTML = entry.title || 'Untitled';
       if (isValidUrl(blogUrl)) {
         titleEl.href = blogUrl;
       }
@@ -704,7 +704,7 @@
       if (badgeText) {
         const badge = document.createElement('span');
         badge.className = 'meta-card-top-right';
-        badge.textContent = badgeText;
+        badge.innerHTML = badgeText;
         titleRow.appendChild(badge);
       }
 
@@ -788,7 +788,7 @@
         if (!tag) return;
         const span = document.createElement('span');
         span.className = 'blog-tag meta-card-tag';
-        span.textContent = tag;
+        span.innerHTML = tag;
         wrapper.appendChild(span);
       });
       return wrapper;
@@ -861,7 +861,7 @@
       filtered.forEach((text) => {
         const span = document.createElement('span');
         span.className = 'meta-card-meta-item';
-        span.textContent = text;
+        span.innerHTML = text;
         meta.appendChild(span);
       });
       return meta;

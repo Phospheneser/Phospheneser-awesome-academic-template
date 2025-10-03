@@ -813,7 +813,7 @@
         if (data.topRight) {
             const badge = document.createElement('span');
             badge.className = 'meta-card-top-right';
-            badge.textContent = data.topRight;
+            badge.innerHTML = data.topRight;
             titleRow.appendChild(badge);
         }
         header.appendChild(titleRow);
@@ -821,7 +821,7 @@
         if (data.subtitle) {
             const subtitle = document.createElement('div');
             subtitle.className = 'meta-card-subtitle';
-            subtitle.textContent = data.subtitle;
+            subtitle.innerHTML = data.subtitle;
             header.appendChild(subtitle);
         }
 
@@ -894,7 +894,7 @@
         const isLink = isValidUrl(url);
         const element = document.createElement(isLink ? 'a' : 'span');
         element.className = 'blog-card-title meta-card-title';
-        element.textContent = title || 'Untitled';
+        element.innerHTML = title || 'Untitled';
         if (isLink) {
             element.href = url;
             if (isExternalUrl(url)) {
@@ -913,7 +913,7 @@
         filtered.forEach(text => {
             const span = document.createElement('span');
             span.className = 'meta-card-meta-item';
-            span.textContent = text;
+            span.innerHTML = text;
             meta.appendChild(span);
         });
         return meta;
@@ -1087,7 +1087,7 @@
             if (!tag) return;
             const span = document.createElement('span');
             span.className = 'blog-tag meta-card-tag';
-            span.textContent = tag;
+            span.innerHTML = tag;
             wrapper.appendChild(span);
         });
         return wrapper;

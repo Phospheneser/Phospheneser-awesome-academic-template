@@ -513,6 +513,7 @@ html {
 .paper-authors {
   margin: 0 0 10px;
   font-size: 14px;
+  font-style: italic;
 }
 
 .paper-link {
@@ -1680,6 +1681,7 @@ body.dark-mode .blog-archive-callout {
   .paper-authors {
     font-size: 0.9rem !important;
     margin-bottom: 0.5rem !important;
+    font-style: italic !important;
   }
 
   .paper-description {
@@ -1777,7 +1779,7 @@ body.dark-mode .blog-archive-callout {
 
 .paper-conf {
   font-style: italic;
-  font-weight: bold;
+  font-weight: normal;
   margin-bottom: 5pt;
 }
 
