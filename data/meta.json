@@ -23,14 +23,6 @@
             "light": "./media/occupacy.jpg"
         }
     },
-    "linkIcons": {
-        "repo": "./media/link_icon/repo.svg",
-        "repository": "./media/link_icon/repo.svg",
-        "pdf": "./media/link_icon/pdf.svg",
-        "paper": "./media/link_icon/pdf.svg",
-        "demo": "./media/link_icon/demo.svg",
-        "huggingface": "./media/link_icon/huggingface.svg"
-    },
     "itemTypes": {
         "news": {
             "requiredKeys": [
