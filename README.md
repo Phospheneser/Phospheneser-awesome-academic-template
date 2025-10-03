@@ -120,6 +120,7 @@ A configuration-first academic homepage template with unified section rendering,
 ### `data/meta.json`
 - `availableLanguages` / `languageLabels` – configure language dropdown options.
 - `backgrounds` – reusable light/dark backgrounds; sections reference them via `background`.
+- `linkIcons` – optional map from link labels (e.g., `repo`, `pdf`) to icon assets under `media/link_icon/`.
 - `sections` – declarative section list with `id`, `dataSource`, `itemType`, backgrounds, and plugin usage.
 - `itemTypes` – optional checklist of expected fields per item type; handy for content QA.
 - `emptyStates` – per-section fallback text when a list has no items.

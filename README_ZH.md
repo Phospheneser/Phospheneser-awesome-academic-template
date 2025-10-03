@@ -120,6 +120,7 @@
 ### `data/meta.json`
 - `availableLanguages` / `languageLabels`：语言下拉菜单及其显示名称。
 - `backgrounds`：注册可复用的浅色/深色背景，Section 通过 `background` 引用。
+- `linkIcons`：将链接类型（如 `repo`、`pdf`）映射到 `media/link_icon/` 下的图标资源。
 - `sections`：声明所有 Section 的 `id`、数据源、类型、背景以及插件。
 - `itemTypes`：可选字段，用于提示内容编辑需要填写的关键字段。
 - `emptyStates`：Section 数据为空时显示的占位文案。

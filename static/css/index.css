@@ -85,6 +85,23 @@ html {
   pointer-events: none !important;
 }
 
+.meta-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.meta-inline-link.meta-link {
+  gap: 4px;
+}
+
+.meta-link-icon {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
 /* 修正汉堡菜单中语言按钮与箭头颜色为白色 */
 #language-dropdown .navbar-link,
 #language-dropdown .navbar-link:visited,

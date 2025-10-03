@@ -499,8 +499,12 @@
       anchor.href = link.url;
       anchor.target = '_blank';
       anchor.rel = 'noopener noreferrer';
-      anchor.textContent = link.type ? `[${link.type}]` : '[Link]';
+      const label = link.type || link.label || 'Link';
+      decorateLinkAnchor(anchor, link, label);
+      const text = link.type ? `[${link.type}]` : (link.label ? `[${link.label}]` : '[Link]');
+      anchor.appendChild(document.createTextNode(text));
       anchor.style.marginRight = '8px';
+      anchor.classList.add('meta-inline-link');
       p.appendChild(anchor);
     });
     block.appendChild(p);
@@ -789,7 +793,9 @@
       const anchor = document.createElement('a');
       anchor.className = 'blog-extra-link';
       anchor.href = url;
-      anchor.textContent = link.type || link.label || url;
+      const label = link.type || link.label || url;
+      decorateLinkAnchor(anchor, link, label);
+      anchor.appendChild(document.createTextNode(label));
       if (link.external === false) {
         anchor.target = '_self';
       } else if (isExternalUrl(url)) {
@@ -801,6 +807,7 @@
       if (primary && url === primary) {
         anchor.classList.add('meta-card-extra-link--primary');
       }
+      anchor.classList.add('meta-link');
       acc.push(anchor);
       return acc;
     }, []);
@@ -839,6 +846,41 @@
     link.innerHTML = `<span>${text}</span><i class="fas fa-arrow-right"></i>`;
     wrapper.appendChild(link);
     container.appendChild(wrapper);
+  }
+
+  function resolveLinkIconKey(link) {
+    if (!link || typeof link !== 'object') return '';
+    if (typeof link.iconKey === 'string') return link.iconKey;
+    if (typeof link.icon === 'string') return link.icon;
+    if (typeof link.type === 'string') return link.type;
+    if (typeof link.label === 'string') return link.label;
+    return '';
+  }
+
+  function getLinkIconPath(key) {
+    if (!key || !metaConfig || !metaConfig.linkIcons) return '';
+    const table = metaConfig.linkIcons;
+    const raw = key.toString().trim();
+    if (!raw) return '';
+    if (table[raw]) return table[raw];
+    const lower = raw.toLowerCase();
+    if (table[lower]) return table[lower];
+    const slugged = lower.replace(/\s+/g, '-');
+    if (table[slugged]) return table[slugged];
+    return '';
+  }
+
+  function decorateLinkAnchor(anchor, link, label) {
+    if (!anchor) return;
+    anchor.classList.add('meta-link');
+    const iconPath = getLinkIconPath(resolveLinkIconKey(link));
+    if (!iconPath) return;
+    const img = document.createElement('img');
+    img.src = iconPath;
+    img.alt = label ? `${label} icon` : 'Link icon';
+    img.className = 'meta-link-icon';
+    img.loading = 'lazy';
+    anchor.appendChild(img);
   }
 
   function buildBlogUrl(entry, lang = currentLang) {
