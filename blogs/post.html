@@ -221,12 +221,13 @@
 
     .post-cover-media {
       width: 100%;
-      min-height: 240px;
       background: #f5f7fb;
       display: flex;
       align-items: center;
       justify-content: center;
       position: relative;
+      aspect-ratio: 16 / 9;
+      min-height: 0;
     }
 
     .post-cover-media img {
@@ -243,6 +244,11 @@
       letter-spacing: 0.08em;
       text-transform: uppercase;
       font-size: 0.85rem;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .post-cover-media--placeholder span {
@@ -296,6 +302,20 @@
     body.dark-mode .post-cover-media--placeholder {
       background: repeating-linear-gradient(135deg, rgba(129, 140, 248, 0.14) 0, rgba(129, 140, 248, 0.14) 20px, rgba(129, 140, 248, 0.22) 20px, rgba(129, 140, 248, 0.22) 40px);
       color: #dbeafe;
+    }
+
+    @supports not (aspect-ratio: 16 / 9) {
+      .post-cover-media {
+        height: 0;
+        padding-bottom: 56.25%;
+        min-height: 0;
+      }
+
+      .post-cover-media img,
+      .post-cover-media--placeholder {
+        position: absolute;
+        inset: 0;
+      }
     }
 
     body.dark-mode .post-content {
@@ -646,7 +666,6 @@
       container.innerHTML = '';
       const labels = postLabels;
       const parts = [];
-      if (entry.date) parts.push(entry.date);
       if (entry.post_time) parts.push(entry.post_time);
       if (entry.updated_at) parts.push(`${labels.updated} ${entry.updated_at}`);
       if (entry.author && typeof entry.author === 'string') parts.push(entry.author);

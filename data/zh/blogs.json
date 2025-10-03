@@ -28,7 +28,6 @@
       "slug": "launching-the-research-blog",
       "title": "这个博客想做什么",
       "summary": "写下创建博客的初衷，以及它如何补足主页上的其他板块。",
-      "date": "2025-01-05",
       "post_time": "2025-01-05 09:00 发布",
       "author": "Joshua Xu",
       "tags": [
@@ -40,7 +39,6 @@
       "slug": "robotics-field-notes",
       "title": "现场笔记：室内避障第三周",
       "summary": "记录平滑控制器、解决 GPU 降频，以及下一轮室外实验计划。",
-      "date": "2025-01-12",
       "post_time": "2025-01-12 14:30 发布",
       "author": "Joshua Xu",
       "tags": [

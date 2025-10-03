@@ -352,9 +352,9 @@
 
     const BLOG_CARD_DEFAULTS = {
       placeholderLabel: 'Media Placeholder',
-      metaFields: ['date', 'post_time', 'author'],
+      metaFields: ['post_time', 'author'],
       badgeField: '',
-      badgeFields: ['date', 'post_time', 'author'],
+      badgeFields: [],
       badgeSeparator: ' · ',
       actions: [{ type: 'readMore' }],
       primaryLink: { type: 'blogSlug' },
@@ -566,10 +566,17 @@
     }
 
     function sortPostsByDate() {
+      const getSortKey = (entry) => {
+        if (!entry) return '';
+        const raw = (entry.post_time || entry.date || entry.updated_at || '').toString().trim();
+        if (!raw) return '';
+        return raw.includes('T') ? raw : raw.replace(' ', 'T');
+      };
+
       posts.sort((a, b) => {
-        const dateA = a.date || '';
-        const dateB = b.date || '';
-        return dateB.localeCompare(dateA);
+        const keyA = getSortKey(a);
+        const keyB = getSortKey(b);
+        return keyB.localeCompare(keyA);
       });
     }
 

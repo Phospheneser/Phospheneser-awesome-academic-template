@@ -28,7 +28,6 @@
       "slug": "launching-the-research-blog",
       "title": "このブログを始めた理由",
       "summary": "長めのアップデートがサイト全体をどう補完するかを紹介します。",
-      "date": "2025-01-05",
       "post_time": "2025年01月05日 09:00 公開",
       "author": "Joshua Xu",
       "tags": [
@@ -40,7 +39,6 @@
       "slug": "robotics-field-notes",
       "title": "フィールドノート：屋内回避テスト第3週",
       "summary": "制御のスムージングやGPU調整など、テストアリーナでの気づきを記録。",
-      "date": "2025-01-12",
       "post_time": "2025年01月12日 14:30 公開",
       "author": "Joshua Xu",
       "tags": [
