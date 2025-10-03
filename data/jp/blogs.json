@@ -3,6 +3,26 @@
   "title": "リサーチログ",
   "subtitle": "進行中のプロジェクトや実験から得た学びを綴ります。",
   "kicker": "Lab Notebook",
+  "archive_label": "すべての記事を見る",
+  "page_labels": {
+    "back": "サイトに戻る",
+    "search": "記事を検索…",
+    "allTags": "すべてのトピック",
+    "empty": "まだ記事が公開されていません。",
+    "darkToLight": "ライトモードへ切り替える",
+    "lightToDark": "ダークモードへ切り替える"
+  },
+  "post_labels": {
+    "backBlog": "ブログに戻る",
+    "backHome": "ホーム",
+    "bottomBackBlog": "ブログ一覧へ戻る",
+    "bottomBackHome": "ホームページへ戻る",
+    "darkToLight": "ライトモードへ切り替える",
+    "lightToDark": "ダークモードへ切り替える",
+    "updated": "更新日",
+    "reading": "読む",
+    "missing": "該当の記事が見つかりませんでした。リンクをご確認いただくか、ブログ一覧に戻ってください。"
+  },
   "blogs": [
     {
       "slug": "launching-the-research-blog",

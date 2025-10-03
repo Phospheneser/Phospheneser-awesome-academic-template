@@ -396,6 +396,7 @@
     let metaConfig = null;
     let posts = [];
     let blogTemplateOptions = BLOG_CARD_DEFAULTS;
+    let pageLabels = BLOG_PAGE_LABELS.en;
     const filters = {
       search: '',
       tag: 'all'
@@ -500,13 +501,17 @@
         posts = Array.isArray(blogsData.blogs) ? blogsData.blogs.slice() : [];
         sortPostsByDate();
 
-        const labels = BLOG_PAGE_LABELS[lang] || BLOG_PAGE_LABELS.en;
+        const fallbackLabels = BLOG_PAGE_LABELS[lang] || BLOG_PAGE_LABELS.en;
+        pageLabels = Object.assign({}, fallbackLabels, blogsData.page_labels || {});
         document.title = blogsData.title ? `${blogsData.title} | Blog` : 'Blog';
         document.getElementById('blog-page-title').textContent = blogsData.title || 'Blog';
         document.getElementById('blog-page-subtitle').textContent = blogsData.subtitle || blogsData.description || '';
-        document.getElementById('blog-kicker').textContent = blogsData.kicker || labels.kicker;
-        document.getElementById('blog-home-text').textContent = labels.back;
-        document.getElementById('blog-search').placeholder = labels.search;
+        const kickerText = blogsData.kicker || pageLabels.kicker || fallbackLabels.kicker || '';
+        document.getElementById('blog-kicker').textContent = kickerText;
+        const backLabel = pageLabels.back || fallbackLabels.back || 'Back';
+        document.getElementById('blog-home-text').textContent = backLabel;
+        const searchLabel = pageLabels.search || fallbackLabels.search || '';
+        document.getElementById('blog-search').placeholder = searchLabel;
         document.getElementById('blog-footer-text').textContent = webContent && webContent.footer ? webContent.footer : '';
 
         filters.search = '';
@@ -571,11 +576,11 @@
       const container = document.getElementById('blog-tag-filter');
       if (!container) return;
       container.innerHTML = '';
-      const labels = BLOG_PAGE_LABELS[currentLang] || BLOG_PAGE_LABELS.en;
+      const labels = pageLabels;
 
       const tags = Array.from(new Set(posts.flatMap(post => Array.isArray(post.tags) ? post.tags : []))).sort((a, b) => a.localeCompare(b, currentLang));
 
-      const allButton = createTagChip('all', labels.allTags, filters.tag === 'all');
+      const allButton = createTagChip('all', labels.allTags || 'All topics', filters.tag === 'all');
       container.appendChild(allButton);
 
       tags.forEach(tag => {
@@ -602,7 +607,7 @@
       if (!container) return;
       container.innerHTML = '';
 
-      const labels = BLOG_PAGE_LABELS[currentLang] || BLOG_PAGE_LABELS.en;
+      const labels = pageLabels;
       const filtered = posts.filter(post => {
         const matchesTag = filters.tag === 'all' || (Array.isArray(post.tags) && post.tags.includes(filters.tag));
         if (!matchesTag) return false;
@@ -614,7 +619,7 @@
       if (!filtered.length) {
         const empty = document.createElement('div');
         empty.className = 'blog-empty';
-        empty.textContent = labels.empty;
+        empty.textContent = labels.empty || 'No posts published yet.';
         container.appendChild(empty);
         return;
       }
@@ -854,8 +859,9 @@
 
       if (!toggle) return;
       const updateLabel = () => {
-        const labels = BLOG_PAGE_LABELS[currentLang] || BLOG_PAGE_LABELS.en;
-        toggle.title = body.classList.contains('dark-mode') ? labels.darkToLight : labels.lightToDark;
+        const darkLabel = pageLabels.darkToLight || 'Switch to light mode';
+        const lightLabel = pageLabels.lightToDark || 'Switch to dark mode';
+        toggle.title = body.classList.contains('dark-mode') ? darkLabel : lightLabel;
       };
 
       updateLabel();

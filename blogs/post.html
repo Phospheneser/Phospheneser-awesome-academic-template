@@ -519,6 +519,7 @@
     let currentLang = (new URLSearchParams(window.location.search).get('lang')) || localStorage.getItem('lang') || 'en';
     let availableLanguages = ['en', 'zh', 'jp'];
     let metaConfig = null;
+    let postLabels = BLOG_POST_LABELS.en;
 
     document.addEventListener('DOMContentLoaded', () => {
       initializeDarkMode();
@@ -571,6 +572,8 @@
         return;
       }
 
+      const fallbackLabels = BLOG_POST_LABELS[activeLang] || BLOG_POST_LABELS.en;
+      postLabels = Object.assign({}, fallbackLabels, blogsData.post_labels || {});
       currentLang = activeLang;
       localStorage.setItem('lang', activeLang);
       renderLanguageSwitcher(slug);
@@ -606,7 +609,7 @@
     function renderMeta(container, entry) {
       if (!container) return;
       container.innerHTML = '';
-      const labels = BLOG_POST_LABELS[currentLang] || BLOG_POST_LABELS.en;
+      const labels = postLabels;
       const parts = [];
       if (entry.date) parts.push(entry.date);
       if (entry.read_time) parts.push(entry.read_time);
@@ -692,8 +695,7 @@
       } else {
         container.innerHTML = '';
         if (status) {
-          const labels = BLOG_POST_LABELS[currentLang] || BLOG_POST_LABELS.en;
-          status.textContent = labels.missing;
+          status.textContent = postLabels.missing || 'We could not find this article. Please check the URL or return to the blog index.';
         }
       }
     }
@@ -726,9 +728,8 @@
       const status = document.getElementById('post-status');
       if (wrapper) wrapper.hidden = true;
       if (!status) return;
-      const labels = BLOG_POST_LABELS[currentLang] || BLOG_POST_LABELS.en;
       if (type === 'missing') {
-        status.textContent = labels.missing;
+        status.textContent = postLabels.missing || 'We could not find this article. Please check the URL or return to the blog index.';
       }
     }
 
@@ -754,7 +755,7 @@
     }
 
     function renderNavigationLabels() {
-      const labels = BLOG_POST_LABELS[currentLang] || BLOG_POST_LABELS.en;
+      const labels = postLabels;
       const mapping = [
         ['post-back-blog-text', labels.backBlog],
         ['post-back-home-text', labels.backHome],
@@ -796,8 +797,9 @@
 
       if (!toggle) return;
       const updateTitle = () => {
-        const labels = BLOG_POST_LABELS[currentLang] || BLOG_POST_LABELS.en;
-        toggle.title = body.classList.contains('dark-mode') ? labels.darkToLight : labels.lightToDark;
+        const darkLabel = postLabels.darkToLight || 'Switch to light mode';
+        const lightLabel = postLabels.lightToDark || 'Switch to dark mode';
+        toggle.title = body.classList.contains('dark-mode') ? darkLabel : lightLabel;
       };
       updateTitle();
       window.__updatePostDarkLabel = updateTitle;

@@ -561,11 +561,11 @@
             }, sectionRoot, listData, data);
         }
 
-        drawList(listData, section, contentDiv);
+        drawList(listData, section, contentDiv, data);
         applyBackground(page);
     }
 
-    function drawList(list, section, contentDiv) {
+    function drawList(list, section, contentDiv, sectionData) {
         if (!contentDiv) return;
         contentDiv.innerHTML = '';
         if (!Array.isArray(list) || list.length === 0) {
@@ -590,8 +590,16 @@
         });
 
         if (type === 'blog' && templateSupportsArchive(template)) {
-            appendBlogArchiveCallout(contentDiv);
+            appendBlogArchiveCallout(contentDiv, getSectionArchiveLabel(section, sectionData));
         }
+    }
+
+    function getSectionArchiveLabel(section, sectionData) {
+        if (!sectionData) return '';
+        if (typeof sectionData.archive_label === 'string') return sectionData.archive_label;
+        if (sectionData.labels && typeof sectionData.labels.archive === 'string') return sectionData.labels.archive;
+        if (sectionData.labels && typeof sectionData.labels.archive_label === 'string') return sectionData.labels.archive_label;
+        return '';
     }
 
     function getSectionTemplate(section, type) {
@@ -1001,14 +1009,15 @@
         return /^https?:\/\//i.test(url);
     }
 
-    function appendBlogArchiveCallout(container) {
+    function appendBlogArchiveCallout(container, label) {
         if (!container || container.querySelector('.blog-archive-callout')) return;
         const wrapper = document.createElement('div');
         wrapper.className = 'blog-archive-callout';
         const link = document.createElement('a');
         link.className = 'blog-archive-link blog-read-more';
         link.href = './blogs/index.html';
-        link.innerHTML = `<span>${getBlogArchiveLabel()}</span><i class="fas fa-arrow-right"></i>`;
+        const text = label || getBlogArchiveLabel();
+        link.innerHTML = `<span>${text}</span><i class="fas fa-arrow-right"></i>`;
         wrapper.appendChild(link);
         container.appendChild(wrapper);
     }

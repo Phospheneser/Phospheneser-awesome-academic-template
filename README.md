@@ -51,6 +51,8 @@ A configuration-first academic homepage template with unified section rendering,
 3. **Add per-language content** – each language uses `data/<lang>/`.
    - `web_content.json` holds homepage copy (title, subtitle, footer, etc.).
    - `<section>.json` mirrors the section `id`/`dataSource` in `meta.json`.
+   - `blogs.json` localizes the blog list/detail chrome (`archive_label`, `page_labels`, `post_labels`).
+   - Blog article bodies live under `blogs/posts/<slug>/<lang>.html` with automatic English fallback.
 
    Example `data/en/news.json`:
    ```json
@@ -68,9 +70,41 @@ A configuration-first academic homepage template with unified section rendering,
    {
      "nav_label": "About Me",
      "title": "🎄 About Me",
-     "texts": [
-       "<strong>About me placeholder:</strong> introduce yourself.",
-       "Add another paragraph with your interests or call-to-action."
+   "texts": [
+     "<strong>About me placeholder:</strong> introduce yourself.",
+     "Add another paragraph with your interests or call-to-action."
+   ]
+ }
+ ```
+
+   Example `data/en/blogs.json`:
+   ```json
+   {
+     "nav_label": "Blog",
+     "title": "Research Log",
+     "subtitle": "Stories, experiments, and longer reflections from ongoing projects.",
+     "archive_label": "View all posts",
+     "page_labels": {
+       "back": "Back to site",
+       "search": "Search posts...",
+       "allTags": "All topics",
+       "empty": "No posts published yet."
+     },
+     "post_labels": {
+       "backBlog": "Back to blog",
+       "bottomBackBlog": "Back to blog index",
+       "darkToLight": "Switch to light mode"
+     },
+     "blogs": [
+       {
+         "slug": "launching-the-research-blog",
+         "title": "Why This Blog Exists",
+         "summary": "Setting the tone for longer-form updates.",
+         "date": "2025-01-05",
+         "read_time": "4 min read",
+         "author": "Joshua Xu",
+         "tags": ["Meta"]
+       }
      ]
    }
    ```
@@ -102,6 +136,14 @@ Each section file must expose at least:
 ```
 where `<dataSource>` matches `sections[].dataSource`. Omit a language file to hide the section for that locale.
 
+### Blog Content (`data/<lang>/blogs.json`)
+- `archive_label` controls the homepage call-to-action that links to the blog archive.
+- `page_labels` localizes the blog index chrome (back link, search placeholder, tag filter label, empty state, dark-mode tooltip).
+- `post_labels` provides the article page UI strings (navigation buttons, dark-mode tooltip, missing-article copy).
+- `blogs[]` stores metadata for each post (`slug`, `title`, `summary`, `date`, `read_time`, `author`, `tags`, optional `image`).
+- Article bodies live in `blogs/posts/<slug>/<lang>.html`; when a translation is missing, the English file is used automatically.
+- Configure card actions (e.g., "Read more") via `meta.json -> itemTypes.blog.templateOptions.actions`.
+
 ### Unified Section Renderer
 `index.html` and `multipage_index.html` share the same text-first renderer:
 - **news** – `date` + `content`.
@@ -111,6 +153,7 @@ where `<dataSource>` matches `sections[].dataSource`. Omit a language file to hi
 - **timeline** – `title`, `org`, `date`, `description`.
 
 Missing fields are skipped automatically. When no items exist, the renderer displays the localized `emptyStates` message.
+Fine-tune how each item type maps onto the card layout through `meta.json -> itemTypes[*].templateOptions` and add styling via `.meta-card--<itemType>` selectors in CSS.
 
 ### Background Tips
 1. Add images under `media/` (or any static directory).
@@ -120,16 +163,16 @@ Missing fields are skipped automatically. When no items exist, the renderer disp
 ## 🔧 Extending the Template
 ### Add a Language
 1. Append the language code to `availableLanguages` and add a label under `languageLabels`.
-2. Create `data/<lang>/` with translated `web_content.json` and section files.
+2. Create `data/<lang>/` with translated `web_content.json`, section files, and a localized `blogs.json` (plus article HTML under `blogs/posts/<slug>/<lang>.html`).
 3. Provide localized media if needed.
 
 ### Add a Section
 1. Describe the section in `meta.json.sections` (optionally add `emptyStates` text).
 2. Create `<lang>/<dataSource>.json` in every language folder.
-3. If you need new fields, adjust `renderEntryIntoBlock` in `index.html` / `multipage_index.html`.
+3. Map fields through `meta.json -> itemTypes` (or register a template in `static/js/templates.js`) and style with CSS classes such as `.meta-card--<itemType>`—no homepage HTML edits required.
 
 ### Customize Rendering or Plugins
-- Section layout lives inside `renderEntryIntoBlock` and helper functions; tailor them for bespoke markup.
+- Section markup comes from `static/js/templates.js` and the helper functions in `index.html` / `multipage_index.html`; extend `TemplateRegistry` or tweak `itemTypes[*].templateOptions` for new layouts without touching page HTML.
 - Register plugins in `static/js/plugins.js` via `PluginRegistry.register` and add the plugin name to `multiPage.plugins`.
 - Tweak typography and spacing inside `static/css/index.css` (`.text-homepage-1`, `.section-text-block`, etc.).
 

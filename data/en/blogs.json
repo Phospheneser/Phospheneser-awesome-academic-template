@@ -3,6 +3,26 @@
   "title": "Research Log",
   "subtitle": "Stories, experiments, and longer reflections from ongoing projects.",
   "kicker": "Lab notebook",
+  "archive_label": "View all posts",
+  "page_labels": {
+    "back": "Back to site",
+    "search": "Search posts...",
+    "allTags": "All topics",
+    "empty": "No posts published yet.",
+    "darkToLight": "Switch to light mode",
+    "lightToDark": "Switch to dark mode"
+  },
+  "post_labels": {
+    "backBlog": "Back to blog",
+    "backHome": "Home",
+    "bottomBackBlog": "Back to blog index",
+    "bottomBackHome": "Return to homepage",
+    "darkToLight": "Switch to light mode",
+    "lightToDark": "Switch to dark mode",
+    "updated": "Updated",
+    "reading": "read",
+    "missing": "We could not find this article. Please check the URL or return to the blog index."
+  },
   "blogs": [
     {
       "slug": "launching-the-research-blog",

@@ -3,6 +3,26 @@
   "title": "研究札记",
   "subtitle": "记录项目进展、实验体会以及更长的思考。",
   "kicker": "实验室手记",
+  "archive_label": "查看全部文章",
+  "page_labels": {
+    "back": "返回主页",
+    "search": "搜索文章…",
+    "allTags": "全部主题",
+    "empty": "暂时还没有发布文章。",
+    "darkToLight": "切换为浅色模式",
+    "lightToDark": "切换为深色模式"
+  },
+  "post_labels": {
+    "backBlog": "返回博客",
+    "backHome": "主页",
+    "bottomBackBlog": "返回博客列表",
+    "bottomBackHome": "回到主页",
+    "darkToLight": "切换为浅色模式",
+    "lightToDark": "切换为深色模式",
+    "updated": "更新于",
+    "reading": "阅读",
+    "missing": "未找到对应文章，请检查链接或返回博客列表。"
+  },
   "blogs": [
     {
       "slug": "launching-the-research-blog",
