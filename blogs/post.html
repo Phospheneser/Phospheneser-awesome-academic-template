@@ -5,6 +5,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Blog Post</title>
+  <meta name="author" content="Phospheneser">
+  <meta name="copyright" content="© 2024 Phospheneser. All rights reserved.">
   <link rel="stylesheet" href="../static/css/bulma.min.css">
   <link rel="stylesheet" href="../static/css/index.css">
   <style>
@@ -416,6 +418,16 @@
       color: #cbd5f5;
     }
 
+    .post-footer {
+      padding: 24px;
+      text-align: center;
+      color: #64748b;
+    }
+
+    body.dark-mode .post-footer {
+      color: #cbd5f5;
+    }
+
     @media screen and (max-width: 768px) {
       .post-wrapper {
         margin: 32px 16px 80px;
@@ -483,6 +495,10 @@
     <div class="post-status-message" id="post-status"></div>
   </main>
 
+  <footer class="post-footer">
+    <p id="post-footer-text">© 2024 Phospheneser. All rights reserved.</p>
+  </footer>
+
   <script defer src="../static/js/fontawesome.all.min.js"></script>
   <script>
     const BLOG_LABELS = {
@@ -492,6 +508,8 @@
         jp: '続きを読む'
       }
     };
+
+    const FOOTER_FALLBACK = '© 2024 Phospheneser. All rights reserved.';
 
     const BLOG_POST_LABELS = {
       en: {
@@ -569,6 +587,7 @@
 
     async function initializePostPage() {
       const slug = new URLSearchParams(window.location.search).get('slug');
+      await updateFooter(currentLang);
       if (!slug) {
         renderStatus('missing');
         return;
@@ -617,6 +636,7 @@
       postLabels = Object.assign({}, fallbackLabels, blogsData.post_labels || {});
       currentLang = activeLang;
       localStorage.setItem('lang', activeLang);
+      await updateFooter(activeLang);
       renderLanguageSwitcher(slug);
       renderNavigationLabels();
       if (typeof window.__updatePostDarkLabel === 'function') {
@@ -747,6 +767,37 @@
         return await res.text();
       } catch (err) {
         console.error('Failed to load content:', path, err);
+        return null;
+      }
+    }
+
+    async function updateFooter(lang) {
+      const footer = document.getElementById('post-footer-text');
+      if (!footer) return;
+      let footerText = FOOTER_FALLBACK;
+      try {
+        const content = await fetchWebContent(lang);
+        if (content && typeof content.footer === 'string' && content.footer.trim()) {
+          footerText = content.footer;
+        } else if (lang !== 'en') {
+          const fallbackContent = await fetchWebContent('en');
+          if (fallbackContent && typeof fallbackContent.footer === 'string' && fallbackContent.footer.trim()) {
+            footerText = fallbackContent.footer;
+          }
+        }
+      } catch (err) {
+        console.error(`Failed to update footer for ${lang}:`, err);
+      }
+      footer.textContent = footerText;
+    }
+
+    async function fetchWebContent(lang) {
+      try {
+        const res = await fetch(`../data/${lang}/web_content.json`);
+        if (!res.ok) return null;
+        return await res.json();
+      } catch (err) {
+        console.error(`Failed to fetch web_content for ${lang}:`, err);
         return null;
       }
     }

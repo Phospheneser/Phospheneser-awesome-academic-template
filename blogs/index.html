@@ -5,6 +5,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Blog</title>
+  <meta name="author" content="Phospheneser">
+  <meta name="copyright" content="© 2024 Phospheneser. All rights reserved.">
   <link rel="stylesheet" href="../static/css/bulma.min.css">
   <link rel="stylesheet" href="../static/css/index.css">
   <style>
@@ -336,7 +338,7 @@
 
   <footer class="blog-footer">
     <div class="container is-max-desktop">
-      <p id="blog-footer-text"></p>
+      <p id="blog-footer-text">© 2024 Phospheneser. All rights reserved.</p>
     </div>
   </footer>
 
@@ -349,6 +351,8 @@
         jp: '続きを読む'
       }
     };
+
+    const FOOTER_FALLBACK = '© 2024 Phospheneser. All rights reserved.';
 
     const BLOG_CARD_DEFAULTS = {
       placeholderLabel: 'Media Placeholder',
@@ -533,7 +537,13 @@
         document.getElementById('blog-home-text').textContent = backLabel;
         const searchLabel = pageLabels.search || fallbackLabels.search || '';
         document.getElementById('blog-search').placeholder = searchLabel;
-        document.getElementById('blog-footer-text').textContent = webContent && webContent.footer ? webContent.footer : '';
+        const blogFooter = document.getElementById('blog-footer-text');
+        if (blogFooter) {
+          const footerText = webContent && typeof webContent.footer === 'string' && webContent.footer.trim()
+            ? webContent.footer
+            : FOOTER_FALLBACK;
+          blogFooter.textContent = footerText;
+        }
 
         filters.search = '';
         filters.tag = 'all';
