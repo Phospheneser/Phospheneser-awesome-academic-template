@@ -101,7 +101,7 @@
          "title": "这个博客想做什么",
          "summary": "写下创建博客的初衷，以及它如何补足主页上的其他板块。",
          "date": "2025-01-05",
-         "read_time": "约 4 分钟",
+         "post_time": "2025-01-05 09:00",
          "author": "Joshua Xu",
          "tags": ["自述"]
        }
@@ -141,7 +141,7 @@
 - `archive_label` 控制首页“查看全部文章”按钮的文案。
 - `page_labels` 负责博客列表页的界面文案（返回按钮、搜索占位、标签过滤、空状态、暗色模式提示）。
 - `post_labels` 负责博客正文页的界面文案（上下导航、暗色模式提示、缺失文章提示语）。
-- `blogs[]` 存放每篇文章的元信息（`slug`、`title`、`summary`、`date`、`read_time`、`author`、`tags`、可选 `image`）。
+- `blogs[]` 存放每篇文章的元信息（`slug`、`title`、`summary`、`date`、`post_time`、`author`、`tags`、可选 `image`）。
 - 文章正文放在 `blogs/posts/<slug>/<lang>.html`，无对应语言时会自动回退到英文版本。
 - “阅读全文”等按钮可通过 `meta.json -> itemTypes.blog.templateOptions.actions` 配置。
 

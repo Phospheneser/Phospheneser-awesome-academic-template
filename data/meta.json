@@ -95,7 +95,7 @@
                 "titleField": "title",
                 "subtitleFields": ["subtitle"],
                 "metaFields": [],
-                "badgeFields": ["date", "read_time", "author"],
+                "badgeFields": ["date", "post_time", "author"],
                 "badgeSeparator": " · ",
                 "descriptionFields": ["summary", "excerpt", "description", "content"],
                 "tagsField": "tags",

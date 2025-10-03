@@ -29,7 +29,7 @@
       "title": "Why This Blog Exists",
       "summary": "Setting the tone for longer-form updates and how they complement the rest of the site.",
       "date": "2025-01-05",
-      "read_time": "4 min read",
+      "post_time": "2025-01-05 09:00",
       "author": "Joshua Xu",
       "tags": [
         "Meta",
@@ -41,7 +41,7 @@
       "title": "Field Notes: Indoor Avoidance Trials",
       "summary": "Notes from week three inside the test arena, smoothing controllers and taming a moody GPU.",
       "date": "2025-01-12",
-      "read_time": "6 min read",
+      "post_time": "2025-01-12 14:30",
       "author": "Joshua Xu",
       "tags": [
         "Robotics",

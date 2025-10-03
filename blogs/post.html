@@ -647,7 +647,7 @@
       const labels = postLabels;
       const parts = [];
       if (entry.date) parts.push(entry.date);
-      if (entry.read_time) parts.push(entry.read_time);
+      if (entry.post_time) parts.push(entry.post_time);
       if (entry.updated_at) parts.push(`${labels.updated} ${entry.updated_at}`);
       if (entry.author && typeof entry.author === 'string') parts.push(entry.author);
 

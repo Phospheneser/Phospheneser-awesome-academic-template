@@ -101,7 +101,7 @@ A configuration-first academic homepage template with unified section rendering,
          "title": "Why This Blog Exists",
          "summary": "Setting the tone for longer-form updates.",
          "date": "2025-01-05",
-         "read_time": "4 min read",
+         "post_time": "2025-01-05 09:00",
          "author": "Joshua Xu",
          "tags": ["Meta"]
        }
@@ -141,7 +141,7 @@ where `<dataSource>` matches `sections[].dataSource`. Omit a language file to hi
 - `archive_label` controls the homepage call-to-action that links to the blog archive.
 - `page_labels` localizes the blog index chrome (back link, search placeholder, tag filter label, empty state, dark-mode tooltip).
 - `post_labels` provides the article page UI strings (navigation buttons, dark-mode tooltip, missing-article copy).
-- `blogs[]` stores metadata for each post (`slug`, `title`, `summary`, `date`, `read_time`, `author`, `tags`, optional `image`).
+- `blogs[]` stores metadata for each post (`slug`, `title`, `summary`, `date`, `post_time`, `author`, `tags`, optional `image`).
 - Article bodies live in `blogs/posts/<slug>/<lang>.html`; when a translation is missing, the English file is used automatically.
 - Configure card actions (e.g., "Read more") via `meta.json -> itemTypes.blog.templateOptions.actions`.
 
