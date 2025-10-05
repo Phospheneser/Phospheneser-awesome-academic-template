@@ -1,6 +1,7 @@
 # Academic Template
 
 A configuration-first academic homepage template with unified section rendering, multi-language data, and plugin extensions.
+🌐 Live Demo: https://phospheneser.github.io/Phospheneser-awesome-academic-template/
 
 [中文文档](README_ZH.md)
 

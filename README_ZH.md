@@ -1,6 +1,7 @@
 # 学术模板 (Academic Template)
 
 一个以配置为核心的学术主页模板，支持多语言内容、统一段落式排版以及插件扩展。
+🌐 演示网页: https://phospheneser.github.io/Phospheneser-awesome-academic-template/
 
 [English Documentation](README.md)
 
