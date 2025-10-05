@@ -904,7 +904,6 @@
     return fallback || '';
   }
 
-
   function decorateLinkAnchor(anchor, link, label) {
     if (!anchor) return;
     anchor.classList.add('meta-link');
@@ -933,7 +932,6 @@
     const observer = new MutationObserver(() => applyIcon());
     observer.observe(document.body, { attributes: true, attributeFilter: ['class'] });
   }
-
 
   function buildBlogUrl(entry, lang = currentLang) {
     if (!entry) return '';
