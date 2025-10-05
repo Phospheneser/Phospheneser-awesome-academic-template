@@ -65,7 +65,7 @@
             "templateOptions": {
                 "mediaField": "image",
                 "titleField": "title",
-                "badgeField": "date",
+                "subtitleFields": ["date"],
                 "metaFields": ["authors"],
                 "descriptionFields": ["description", "summary", "content"],
                 "detailsField": "stack",
