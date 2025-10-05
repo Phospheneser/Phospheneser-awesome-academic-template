@@ -173,6 +173,8 @@
 2. 在各语言目录创建对应的 `<dataSource>.json` 文件。
 3. 通过 `meta.json -> itemTypes` 配置字段映射，或在 `static/js/templates.js` 注册新模板，并使用 `.meta-card--<itemType>` 等 CSS 选择器定制样式，无需改动主页 HTML。
 
+详细改动参见[使用示例](https://github.com/Phospheneser/Phospheneser.github.io/commit/d562fbf003b006c1ef92675db1a8ce6184f5062d#diff-185fdcbe4e1d3cf7c9aa4e9e86e9cf6b1f49d7ecd733e9ec81220c2890673cb6)。
+
 ### 自定义排版与插件
 - Section 的布局由 `static/js/templates.js` 以及 `index.html` / `multipage_index.html` 中的辅助函数生成；通过扩展 `TemplateRegistry` 或调整 `itemTypes[*].templateOptions` 即可实现新样式。
 - 插件通过 `static/js/plugins.js` 的 `PluginRegistry.register` 注册，再在 `multiPage.plugins` 中引用。

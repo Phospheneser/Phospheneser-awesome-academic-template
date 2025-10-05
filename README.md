@@ -173,6 +173,9 @@ Fine-tune how each item type maps onto the card layout through `meta.json -> ite
 2. Create `<lang>/<dataSource>.json` in every language folder.
 3. Map fields through `meta.json -> itemTypes` (or register a template in `static/js/templates.js`) and style with CSS classes such as `.meta-card--<itemType>`—no homepage HTML edits required.
 
+For detailed changes, see the [Usage Example](https://github.com/Phospheneser/Phospheneser.github.io/commit/d562fbf003b006c1ef92675db1a8ce6184f5062d#diff-185fdcbe4e1d3cf7c9aa4e9e86e9cf6b1f49d7ecd733e9ec81220c2890673cb6).
+
+
 ### Customize Rendering or Plugins
 - Section markup comes from `static/js/templates.js` and the helper functions in `index.html` / `multipage_index.html`; extend `TemplateRegistry` or tweak `itemTypes[*].templateOptions` for new layouts without touching page HTML.
 - Register plugins in `static/js/plugins.js` via `PluginRegistry.register` and add the plugin name to `multiPage.plugins`.
