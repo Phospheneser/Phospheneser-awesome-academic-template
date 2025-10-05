@@ -387,7 +387,9 @@
   }
 
   function drawList(list, section, contentDiv, sectionData) {
+    if (!contentDiv) return;
     contentDiv.innerHTML = '';
+
     if (!Array.isArray(list) || list.length === 0) {
       const placeholder = (metaConfig && metaConfig.emptyStates && metaConfig.emptyStates[section.id]) || 'No records available.';
       const p = document.createElement('p');
@@ -400,12 +402,26 @@
     const type = section.itemType || section.id;
     const template = getSectionTemplate(section, type);
 
+    // ✅ 调试信息
+    console.log(`[drawList] section="${section.id}" type="${type}" template="${template}" list.length=${list.length}`);
+
+    // ✅ 优先尝试使用 TemplateRegistry 中的模板（整段交由模板自行渲染）
+    const customRenderer = window.TemplateRegistry?.get?.(template);
+    if (typeof customRenderer === 'function') {
+      console.log(`[TemplateRegistry][USE] Custom template found: "${template}"`);
+      try {
+        customRenderer(list, section, contentDiv);
+        return; // ✅ 自定义模板已处理完毕
+      } catch (err) {
+        console.error(`[TemplateRegistry][ERROR] Failed to render "${template}":`, err);
+      }
+    }
+
+    // ⚙️ 否则回退到默认渲染逻辑（兼容旧模板）
     list.forEach(entry => {
       const block = document.createElement('div');
       block.className = 'section-text-block';
-
       renderEntryByTemplate(block, entry, section, template, type);
-
       if (block.childElementCount > 0) {
         contentDiv.appendChild(block);
       }
@@ -415,6 +431,7 @@
       appendBlogArchiveCallout(contentDiv, getSectionArchiveLabel(section, sectionData));
     }
   }
+
 
   function getSectionArchiveLabel(section, sectionData) {
     if (!sectionData) return '';
@@ -441,6 +458,22 @@
 
   function renderEntryByTemplate(block, entry, section, template, type) {
     appendSortMetadata(block, entry);
+
+    // ✅ 优先查找 TemplateRegistry 中是否定义了对应模板
+    const renderer = window.TemplateRegistry?.get?.(template);
+    if (typeof renderer === 'function') {
+      console.log(`[TemplateRegistry][GET] template: ${template}`, renderer);
+      try {
+        // 自定义模板大多以 (items, section, contentDiv) 形式定义
+        // 我们单独包装当前 entry 成数组传入
+        renderer([entry], section, block);
+        return; // ✅ 成功交给自定义模板渲染
+      } catch (err) {
+        console.error(`[TemplateRegistry][ERROR] renderer("${template}") failed:`, err);
+      }
+    }
+
+    // ⚙️ 否则使用默认渲染分支（保持旧逻辑）
     switch ((template || '').toLowerCase()) {
       case 'paper-card':
       case 'meta-card':
@@ -988,15 +1021,15 @@
       if (sec.id === 'about') {
         const wrap = document.createElement('section');
         wrap.className = 'section';
-      wrap.innerHTML = `
+        wrap.innerHTML = `
           <div class="container is-max-desktop">
             <div id="about">
               <h1 class="title is-3" id="about-title" style="margin-top: 60px;"></h1>
             </div>
             <div id="about-texts" class="about-texts"></div>
           </div>`;
-      root.appendChild(wrap);
-      return;
+        root.appendChild(wrap);
+        return;
       }
       const wrap = document.createElement('section');
       wrap.className = 'section';
