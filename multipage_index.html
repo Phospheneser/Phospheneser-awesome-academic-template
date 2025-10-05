@@ -1066,8 +1066,21 @@
 
     function getLinkIconPath(link) {
         if (!link || typeof link !== 'object') return '';
+
+        // 检查当前是否是暗色模式
+        const isDark = document.body.classList.contains('dark-mode') ||
+            window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+        // 优先使用 dark_icon
+        if (isDark && typeof link.dark_icon === 'string' && link.dark_icon.trim()) {
+            return link.dark_icon.trim();
+        }
+
+        // 否则使用普通 icon
         const direct = typeof link.icon === 'string' ? link.icon.trim() : '';
         if (direct) return direct;
+
+        // 最后兜底 iconUrl
         const fallback = typeof link.iconUrl === 'string' ? link.iconUrl.trim() : '';
         return fallback || '';
     }
@@ -1075,14 +1088,30 @@
     function decorateLinkAnchor(anchor, link, label) {
         if (!anchor) return;
         anchor.classList.add('meta-link');
-        const iconPath = getLinkIconPath(link);
-        if (!iconPath) return;
-        const img = document.createElement('img');
-        img.src = iconPath;
-        img.alt = label ? `${label} icon` : 'Link icon';
-        img.className = 'meta-link-icon';
-        img.loading = 'lazy';
-        anchor.appendChild(img);
+
+        const applyIcon = () => {
+            const iconPath = getLinkIconPath(link);
+            console.log("iconPath=")
+            console.log(iconPath)
+            if (!iconPath) return;
+
+            // 删除旧图标，避免重复
+            const existing = anchor.querySelector('img.meta-link-icon');
+            if (existing) existing.remove();
+
+            const img = document.createElement('img');
+            img.src = iconPath;
+            img.alt = label ? `${label} icon` : 'Link icon';
+            img.className = 'meta-link-icon';
+            img.loading = 'lazy';
+            anchor.insertBefore(img, anchor.firstChild);
+        };
+
+        applyIcon();
+
+        // 🔄 监听暗色模式切换时自动更新图标
+        const observer = new MutationObserver(() => applyIcon());
+        observer.observe(document.body, { attributes: true, attributeFilter: ['class'] });
     }
 
     function buildBlogUrl(entry, lang = currentLang) {

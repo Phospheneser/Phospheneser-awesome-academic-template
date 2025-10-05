@@ -408,6 +408,17 @@
 
     function getLinkIconPath(link) {
       if (!link || typeof link !== 'object') return '';
+
+      // 检测是否为暗色模式
+      const isDark = document.body.classList.contains('dark-mode') ||
+        window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+      // 优先使用 dark_icon
+      if (isDark && typeof link.dark_icon === 'string' && link.dark_icon.trim()) {
+        return link.dark_icon.trim();
+      }
+
+      // 否则回退到 icon 或 iconUrl
       const direct = typeof link.icon === 'string' ? link.icon.trim() : '';
       if (direct) return direct;
       const fallback = typeof link.iconUrl === 'string' ? link.iconUrl.trim() : '';
@@ -415,17 +426,35 @@
     }
 
     function decorateLinkAnchor(anchor, link, label) {
+      console.log("icon decorateLinkAnchor")
       if (!anchor) return;
       anchor.classList.add('meta-link');
-      const iconPath = getLinkIconPath(link);
-      if (!iconPath) return;
-      const img = document.createElement('img');
-      img.src = iconPath;
-      img.alt = label ? `${label} icon` : 'Link icon';
-      img.className = 'meta-link-icon';
-      img.loading = 'lazy';
-      anchor.appendChild(img);
+
+      const applyIcon = () => {
+        const iconPath = getLinkIconPath(link);
+        console.log("iconPsth=")
+        console.log(iconPsth)
+        if (!iconPath) return;
+
+        // 移除旧图标（防止重复添加）
+        const existing = anchor.querySelector('img.meta-link-icon');
+        if (existing) existing.remove();
+
+        const img = document.createElement('img');
+        img.src = iconPath;
+        img.alt = label ? `${label} icon` : 'Link icon';
+        img.className = 'meta-link-icon';
+        img.loading = 'lazy';
+        anchor.appendChild(img);
+      };
+
+      applyIcon();
+
+      // 监听暗色模式切换时自动更新 icon
+      const observer = new MutationObserver(() => applyIcon());
+      observer.observe(document.body, { attributes: true, attributeFilter: ['class'] });
     }
+
 
     function hydrateBlogTemplateOptions(raw) {
       const opts = raw || {};
@@ -813,7 +842,7 @@
             const readMore = document.createElement('a');
             readMore.className = 'blog-read-more';
             readMore.href = url;
-          const label = resolveBlogActionLabel(action.label) || entry.read_more_label || getBlogReadMoreLabel();
+            const label = resolveBlogActionLabel(action.label) || entry.read_more_label || getBlogReadMoreLabel();
             readMore.innerHTML = `<span>${label}</span><i class="fas fa-arrow-right"></i>`;
             actions.appendChild(readMore);
             break;
