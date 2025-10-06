@@ -13,6 +13,7 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
 from divine_utils import JiuGongLiuRen, LiuYaoQiGua, Tarot
+from llm_integration import llm_integrator
 
 class DivineHandler(http.server.BaseHTTPRequestHandler):
     def do_GET(self):
@@ -26,6 +27,8 @@ class DivineHandler(http.server.BaseHTTPRequestHandler):
                 # 获取参数
                 query = params.get('query', ['今日运势'])[0]
                 div_type = params.get('type', ['JiuGongLiuRen'])[0]
+                # 添加是否使用LLM生成哲理回复的参数，默认为False
+                use_llm = params.get('use_llm', ['false'])[0].lower() == 'true'
                 
                 # 设置返回结果的编码
                 self.send_response(200)
@@ -66,6 +69,18 @@ class DivineHandler(http.server.BaseHTTPRequestHandler):
                         'type': div_type,
                         'result': '\n'.join(result)
                     }
+                    
+                    # 如果需要使用LLM生成哲理回复
+                    if use_llm:
+                        try:
+                            philosophical_reply = llm_integrator.generate_philosophical_reply(
+                                query, '\n'.join(result), div_type
+                            )
+                            response['philosophical_reply'] = philosophical_reply
+                        except Exception as llm_error:
+                            print(f"生成哲理回复时出错: {str(llm_error)}")
+                            # 出错时不影响原始占卜结果的返回
+                            response['philosophical_reply_error'] = str(llm_error)
                 elif div_type == 'LiuYaoQiGua':
                     # 调用六爻起卦占卜函数，获取返回结果
                     result = []
@@ -95,6 +110,18 @@ class DivineHandler(http.server.BaseHTTPRequestHandler):
                         'type': div_type,
                         'result': '\n'.join(result)
                     }
+                    
+                    # 如果需要使用LLM生成哲理回复
+                    if use_llm:
+                        try:
+                            philosophical_reply = llm_integrator.generate_philosophical_reply(
+                                query, '\n'.join(result), div_type
+                            )
+                            response['philosophical_reply'] = philosophical_reply
+                        except Exception as llm_error:
+                            print(f"生成哲理回复时出错: {str(llm_error)}")
+                            # 出错时不影响原始占卜结果的返回
+                            response['philosophical_reply_error'] = str(llm_error)
                 elif div_type == 'Tarot':
                     # 调用塔罗牌占卜函数，获取返回结果
                     result = []
@@ -124,6 +151,18 @@ class DivineHandler(http.server.BaseHTTPRequestHandler):
                         'type': div_type,
                         'result': '\n'.join(result)
                     }
+                    
+                    # 如果需要使用LLM生成哲理回复
+                    if use_llm:
+                        try:
+                            philosophical_reply = llm_integrator.generate_philosophical_reply(
+                                query, '\n'.join(result), div_type
+                            )
+                            response['philosophical_reply'] = philosophical_reply
+                        except Exception as llm_error:
+                            print(f"生成哲理回复时出错: {str(llm_error)}")
+                            # 出错时不影响原始占卜结果的返回
+                            response['philosophical_reply_error'] = str(llm_error)
                 else:
                     response = {
                         'success': False,
