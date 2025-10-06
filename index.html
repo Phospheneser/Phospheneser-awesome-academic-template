@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Academic Template</title>
+  <title>Joshua's HomePage</title>
   <meta name="author" content="Phospheneser">
   <meta name="copyright" content="© 2024 Phospheneser. All rights reserved.">
 
@@ -43,6 +43,10 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/wordcloud2.js/1.0.6/wordcloud2.min.js"></script>
   <script src="https://www.goat1000.com/tagcanvas.min.js"></script>
   <script src="./static/js/divine.js"></script>
+  <!-- index.html -->
+  <link rel="icon" type="image/png" sizes="32x32" href="./media/web_icon/academic32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="./media/web_icon/academic16.png">
+
   <style>
     /* 干掉 Bulma 默认箭头 */
     .navbar.is-primary .navbar-end .navbar-link::after,
@@ -175,7 +179,6 @@
 <script>
   let currentLang = localStorage.getItem('lang') || 'en';
   let availableLanguages = ['en', 'zh', 'jp']; // 将在元配置加载后被覆盖
-  window.metaConfig = {}; // 初始化全局meta配置对象
   // 根据当前页面和localStorage确定布局模式
   function getInitialLayoutMode() {
     const stored = localStorage.getItem('layoutMode');
@@ -213,10 +216,9 @@
   async function loadMeta() {
     try {
       const res = await fetch(`data/meta.json`);
-      const config = await res.json();
-      window.metaConfig = config;
-      if (Array.isArray(config.availableLanguages)) {
-        availableLanguages = config.availableLanguages;
+      metaConfig = await res.json();
+      if (Array.isArray(metaConfig.availableLanguages)) {
+        availableLanguages = metaConfig.availableLanguages;
       }
     } catch (e) { console.error('Failed to load meta.json', e); }
   }

@@ -92,16 +92,24 @@ class Diviner {
     this.divineWindow.style.right = '20px';
     this.divineWindow.style.width = '350px';
     this.divineWindow.style.maxHeight = '600px';
-    this.divineWindow.style.backgroundColor = 'white';
+    // 设置基础样式，后续会根据暗色模式调整
     this.divineWindow.style.borderRadius = '10px';
-    this.divineWindow.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.2)';
     this.divineWindow.style.padding = '20px';
     this.divineWindow.style.zIndex = '1002';
     this.divineWindow.style.overflow = 'auto';
+    this.divineWindow.style.fontFamily = 'Noto Sans, sans-serif';
+    
+    // 初始化样式（亮色模式）
+    this.divineWindow.style.backgroundColor = 'white';
+    this.divineWindow.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.2)';
+    
+    // 检查是否为暗色模式并应用相应样式
+    this.updateDarkModeStyles();
 
     // 添加关闭按钮
     const closeBtn = document.createElement('button');
     closeBtn.innerText = '×';
+    closeBtn.id = 'divine-close-btn';
     closeBtn.style.position = 'absolute';
     closeBtn.style.top = '10px';
     closeBtn.style.right = '10px';
@@ -112,8 +120,16 @@ class Diviner {
     closeBtn.style.fontSize = '24px';
     closeBtn.style.cursor = 'pointer';
     closeBtn.style.color = '#666';
+    closeBtn.style.transition = 'color 0.3s ease';
     closeBtn.addEventListener('click', () => {
       this.closeDivineWindow();
+    });
+    // 悬停效果
+    closeBtn.addEventListener('mouseover', () => {
+      closeBtn.style.color = document.body.classList.contains('dark-mode') ? '#ffffff' : '#333';
+    });
+    closeBtn.addEventListener('mouseout', () => {
+      closeBtn.style.color = document.body.classList.contains('dark-mode') ? '#aaa' : '#666';
     });
     this.divineWindow.appendChild(closeBtn);
 
@@ -121,9 +137,9 @@ class Diviner {
     const title = document.createElement('h3');
     title.innerText = '神秘占卜师';
     title.style.textAlign = 'center';
-    title.style.color = '#8B0000';
+    title.style.color = document.body.classList.contains('dark-mode') ? '#e0e0e0' : '#363636';
     title.style.marginBottom = '20px';
-    title.style.fontFamily = 'Pacifico, cursive';
+    title.style.fontFamily = 'Google Sans, sans-serif';
     title.style.fontSize = '24px';
     this.divineWindow.appendChild(title);
 
@@ -132,7 +148,7 @@ class Diviner {
     queryLabel.innerText = '请输入您的问题：';
     queryLabel.style.display = 'block';
     queryLabel.style.marginBottom = '10px';
-    queryLabel.style.color = '#333';
+    queryLabel.style.color = document.body.classList.contains('dark-mode') ? '#e0e0e0' : '#333';
     this.divineWindow.appendChild(queryLabel);
 
     const queryInput = document.createElement('input');
@@ -142,8 +158,11 @@ class Diviner {
     queryInput.style.width = '100%';
     queryInput.style.padding = '8px';
     queryInput.style.marginBottom = '15px';
-    queryInput.style.border = '1px solid #ddd';
+    queryInput.style.border = document.body.classList.contains('dark-mode') ? '1px solid #555' : '1px solid #ddd';
     queryInput.style.borderRadius = '5px';
+    queryInput.style.backgroundColor = document.body.classList.contains('dark-mode') ? '#4a4a4a' : 'white';
+    queryInput.style.color = document.body.classList.contains('dark-mode') ? '#ffffff' : '#333';
+    queryInput.style.transition = 'all 0.3s ease';
     queryInput.addEventListener('input', () => {
       this.query = queryInput.value;
     });
@@ -154,7 +173,7 @@ class Diviner {
     modeLabel.innerText = '选择占卜方式：';
     modeLabel.style.display = 'block';
     modeLabel.style.marginBottom = '10px';
-    modeLabel.style.color = '#333';
+    modeLabel.style.color = document.body.classList.contains('dark-mode') ? '#e0e0e0' : '#333';
     this.divineWindow.appendChild(modeLabel);
 
     const modeContainer = document.createElement('div');
@@ -185,6 +204,7 @@ class Diviner {
       modeLabel.innerText = mode.name;
       modeLabel.style.marginLeft = '5px';
       modeLabel.style.cursor = 'pointer';
+      modeLabel.style.color = document.body.classList.contains('dark-mode') ? '#e0e0e0' : '#333';
 
       modeOption.appendChild(radio);
       modeOption.appendChild(modeLabel);
@@ -198,12 +218,19 @@ class Diviner {
     divineBtn.innerText = '开始占卜';
     divineBtn.style.width = '100%';
     divineBtn.style.padding = '10px';
-    divineBtn.style.backgroundColor = '#8B0000';
-    divineBtn.style.color = 'white';
-    divineBtn.style.border = 'none';
+    divineBtn.style.backgroundColor = document.body.classList.contains('dark-mode') ? '#4a4a4a' : '#f5f5f5';
+    divineBtn.style.color = document.body.classList.contains('dark-mode') ? '#ffffff' : '#363636';
+    divineBtn.style.border = document.body.classList.contains('dark-mode') ? '1px solid #666' : '1px solid #ddd';
     divineBtn.style.borderRadius = '5px';
     divineBtn.style.cursor = 'pointer';
     divineBtn.style.fontSize = '16px';
+    divineBtn.style.transition = 'all 0.3s ease';
+    divineBtn.addEventListener('mouseover', () => {
+      divineBtn.style.backgroundColor = document.body.classList.contains('dark-mode') ? '#666666' : '#e0e0e0';
+    });
+    divineBtn.addEventListener('mouseout', () => {
+      divineBtn.style.backgroundColor = document.body.classList.contains('dark-mode') ? '#4a4a4a' : '#f5f5f5';
+    });
     divineBtn.addEventListener('click', () => {
       this.startDivination();
     });
@@ -214,22 +241,122 @@ class Diviner {
     resultContainer.id = 'divine-result';
     resultContainer.style.marginTop = '20px';
     resultContainer.style.padding = '15px';
-    resultContainer.style.backgroundColor = '#f9f9f9';
+    resultContainer.style.backgroundColor = document.body.classList.contains('dark-mode') ? 'rgba(50, 50, 50, 0.9)' : '#f9f9f9';
     resultContainer.style.borderRadius = '5px';
     resultContainer.style.minHeight = '100px';
     resultContainer.style.whiteSpace = 'pre-wrap';
     resultContainer.style.fontFamily = 'Noto Sans, sans-serif';
+    resultContainer.style.color = document.body.classList.contains('dark-mode') ? '#e0e0e0' : '#333';
+    resultContainer.style.border = document.body.classList.contains('dark-mode') ? '1px solid #555' : '1px solid #ddd';
     this.divineWindow.appendChild(resultContainer);
 
+    // 添加入场动画
+    this.divineWindow.style.opacity = '0';
+    this.divineWindow.style.transform = 'scale(0.9)';
+    this.divineWindow.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+    
     // 添加到页面
     document.body.appendChild(this.divineWindow);
+    
+    // 触发重排后执行动画
+    setTimeout(() => {
+      this.divineWindow.style.opacity = '1';
+      this.divineWindow.style.transform = 'scale(1)';
+    }, 10);
+    
+    // 监听暗色模式切换
+    this.setupDarkModeListener();
+  }
+  
+  // 设置暗色模式监听器
+  setupDarkModeListener() {
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach(mutation => {
+        if (mutation.attributeName === 'class' && document.body.classList.contains('dark-mode') !== this.wasDarkMode) {
+          this.updateDarkModeStyles();
+          this.wasDarkMode = document.body.classList.contains('dark-mode');
+        }
+      });
+    });
+    
+    // 存储当前模式状态
+    this.wasDarkMode = document.body.classList.contains('dark-mode');
+    
+    // 观察body的class变化
+    observer.observe(document.body, {
+      attributes: true
+    });
+    
+    // 当窗口关闭时断开观察器
+    this.divineWindow.addEventListener('DOMNodeRemoved', () => {
+      observer.disconnect();
+    });
   }
 
   // 关闭占卜窗口
   closeDivineWindow() {
     if (this.divineWindow) {
-      document.body.removeChild(this.divineWindow);
-      this.divineWindow = null;
+      // 添加入场动画
+      this.divineWindow.style.opacity = '0';
+      this.divineWindow.style.transform = 'scale(0.9)';
+      this.divineWindow.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+      
+      // 等待动画完成后移除
+      setTimeout(() => {
+        document.body.removeChild(this.divineWindow);
+        this.divineWindow = null;
+      }, 300);
+    }
+  }
+  
+  // 更新暗色模式样式
+  updateDarkModeStyles() {
+    const isDarkMode = document.body.classList.contains('dark-mode');
+    
+    // 更新窗口样式
+    this.divineWindow.style.backgroundColor = isDarkMode ? 'rgba(50, 50, 50, 0.95)' : 'white';
+    this.divineWindow.style.boxShadow = isDarkMode ? '0 4px 20px rgba(0, 0, 0, 0.5)' : '0 4px 20px rgba(0, 0, 0, 0.2)';
+    
+    // 更新标题样式
+    const title = this.divineWindow.querySelector('h3');
+    if (title) {
+      title.style.color = isDarkMode ? '#e0e0e0' : '#363636';
+    }
+    
+    // 更新标签样式
+    const labels = this.divineWindow.querySelectorAll('label');
+    labels.forEach(label => {
+      label.style.color = isDarkMode ? '#e0e0e0' : '#333';
+    });
+    
+    // 更新输入框样式
+    const queryInput = this.divineWindow.querySelector('#divine-query');
+    if (queryInput) {
+      queryInput.style.border = isDarkMode ? '1px solid #555' : '1px solid #ddd';
+      queryInput.style.backgroundColor = isDarkMode ? '#4a4a4a' : 'white';
+      queryInput.style.color = isDarkMode ? '#ffffff' : '#333';
+    }
+    
+    // 更新结果区域样式
+    const resultContainer = this.divineWindow.querySelector('#divine-result');
+    if (resultContainer) {
+      resultContainer.style.backgroundColor = isDarkMode ? 'rgba(50, 50, 50, 0.9)' : '#f9f9f9';
+      resultContainer.style.color = isDarkMode ? '#e0e0e0' : '#333';
+      resultContainer.style.border = isDarkMode ? '1px solid #555' : '1px solid #ddd';
+    }
+    
+    // 更新关闭按钮样式
+    const closeBtn = this.divineWindow.querySelector('#divine-close-btn');
+    if (closeBtn) {
+      closeBtn.style.color = isDarkMode ? '#aaa' : '#666';
+    }
+    
+    // 更新占卜按钮样式
+    const divineBtn = this.divineWindow.querySelector('button:not(#divine-close-btn)');
+    if (divineBtn) {
+      divineBtn.style.backgroundColor = isDarkMode ? '#4a4a4a' : '#f5f5f5';
+      divineBtn.style.color = isDarkMode ? '#ffffff' : '#363636';
+      divineBtn.style.border = isDarkMode ? '1px solid #666' : '1px solid #ddd';
     }
   }
 
