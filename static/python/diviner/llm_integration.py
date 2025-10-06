@@ -6,14 +6,16 @@ import os
 class LLMIntegration:
     def __init__(self):
         # 默认配置，可通过环境变量覆盖
-        self.api_base = os.environ.get("LLM_API_BASE", "https://api.chatanywhere.tech/v1")
+        self.api_base = os.environ.get(
+            "LLM_API_BASE", "https://api.chatanywhere.tech/v1"
+        )
         self.api_key = os.environ.get("LLM_API_KEY", "free")  # 默认API密钥
         self.model = os.environ.get("LLM_MODEL", "gpt-3.5-turbo")
-        
+
         # 可以根据需要切换到其他免费API服务，如以下配置：
         # self.api_base = 'https://api.openai-proxy.com/v1'
         # self.api_key = 'your_api_key_here'
-        
+
         # 如果使用本地部署的模型，可以配置为：
         # self.api_base = 'http://localhost:8080/v1'
         # self.api_key = 'not_used_for_local_models'

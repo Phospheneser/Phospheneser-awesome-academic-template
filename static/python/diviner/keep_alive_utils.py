@@ -16,16 +16,17 @@ import logging
 # 配置日志
 logging.basicConfig(
     level=logging.INFO,
-    format='%(asctime)s - 保活服务 - %(levelname)s - %(message)s',
-    datefmt='%Y-%m-%d %H:%M:%S'
+    format="%(asctime)s - 保活服务 - %(levelname)s - %(message)s",
+    datefmt="%Y-%m-%d %H:%M:%S",
 )
 logger = logging.getLogger(__name__)
 
+
 class KeepAliveService:
-    def __init__(self, server_url='http://localhost:8000', interval=600):
+    def __init__(self, server_url="http://localhost:8000", interval=600):
         """
         初始化保活服务
-        
+
         参数:
         server_url (str): 服务器基础URL，默认是'http://localhost:8000'
         interval (int): 发送请求的间隔时间（秒），默认是600秒（10分钟）
@@ -34,38 +35,37 @@ class KeepAliveService:
         self.interval = interval
         self.thread = None
         self.running = False
-        
+
         # 默认请求参数
         self.default_request = {
-            'path': '/divine',
-            'params': {
-                'type': 'JiuGongLiuRen',
-                'query': '保活请求'
-            }
+            "path": "/divine",
+            "params": {"type": "JiuGongLiuRen", "query": "保活请求"},
         }
-    
+
     def start(self):
         """启动保活服务"""
         if self.running:
             logger.info("保活服务已经在运行中")
             return
-        
+
         self.running = True
         self.thread = threading.Thread(target=self._keep_alive_loop, daemon=True)
         self.thread.start()
-        logger.info(f"保活服务已启动，将每{self.interval//60}分钟发送一次请求到{self.server_url}")
-    
+        logger.info(
+            f"保活服务已启动，将每{self.interval//60}分钟发送一次请求到{self.server_url}"
+        )
+
     def stop(self):
         """停止保活服务"""
         if not self.running:
             logger.info("保活服务未在运行")
             return
-        
+
         self.running = False
         if self.thread and self.thread.is_alive():
             self.thread.join(timeout=5)
         logger.info("保活服务已停止")
-    
+
     def _keep_alive_loop(self):
         """保活循环，定期发送请求"""
         while self.running:
@@ -73,31 +73,33 @@ class KeepAliveService:
                 self._send_keep_alive_request()
             except Exception as e:
                 logger.error(f"保活请求发送失败: {e}")
-            
+
             # 等待指定的时间间隔
             for _ in range(self.interval):
                 if not self.running:
                     break
                 time.sleep(1)
-    
+
     def _send_keep_alive_request(self):
         """发送保活请求到服务器"""
         # 构造请求URL
-        path = self.default_request['path']
-        params = self.default_request['params']
-        
+        path = self.default_request["path"]
+        params = self.default_request["params"]
+
         # 构建查询字符串
-        query_string = '&'.join([f"{key}={urllib.parse.quote(str(value))}" for key, value in params.items()])
+        query_string = "&".join(
+            [f"{key}={urllib.parse.quote(str(value))}" for key, value in params.items()]
+        )
         request_url = f"{self.server_url}{path}?{query_string}"
-        
+
         logger.info(f"发送保活请求: {request_url}")
-        
+
         # 设置请求头
         headers = {
-            'User-Agent': 'Divine-Server-KeepAlive/1.0',
-            'Content-Type': 'application/json'
+            "User-Agent": "Divine-Server-KeepAlive/1.0",
+            "Content-Type": "application/json",
         }
-        
+
         # 发送请求
         try:
             req = urllib.request.Request(request_url, headers=headers)
@@ -106,10 +108,12 @@ class KeepAliveService:
                 if status_code == 200:
                     # 尝试解析响应内容
                     try:
-                        response_data = json.loads(response.read().decode('utf-8'))
+                        response_data = json.loads(response.read().decode("utf-8"))
                         logger.info(f"保活请求成功，服务器返回状态码: {status_code}")
                     except json.JSONDecodeError:
-                        logger.warning(f"保活请求成功，但无法解析响应内容，状态码: {status_code}")
+                        logger.warning(
+                            f"保活请求成功，但无法解析响应内容，状态码: {status_code}"
+                        )
                 else:
                     logger.warning(f"保活请求失败，状态码: {status_code}")
         except urllib.error.URLError as e:
@@ -118,6 +122,7 @@ class KeepAliveService:
             logger.error(f"保活请求HTTP错误: {e.code} - {e.reason}")
         except Exception as e:
             logger.error(f"保活请求发生未知错误: {e}")
+
 
 # 如果作为主程序运行，则启动一个简单的测试
 if __name__ == "__main__":

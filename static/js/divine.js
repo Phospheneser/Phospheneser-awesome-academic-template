@@ -257,10 +257,12 @@ class Diviner {
   // 从服务器获取占卜结果 - 重写版本以解决URL问题
   async getDivineResultFromServer() {
     // 获取服务器地址的优先级：
+    // 服务器地址获取优先级：
     // 1. URL参数 (用于临时测试)
     // 2. localStorage (用于持久化设置)
-    // 3. meta配置 (默认值)
-    let serverUrl = 'http://localhost:8080'; // 默认值（修改为与当前运行的服务器端口一致）
+    // 3. meta配置
+    // 4. 默认值（当前网页域名，避免硬编码具体地址）
+    let serverUrl = '';
 
     // 检查URL参数
     const urlParams = new URLSearchParams(window.location.search);
@@ -273,10 +275,15 @@ class Diviner {
       serverUrl = localStorage.getItem('divineServerUrl');
       console.log('从localStorage获取服务器地址:', serverUrl);
     }
-    // 最后检查meta配置
+    // 检查meta配置
     else if (window.metaConfig?.divine?.serverUrl) {
       serverUrl = window.metaConfig.divine.serverUrl;
       console.log('从meta配置获取服务器地址:', serverUrl);
+    }
+    // 默认使用Render服务器地址
+    else {
+      serverUrl = 'https://phospheneser-awesome-academic-template.onrender.com';
+      console.log('使用默认Render服务器地址:', serverUrl);
     }
 
     // 确保serverUrl格式正确，没有尾部斜杠
