@@ -5,6 +5,7 @@
         "zh",
         "jp"
     ],
+    "add_diviner": true,
     "languageLabels": {
         "en": "English",
         "zh": "中文",
