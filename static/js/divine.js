@@ -315,11 +315,31 @@ class Diviner {
       
       // 检查响应状态
       if (!response.ok) {
-        throw new Error(`服务器响应错误：${response.status}`);
+        // 尝试获取错误响应内容
+        let errorText = '';
+        try {
+          errorText = await response.text();
+        } catch (e) {
+          errorText = `HTTP错误: ${response.status} ${response.statusText}`;
+        }
+        throw new Error(`服务器响应错误：${response.status}\n${errorText}`);
       }
       
-      // 解析JSON响应
-      const data = await response.json();
+      // 解析JSON响应 - 添加安全检查
+      let data;
+      try {
+        // 先获取文本内容，以便在JSON解析失败时能提供更多信息
+        const responseText = await response.text();
+        data = JSON.parse(responseText);
+      } catch (parseError) {
+        // 如果JSON解析失败，抛出包含原始响应的错误
+        try {
+          const rawResponse = await response.clone().text();
+          throw new Error(`无效的JSON响应：${parseError.message}\n原始响应：${rawResponse}`);
+        } catch (textError) {
+          throw new Error(`无法解析服务器响应：${parseError.message}`);
+        }
+      }
       
       // 检查占卜是否成功
       if (!data.success) {
