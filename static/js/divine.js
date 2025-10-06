@@ -57,11 +57,11 @@ class Diviner {
         e.preventDefault();
         const x = e.clientX - this.offsetX;
         const y = e.clientY - this.offsetY;
-        
+
         // 确保不超出窗口边界
         const maxX = window.innerWidth - this.container.offsetWidth;
         const maxY = window.innerHeight - this.container.offsetHeight;
-        
+
         this.container.style.left = Math.max(0, Math.min(x, maxX)) + 'px';
         this.container.style.top = Math.max(0, Math.min(y, maxY)) + 'px';
         this.container.style.bottom = 'auto';
@@ -98,7 +98,7 @@ class Diviner {
     this.divineWindow.style.padding = '20px';
     this.divineWindow.style.zIndex = '1002';
     this.divineWindow.style.overflow = 'auto';
-    
+
     // 添加关闭按钮
     const closeBtn = document.createElement('button');
     closeBtn.innerText = '×';
@@ -159,7 +159,7 @@ class Diviner {
 
     const modeContainer = document.createElement('div');
     modeContainer.style.marginBottom = '15px';
-    
+
     const modes = [
       { id: 'JiuGongLiuRen', name: '九宫六壬' },
       { id: 'LiuYaoQiGua', name: '六爻起卦' },
@@ -169,7 +169,7 @@ class Diviner {
     modes.forEach(mode => {
       const modeOption = document.createElement('div');
       modeOption.style.marginBottom = '5px';
-      
+
       const radio = document.createElement('input');
       radio.type = 'radio';
       radio.id = `mode-${mode.id}`;
@@ -179,13 +179,13 @@ class Diviner {
       radio.addEventListener('change', () => {
         this.divineMode = mode.id;
       });
-      
+
       const modeLabel = document.createElement('label');
       modeLabel.htmlFor = `mode-${mode.id}`;
       modeLabel.innerText = mode.name;
       modeLabel.style.marginLeft = '5px';
       modeLabel.style.cursor = 'pointer';
-      
+
       modeOption.appendChild(radio);
       modeOption.appendChild(modeLabel);
       modeContainer.appendChild(modeOption);
@@ -237,7 +237,7 @@ class Diviner {
   async startDivination() {
     const resultContainer = document.getElementById('divine-result');
     resultContainer.innerText = '占卜中...';
-    
+
     try {
       // 调用Python服务器获取真实的占卜结果
       const result = await this.getDivineResultFromServer();
@@ -260,8 +260,8 @@ class Diviner {
     // 1. URL参数 (用于临时测试)
     // 2. localStorage (用于持久化设置)
     // 3. meta配置 (默认值)
-    let serverUrl = 'http://localhost:8000'; // 默认值
-    
+    let serverUrl = 'http://localhost:8080'; // 默认值（修改为与当前运行的服务器端口一致）
+
     // 检查URL参数
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.has('serverUrl')) {
@@ -278,24 +278,26 @@ class Diviner {
       serverUrl = window.metaConfig.divine.serverUrl;
       console.log('从meta配置获取服务器地址:', serverUrl);
     }
-    
+
     // 确保serverUrl格式正确，没有尾部斜杠
     serverUrl = serverUrl.replace(/\/$/, '');
-    
+
     // 构造正确的API请求URL，使用/divine路径
     const divinePath = 'divine';
     const queryParams = new URLSearchParams();
     queryParams.append('type', this.divineMode);
     queryParams.append('query', this.query);
+    // 添加use_llm参数以启用LLM哲理回复功能
+    queryParams.append('use_llm', 'true');
     const apiUrl = `${serverUrl}/${divinePath}?${queryParams.toString()}`;
-    
+
     // 添加详细的调试日志，确认构造的URL
     console.log('构造的API请求URL:', apiUrl);
-    
+
     // 设置超时处理
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 10000); // 10秒超时
-    
+
     try {
       // 发送GET请求到Python服务器
       console.log('准备发送请求到:', apiUrl);
@@ -306,13 +308,13 @@ class Diviner {
         },
         signal: controller.signal
       });
-      
+
       // 清除超时计时器
       clearTimeout(timeoutId);
-      
+
       // 记录响应状态
       console.log('服务器响应状态:', response.status);
-      
+
       // 检查响应状态
       if (!response.ok) {
         // 尝试获取错误响应内容
@@ -324,7 +326,7 @@ class Diviner {
         }
         throw new Error(`服务器响应错误：${response.status}\n${errorText}`);
       }
-      
+
       // 解析JSON响应 - 添加安全检查
       let data;
       try {
@@ -340,14 +342,19 @@ class Diviner {
           throw new Error(`无法解析服务器响应：${parseError.message}`);
         }
       }
-      
+
       // 检查占卜是否成功
       if (!data.success) {
         throw new Error(data.error || '占卜过程中发生错误');
       }
-      
-      // 返回占卜结果
-      return data.result;
+
+      // 如果服务器返回了哲理回复，则将其添加到结果中
+      if (data.philosophical_reply) {
+        return `${data.result}\n\n--- 卦象解读 ---\n${data.philosophical_reply}`;
+      } else {
+        // 否则只返回基本占卜结果
+        return data.result;
+      }
     } catch (error) {
       // 统一错误处理
       console.error('API调用错误:', error);
@@ -363,7 +370,7 @@ class Diviner {
   // 模拟占卜结果（作为备选）
   mockDivineResult() {
     const baseResult = `对于您的问题：【${this.query}】\n\n`;
-    
+
     switch (this.divineMode) {
       case 'JiuGongLiuRen':
         const jiuGongResults = [
@@ -374,7 +381,7 @@ class Diviner {
           '【小吉（巽）（木）：小有收获，平稳略好】->【天德（乾）（金）：吉祥如意，贵人相助】->【速喜（离）（火）：喜事临门，好消息快来】'
         ];
         return baseResult + jiuGongResults[Math.floor(Math.random() * jiuGongResults.length)];
-        
+
       case 'LiuYaoQiGua':
         const liuYaoResults = [
           '得到的是【乾卦(刚健中正)】\n卦辞为：【元亨利贞】\n解释为：大吉大利，亨通顺利，坚守正道。\n性质是：【大吉】',
@@ -384,7 +391,7 @@ class Diviner {
           '得到的是【需卦(等待)】\n上爻爻变，爻辞为：【入于穴，有不速之客三人来，敬之终吉】\n解释为：进入洞穴，有不请自来的三位客人，恭敬对待他们最终吉祥。\n吉凶：【吉】'
         ];
         return baseResult + liuYaoResults[Math.floor(Math.random() * liuYaoResults.length)];
-        
+
       case 'Tarot':
         const tarotResults = [
           '过去 :【正位 魔术师 : 创造与自信】\n现在 :【正位 恋人 : 选择与和谐】\n未来 :【正位 太阳 : 成功与快乐】',
@@ -394,7 +401,7 @@ class Diviner {
           '过去 :【逆位 命运之轮 : 停滞与挑战】\n现在 :【正位 力量 : 勇气与耐心】\n未来 :【正位 节制 : 平衡与和谐】'
         ];
         return baseResult + tarotResults[Math.floor(Math.random() * tarotResults.length)];
-        
+
       default:
         return baseResult + '未知的占卜方式';
     }
@@ -408,17 +415,17 @@ function initDiviner() {
     if (typeof window !== 'undefined' && window.metaConfig && window.metaConfig.add_diviner === false) {
       return;
     }
-    
+
     // 检查是否存在全局meta_config对象并且明确禁用了占卜小人
     if (typeof window !== 'undefined' && window.meta_config && window.meta_config.add_diviner === false) {
       return;
     }
-    
+
     // 检查是否存在局部metaConfig变量并且明确禁用了占卜小人
     if (typeof metaConfig !== 'undefined' && metaConfig && metaConfig.add_diviner === false) {
       return;
     }
-    
+
     // 默认情况下初始化占卜小人（除非明确禁用）
     const diviner = new Diviner();
     diviner.init();
@@ -441,17 +448,17 @@ function initDiviner() {
  * - 清除服务器地址设置: setDivineServerUrl(null)
  * @param {string|null} url - 服务器地址，为null时清除设置
  */
-window.setDivineServerUrl = function(url) {
+window.setDivineServerUrl = function (url) {
   if (url) {
     // 确保URL格式正确，添加http或https协议
     if (!url.startsWith('http://') && !url.startsWith('https://')) {
       console.warn('警告：URL应包含协议(http://或https://)，已自动添加https://');
       url = 'https://' + url;
     }
-    
+
     // 去除尾部斜杠
     url = url.replace(/\/$/, '');
-    
+
     localStorage.setItem('divineServerUrl', url);
     console.log('服务器地址已保存到localStorage:', url);
     console.log('请刷新页面以应用新的服务器地址设置。');
