@@ -456,6 +456,15 @@
       color: #cbd5f5;
     }
 
+    /* 数学公式的基础样式 */
+    .math {
+      overflow-x: auto;
+      white-space: nowrap;
+      -webkit-overflow-scrolling: touch;
+      padding: 8px 0;
+    }
+
+    /* 响应式数学公式样式 */
     @media screen and (max-width: 768px) {
       .post-wrapper {
         margin: 32px 16px 80px;
@@ -471,6 +480,16 @@
 
       .post-hero h1 {
         font-size: 2.2rem;
+      }
+
+      /* 窄屏幕下的数学公式优化 */
+      .math {
+        /* 允许公式在小屏幕上水平滚动 */
+        overflow-x: auto;
+        /* 确保公式不会超出父容器的左右边距 */
+        max-width: calc(100vw - 48px);
+        /* 调整公式字体大小以适应小屏幕 */
+        font-size: 0.95rem !important;
       }
     }
   </style>
