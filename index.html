@@ -175,6 +175,7 @@
 <script>
   let currentLang = localStorage.getItem('lang') || 'en';
   let availableLanguages = ['en', 'zh', 'jp']; // 将在元配置加载后被覆盖
+  window.metaConfig = {}; // 初始化全局meta配置对象
   // 根据当前页面和localStorage确定布局模式
   function getInitialLayoutMode() {
     const stored = localStorage.getItem('layoutMode');
@@ -212,9 +213,10 @@
   async function loadMeta() {
     try {
       const res = await fetch(`data/meta.json`);
-      metaConfig = await res.json();
-      if (Array.isArray(metaConfig.availableLanguages)) {
-        availableLanguages = metaConfig.availableLanguages;
+      const config = await res.json();
+      window.metaConfig = config;
+      if (Array.isArray(config.availableLanguages)) {
+        availableLanguages = config.availableLanguages;
       }
     } catch (e) { console.error('Failed to load meta.json', e); }
   }

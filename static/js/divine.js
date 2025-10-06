@@ -256,12 +256,38 @@ class Diviner {
 
   // 从服务器获取占卜结果 - 重写版本以解决URL问题
   async getDivineResultFromServer() {
+    // 获取服务器地址的优先级：
+    // 1. URL参数 (用于临时测试)
+    // 2. localStorage (用于持久化设置)
+    // 3. meta配置 (默认值)
+    let serverUrl = 'http://localhost:8000'; // 默认值
+    
+    // 检查URL参数
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has('serverUrl')) {
+      serverUrl = urlParams.get('serverUrl');
+      console.log('从URL参数获取服务器地址:', serverUrl);
+    }
+    // 检查localStorage
+    else if (localStorage.getItem('divineServerUrl')) {
+      serverUrl = localStorage.getItem('divineServerUrl');
+      console.log('从localStorage获取服务器地址:', serverUrl);
+    }
+    // 最后检查meta配置
+    else if (window.metaConfig?.divine?.serverUrl) {
+      serverUrl = window.metaConfig.divine.serverUrl;
+      console.log('从meta配置获取服务器地址:', serverUrl);
+    }
+    
+    // 确保serverUrl格式正确，没有尾部斜杠
+    serverUrl = serverUrl.replace(/\/$/, '');
+    
     // 构造正确的API请求URL，使用/divine路径
     const divinePath = 'divine';
     const queryParams = new URLSearchParams();
     queryParams.append('type', this.divineMode);
     queryParams.append('query', this.query);
-    const apiUrl = `http://localhost:8000/${divinePath}?${queryParams.toString()}`;
+    const apiUrl = `${serverUrl}/${divinePath}?${queryParams.toString()}`;
     
     // 添加详细的调试日志，确认构造的URL
     console.log('构造的API请求URL:', apiUrl);
@@ -387,3 +413,31 @@ function initDiviner() {
     }
   }
 }
+
+/**
+ * 全局帮助函数：设置或清除服务器地址
+ * 使用方法：
+ * - 设置服务器地址: setDivineServerUrl('https://your-server-url.com')
+ * - 清除服务器地址设置: setDivineServerUrl(null)
+ * @param {string|null} url - 服务器地址，为null时清除设置
+ */
+window.setDivineServerUrl = function(url) {
+  if (url) {
+    // 确保URL格式正确，添加http或https协议
+    if (!url.startsWith('http://') && !url.startsWith('https://')) {
+      console.warn('警告：URL应包含协议(http://或https://)，已自动添加https://');
+      url = 'https://' + url;
+    }
+    
+    // 去除尾部斜杠
+    url = url.replace(/\/$/, '');
+    
+    localStorage.setItem('divineServerUrl', url);
+    console.log('服务器地址已保存到localStorage:', url);
+    console.log('请刷新页面以应用新的服务器地址设置。');
+  } else {
+    localStorage.removeItem('divineServerUrl');
+    console.log('已清除localStorage中的服务器地址设置，将使用默认配置。');
+    console.log('请刷新页面以应用默认设置。');
+  }
+};

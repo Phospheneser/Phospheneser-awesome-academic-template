@@ -298,5 +298,8 @@
         "primary": "#3273dc",
         "secondary": "#23d160",
         "accent": "#ff3860"
+    },
+    "divine": {
+        "serverUrl": "http://localhost:8000"
     }
 }

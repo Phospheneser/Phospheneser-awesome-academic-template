@@ -9,6 +9,8 @@ import os
 import sys
 import subprocess
 import time
+# 导入保活服务模块
+from keep_alive_utils import KeepAliveService
 
 # 获取脚本所在目录的绝对路径
 script_dir = os.path.dirname(os.path.abspath(__file__))
@@ -65,6 +67,32 @@ try:
             print("\n服务器已成功启动！")
             print("您可以通过网页中的占卜小人访问占卜功能。")
             print("或者直接访问 http://localhost:8000/ 来测试API")
+            
+            # 启动保活服务
+            try:
+                # 尝试从输出中提取端口号
+                import re
+                port_match = re.search(r'port: (\d+)', line)
+                port = int(port_match.group(1)) if port_match else 8000
+                
+                # 初始化并启动保活服务
+                # 检查是否在Render环境中运行（可以根据环境变量或特定条件判断）
+                import os
+                is_render_env = 'RENDER' in os.environ or 'RENDER_SERVICE_NAME' in os.environ
+                
+                if is_render_env:
+                    # 在Render环境中，使用Render提供的主URL
+                    render_url = 'https://phospheneser-awesome-academic-template.onrender.com'
+                    keep_alive = KeepAliveService(server_url=render_url)
+                    print(f"\n保活服务已启动，将每10分钟发送一次保活请求到 {render_url}")
+                else:
+                    # 在本地环境中，继续使用localhost
+                    keep_alive = KeepAliveService(server_url=f'http://localhost:{port}')
+                    print(f"\n保活服务已启动，将每10分钟发送一次保活请求到 http://localhost:{port}")
+                
+                keep_alive.start()
+            except Exception as e:
+                print(f"启动保活服务时发生错误: {e}")
     
     # 等待进程结束
     process.wait()

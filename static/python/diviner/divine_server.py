@@ -188,9 +188,21 @@ def run_server(port=8000):
             httpd.server_close()
 
 if __name__ == "__main__":
-    # 允许通过命令行参数指定端口
+    # 允许通过环境变量PORT指定端口（适应Render等平台）
+    # 优先使用环境变量PORT，然后是命令行参数，最后是默认端口
+    import os
     port = 8000
-    if len(sys.argv) > 1:
+    
+    # 首先检查环境变量PORT
+    if 'PORT' in os.environ:
+        try:
+            port = int(os.environ['PORT'])
+            print(f"使用环境变量PORT指定的端口: {port}")
+        except ValueError:
+            print(f"环境变量PORT的值 '{os.environ['PORT']}' 不是有效的端口号，使用默认端口8000")
+    
+    # 然后检查命令行参数
+    elif len(sys.argv) > 1:
         try:
             port = int(sys.argv[1])
         except ValueError:
