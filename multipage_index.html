@@ -832,8 +832,14 @@
         if (!entry) return;
         const { data, options } = buildMetaCardData(entry, type);
         block.classList.add('meta-card', `meta-card--${type}`);
-
-        const media = createMediaSlot(data.image, data.title, options.placeholderLabel);
+        let imageSrc = '';
+        if (entry.hero_image) {
+            // 处理hero_image路径，添加blogs/前缀
+            imageSrc = 'blogs/' + entry.hero_image.replace(/^\.\//, '');
+        } else {
+            imageSrc = data.image || '';
+        }
+        const media = createMediaSlot(imageSrc, data.title, options.placeholderLabel);
         if (media) block.appendChild(media);
 
         const content = document.createElement('div');

@@ -4,11 +4,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Blog Post</title>
+  <title>Joshua's Blog Post</title>
   <meta name="author" content="Phospheneser">
   <meta name="copyright" content="© 2024 Phospheneser. All rights reserved.">
   <link rel="stylesheet" href="../static/css/bulma.min.css">
   <link rel="stylesheet" href="../static/css/index.css">
+
+  <link rel="icon" type="image/png" sizes="32x32" href="./media/web_icon/post32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="./media/web_icon/post16.png">
   <style>
     body {
       min-height: 100vh;
@@ -275,6 +278,31 @@
 
     .post-content p {
       margin-bottom: 18px;
+    }
+
+    .post-content ul,
+    .post-content ol {
+      margin: 20px 0;
+      padding-left: 30px;
+    }
+
+    .post-content ul {
+      list-style-type: disc;
+      display: block !important;
+    }
+
+    .post-content ol {
+      list-style-type: decimal;
+    }
+
+    .post-content li {
+      margin-bottom: 10px;
+      line-height: 1.8;
+    }
+
+    .post-content li strong {
+      font-weight: 700;
+      color: #0f172a;
     }
 
     .post-content blockquote {
@@ -744,14 +772,49 @@
       const primaryPath = `./posts/${slug}/${lang}.html`;
       const fallbackPath = lang === 'en' ? null : `./posts/${slug}/en.html`;
 
+      console.log('渲染内容:', { slug, lang, primaryPath, fallbackPath });
+
       let html = await fetchContent(primaryPath);
+      console.log('加载primaryPath结果:', html ? '成功' : '失败');
+
       if (!html && fallbackPath) {
+        console.log('尝试加载fallbackPath:', fallbackPath);
         html = await fetchContent(fallbackPath);
+        console.log('加载fallbackPath结果:', html ? '成功' : '失败');
       }
 
       if (html) {
+        console.log('HTML内容长度:', html.length);
+        // 调试：检查是否包含列表元素
+        const hasList = html.includes('<ul');
+        console.log('HTML包含列表元素:', hasList);
+
+        if (hasList) {
+          const listStart = html.indexOf('<ul');
+          const listEnd = html.indexOf('</ul>') + '</ul>'.length;
+          const listContent = html.substring(listStart, listEnd);
+          console.log('列表内容:', listContent);
+        }
+
         container.innerHTML = html;
         if (status) status.textContent = '';
+
+        // 调试：检查设置后的内容
+        setTimeout(() => {
+          const contentHtml = container.innerHTML;
+          const ulElements = container.querySelectorAll('ul');
+          console.log('设置后内容长度:', contentHtml.length);
+          console.log('设置后找到的ul元素数量:', ulElements.length);
+          ulElements.forEach((ul, index) => {
+            const items = ul.querySelectorAll('li');
+            console.log('列表', index + 1, '包含', items.length, '个列表项');
+          });
+
+          // 延迟触发MathJax渲染，确保内容已完全加载
+          if (window.__typesetMath) {
+            window.__typesetMath();
+          }
+        }, 100);
       } else {
         container.innerHTML = '';
         if (status) {
@@ -762,9 +825,16 @@
 
     async function fetchContent(path) {
       try {
+        console.log('尝试加载路径:', path);
         const res = await fetch(path);
-        if (!res.ok) return null;
-        return await res.text();
+        console.log('加载响应状态:', res.status, res.statusText);
+        if (!res.ok) {
+          console.error('加载失败:', res.status);
+          return null;
+        }
+        const text = await res.text();
+        console.log('加载成功，内容长度:', text.length);
+        return text;
       } catch (err) {
         console.error('Failed to load content:', path, err);
         return null;
@@ -912,6 +982,52 @@
         updateTitle();
       });
     }
+
+    // 初始化MathJax用于渲染数学公式
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        processEscapes: true,
+        processEnvironments: true
+      },
+      svg: {
+        fontCache: 'global'
+      },
+      startup: {
+        ready: function () {
+          // 注册内容更新时触发渲染的函数
+          window.__typesetMath = function () {
+            MathJax.typesetPromise([document.getElementById('post-content')]).catch(function (err) {
+              console.warn('MathJax渲染失败:', err.message);
+            });
+          };
+          MathJax.startup.defaultReady();
+        }
+      }
+    };
+  </script>
+  <!-- MathJax CDN引入 -->
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" onload="console.log('MathJax加载成功');"></script>
+
+  <!-- 页面加载完成后触发一次渲染 -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      console.log('DOM加载完成，尝试触发MathJax渲染');
+      if (window.__typesetMath) {
+        window.__typesetMath();
+      } else {
+        // 如果自定义函数未定义，尝试直接使用MathJax
+        setTimeout(() => {
+          if (window.MathJax && window.MathJax.typeset) {
+            console.log('直接使用MathJax.typeset触发渲染');
+            MathJax.typesetPromise().catch(function (err) {
+              console.warn('MathJax渲染失败:', err.message);
+            });
+          }
+        }, 500);
+      }
+    });
   </script>
 </body>
 
