@@ -180,7 +180,7 @@ def LiuYaoQiGua(query, Divintype="three_coin", need_return=False, need_print=Tru
         "风": "巽",
         "雷": "震",
     }
-    with open("./info/64卦.json", "r") as f:
+    with open("./info/64gua.json", "r") as f:
         guaciInfo = json.load(f)
     # print(guaciInfo.keys())
     yaoListGot = random_get_liu_yao(Divintype)

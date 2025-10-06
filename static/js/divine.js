@@ -91,18 +91,19 @@ class Diviner {
     this.divineWindow.style.bottom = '80px';
     this.divineWindow.style.right = '20px';
     this.divineWindow.style.width = '350px';
-    this.divineWindow.style.maxHeight = '600px';
+    this.divineWindow.style.maxHeight = '50vh'; // 最大高度为屏幕高度的50%，确保顶部不超过屏幕中央
+    this.divineWindow.style.maxWidth = '90vw'; // 确保在小屏幕上不会太宽
     // 设置基础样式，后续会根据暗色模式调整
     this.divineWindow.style.borderRadius = '10px';
     this.divineWindow.style.padding = '20px';
     this.divineWindow.style.zIndex = '1002';
     this.divineWindow.style.overflow = 'auto';
     this.divineWindow.style.fontFamily = 'Noto Sans, sans-serif';
-    
+
     // 初始化样式（亮色模式）
     this.divineWindow.style.backgroundColor = 'white';
     this.divineWindow.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.2)';
-    
+
     // 检查是否为暗色模式并应用相应样式
     this.updateDarkModeStyles();
 
@@ -254,20 +255,20 @@ class Diviner {
     this.divineWindow.style.opacity = '0';
     this.divineWindow.style.transform = 'scale(0.9)';
     this.divineWindow.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
-    
+
     // 添加到页面
     document.body.appendChild(this.divineWindow);
-    
+
     // 触发重排后执行动画
     setTimeout(() => {
       this.divineWindow.style.opacity = '1';
       this.divineWindow.style.transform = 'scale(1)';
     }, 10);
-    
+
     // 监听暗色模式切换
     this.setupDarkModeListener();
   }
-  
+
   // 设置暗色模式监听器
   setupDarkModeListener() {
     const observer = new MutationObserver((mutations) => {
@@ -278,15 +279,15 @@ class Diviner {
         }
       });
     });
-    
+
     // 存储当前模式状态
     this.wasDarkMode = document.body.classList.contains('dark-mode');
-    
+
     // 观察body的class变化
     observer.observe(document.body, {
       attributes: true
     });
-    
+
     // 当窗口关闭时断开观察器
     this.divineWindow.addEventListener('DOMNodeRemoved', () => {
       observer.disconnect();
@@ -300,7 +301,7 @@ class Diviner {
       this.divineWindow.style.opacity = '0';
       this.divineWindow.style.transform = 'scale(0.9)';
       this.divineWindow.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
-      
+
       // 等待动画完成后移除
       setTimeout(() => {
         document.body.removeChild(this.divineWindow);
@@ -308,27 +309,27 @@ class Diviner {
       }, 300);
     }
   }
-  
+
   // 更新暗色模式样式
   updateDarkModeStyles() {
     const isDarkMode = document.body.classList.contains('dark-mode');
-    
+
     // 更新窗口样式
     this.divineWindow.style.backgroundColor = isDarkMode ? 'rgba(50, 50, 50, 0.95)' : 'white';
     this.divineWindow.style.boxShadow = isDarkMode ? '0 4px 20px rgba(0, 0, 0, 0.5)' : '0 4px 20px rgba(0, 0, 0, 0.2)';
-    
+
     // 更新标题样式
     const title = this.divineWindow.querySelector('h3');
     if (title) {
       title.style.color = isDarkMode ? '#e0e0e0' : '#363636';
     }
-    
+
     // 更新标签样式
     const labels = this.divineWindow.querySelectorAll('label');
     labels.forEach(label => {
       label.style.color = isDarkMode ? '#e0e0e0' : '#333';
     });
-    
+
     // 更新输入框样式
     const queryInput = this.divineWindow.querySelector('#divine-query');
     if (queryInput) {
@@ -336,7 +337,7 @@ class Diviner {
       queryInput.style.backgroundColor = isDarkMode ? '#4a4a4a' : 'white';
       queryInput.style.color = isDarkMode ? '#ffffff' : '#333';
     }
-    
+
     // 更新结果区域样式
     const resultContainer = this.divineWindow.querySelector('#divine-result');
     if (resultContainer) {
@@ -344,13 +345,13 @@ class Diviner {
       resultContainer.style.color = isDarkMode ? '#e0e0e0' : '#333';
       resultContainer.style.border = isDarkMode ? '1px solid #555' : '1px solid #ddd';
     }
-    
+
     // 更新关闭按钮样式
     const closeBtn = this.divineWindow.querySelector('#divine-close-btn');
     if (closeBtn) {
       closeBtn.style.color = isDarkMode ? '#aaa' : '#666';
     }
-    
+
     // 更新占卜按钮样式
     const divineBtn = this.divineWindow.querySelector('button:not(#divine-close-btn)');
     if (divineBtn) {
@@ -370,13 +371,28 @@ class Diviner {
       const result = await this.getDivineResultFromServer();
       resultContainer.innerText = result;
     } catch (error) {
-      // 如果API调用失败，使用模拟结果作为备选
-      console.warn('API调用失败，使用模拟结果：', error);
+      // 记录错误信息
+      console.warn('API调用失败：', error);
+
+      // 判断错误类型，提供更具体的用户提示
+      let errorType = '服务器连接问题';
+      let extraInfo = '';
+
+      if (error.message.includes('500 Internal Server Error')) {
+        errorType = '服务器处理出错';
+        // 特别处理六爻起卦模式
+        if (this.divineMode === 'LiuYaoQiGua') {
+          extraInfo = '\n\n提示：当前服务器可能暂不支持六爻起卦模式，请尝试其他占卜方式。';
+        }
+      }
+
       try {
+        // 使用模拟结果作为备选
         const mockResult = this.mockDivineResult();
-        resultContainer.innerText = `(使用模拟结果)\n${mockResult}`;
+        resultContainer.innerText = `(使用本地模拟结果 - ${errorType})\n${mockResult}${extraInfo}`;
       } catch (mockError) {
-        resultContainer.innerText = `占卜失败：${error.message}\n\n请确保Python服务器已启动。\n启动方法：cd static/python/diviner && python3 divine_server.py`;
+        console.error('模拟结果生成失败:', mockError);
+        resultContainer.innerText = `占卜失败：${error.message}\n\n请确保Python服务器已启动。\n启动方法：cd static/python/diviner && python3 divine_server.py${extraInfo}`;
       }
     }
   }
@@ -461,20 +477,31 @@ class Diviner {
         throw new Error(`服务器响应错误：${response.status}\n${errorText}`);
       }
 
-      // 解析JSON响应 - 添加安全检查
+      // 解析JSON响应 - 增强安全检查和错误处理
       let data;
+      let responseText = '';
       try {
         // 先获取文本内容，以便在JSON解析失败时能提供更多信息
-        const responseText = await response.text();
+        responseText = await response.text();
+        console.log(`服务器响应内容(${this.divineMode}模式):`, responseText.substring(0, 100) + (responseText.length > 100 ? '...' : ''));
+
+        // 尝试解析JSON
         data = JSON.parse(responseText);
       } catch (parseError) {
-        // 如果JSON解析失败，抛出包含原始响应的错误
-        try {
-          const rawResponse = await response.clone().text();
-          throw new Error(`无效的JSON响应：${parseError.message}\n原始响应：${rawResponse}`);
-        } catch (textError) {
-          throw new Error(`无法解析服务器响应：${parseError.message}`);
+        console.error(`JSON解析错误(${this.divineMode}模式):`, parseError);
+
+        // 处理服务器返回HTTP错误消息的特殊情况
+        if (responseText && (responseText.startsWith('HTTP/1.0') || responseText.startsWith('HTTP/1.1'))) {
+          const httpErrorMatch = responseText.match(/HTTP\/\d\.\d\s+(\d+)\s+([^\r\n]+)/);
+          if (httpErrorMatch) {
+            const statusCode = httpErrorMatch[1];
+            const statusText = httpErrorMatch[2];
+            throw new Error(`服务器返回HTTP错误：${statusCode} ${statusText}\n\n可能原因：\n1. 服务器可能未启动\n2. 服务器可能无法处理${this.divineMode}类型的请求\n3. 网络连接问题`);
+          }
         }
+
+        // 提供更详细的错误信息
+        throw new Error(`无法解析服务器响应：${parseError.message}\n原始响应前100字符：${responseText ? responseText.substring(0, 100) + (responseText.length > 100 ? '...' : '') : '空响应'}`);
       }
 
       // 检查占卜是否成功
