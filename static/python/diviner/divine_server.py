@@ -1,271 +1,125 @@
 #!/usr/bin/env python3
+"""Small JSON API. Compute a complete response before sending its status."""
 import http.server
-import socketserver
 import json
-import urllib.parse
-import sys
+import logging
 import os
-
-# 添加当前目录到Python路径，确保能够正确导入divine_utils
-sys.path.append(os.path.dirname(os.path.abspath(__file__)))
-
-# 设置工作目录为当前目录，确保能够正确加载JSON文件
-os.chdir(os.path.dirname(os.path.abspath(__file__)))
+import sys
+import threading
+import urllib.parse
 
 from divine_utils import JiuGongLiuRen, LiuYaoQiGua, Tarot
-from llm_integration import llm_integrator
+
+logger = logging.getLogger(__name__)
+# Legacy algorithms seed the process-wide random generator. Keep only the
+# short local calculation under a lock; network I/O must never hold it.
+calculation_lock = threading.Lock()
+llm_slots = threading.BoundedSemaphore(2)
+
+
+def build_result(query, div_type):
+    with calculation_lock:
+        if div_type == 'JiuGongLiuRen':
+            values = JiuGongLiuRen(query, need_return=True, need_print=False)
+            return f'对于你的问题：【{query}】  得到的卦象是\n【' + '】->【'.join(values) + '】'
+        if div_type == 'Tarot':
+            cards, records, _, orientations = Tarot(query, need_return=True, need_print=False)
+            lines = [f'对于你的问题：【{query}】', '抽到的卡牌如下']
+            for i, (card, record, orientation) in enumerate(zip(cards, records, orientations), 1):
+                direction = '正位' if orientation else '逆位'
+                lines.append(f'卡{i} :【{direction} {card} : {record[card][direction + "关键词"]} 】')
+            return '\n'.join(lines)
+        if div_type == 'LiuYaoQiGua':
+            _, line, _, info, yaos = LiuYaoQiGua(query, need_return=True, need_print=False)
+            symbols = {'老阳': '---------- o', '老阴': '----  ---- x', '阳': '----------', '阴': '----  ----'}
+            lines = [f'对于你的问题：【{query}】', '卜卦结果如下', *[symbols[yao] for yao in reversed(yaos)]]
+            lines.append(f'得到的是【{info["卦名"].split("(")[0]}({info["卦名直解"]})】')
+            if line not in info:
+                lines.append(f'资料未收录{line}，以下展示卦辞。')
+                line = '卦辞'
+            detail = info[line]
+            lines.extend([f'{line}：【{"".join(detail["原文"])}】', f'解释为：【{"".join(detail["解释"])}】', f'吉凶/性质：【{detail["吉凶/性质"]}】'])
+            return '\n'.join(lines)
+    raise ValueError('未知的占卜类型')
+
+
+def generate_reply(query, result, div_type):
+    # Basic divination has no third-party package or LLM dependency.
+    from llm_integration import llm_integrator
+    return llm_integrator.generate_philosophical_reply(query, result, div_type)
 
 
 class DivineHandler(http.server.BaseHTTPRequestHandler):
-    def do_GET(self):
-        # 解析URL参数
-        parsed_path = urllib.parse.urlparse(self.path)
-        params = urllib.parse.parse_qs(parsed_path.query)
-
-        # 检查是否是占卜API请求
-        if parsed_path.path == "/divine":
-            try:
-                # 获取参数
-                query = params.get("query", ["今日运势"])[0]
-                div_type = params.get("type", ["JiuGongLiuRen"])[0]
-                # 添加是否使用LLM生成哲理回复的参数，默认为False
-                use_llm = params.get("use_llm", ["false"])[0].lower() == "true"
-
-                # 设置返回结果的编码
-                self.send_response(200)
-                self.send_header("Content-type", "application/json; charset=utf-8")
-                # 添加CORS头
-                self.send_header("Access-Control-Allow-Origin", "*")
-                self.send_header("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
-                self.send_header(
-                    "Access-Control-Allow-Headers", "X-Requested-With, Content-Type"
-                )
-                self.end_headers()
-
-                # 根据占卜类型调用相应的函数
-                if div_type == "JiuGongLiuRen":
-                    # 调用九宫六壬占卜函数，获取返回结果
-                    result = []
-
-                    def capture_print(text):
-                        result.append(text)
-
-                    # 保存原始的print函数
-                    original_stdout = sys.stdout
-                    # 创建一个StringIO对象来捕获输出
-                    from io import StringIO
-
-                    sys.stdout = StringIO()
-
-                    try:
-                        # 调用占卜函数
-                        JiuGongLiuRen(query, need_return=False, need_print=True)
-                        # 获取捕获的输出
-                        result_output = sys.stdout.getvalue()
-                        result = result_output.strip().split("\n")
-                    finally:
-                        # 恢复原始的stdout
-                        sys.stdout = original_stdout
-
-                    # 构建返回结果
-                    response = {
-                        "success": True,
-                        "query": query,
-                        "type": div_type,
-                        "result": "\n".join(result),
-                    }
-
-                    # 如果需要使用LLM生成哲理回复
-                    if use_llm:
-                        try:
-                            philosophical_reply = (
-                                llm_integrator.generate_philosophical_reply(
-                                    query, "\n".join(result), div_type
-                                )
-                            )
-                            response["philosophical_reply"] = philosophical_reply
-                        except Exception as llm_error:
-                            print(f"生成哲理回复时出错: {str(llm_error)}")
-                            # 出错时不影响原始占卜结果的返回
-                            response["philosophical_reply_error"] = str(llm_error)
-                elif div_type == "LiuYaoQiGua":
-                    # 调用六爻起卦占卜函数，获取返回结果
-                    result = []
-
-                    def capture_print(text):
-                        result.append(text)
-
-                    # 保存原始的print函数
-                    original_stdout = sys.stdout
-                    # 创建一个StringIO对象来捕获输出
-                    from io import StringIO
-
-                    sys.stdout = StringIO()
-
-                    try:
-                        # 调用占卜函数
-                        LiuYaoQiGua(query, need_return=False, need_print=True)
-                        # 获取捕获的输出
-                        result_output = sys.stdout.getvalue()
-                        result = result_output.strip().split("\n")
-                    finally:
-                        # 恢复原始的stdout
-                        sys.stdout = original_stdout
-
-                    # 构建返回结果
-                    response = {
-                        "success": True,
-                        "query": query,
-                        "type": div_type,
-                        "result": "\n".join(result),
-                    }
-
-                    # 如果需要使用LLM生成哲理回复
-                    if use_llm:
-                        try:
-                            philosophical_reply = (
-                                llm_integrator.generate_philosophical_reply(
-                                    query, "\n".join(result), div_type
-                                )
-                            )
-                            response["philosophical_reply"] = philosophical_reply
-                        except Exception as llm_error:
-                            print(f"生成哲理回复时出错: {str(llm_error)}")
-                            # 出错时不影响原始占卜结果的返回
-                            response["philosophical_reply_error"] = str(llm_error)
-                elif div_type == "Tarot":
-                    # 调用塔罗牌占卜函数，获取返回结果
-                    result = []
-
-                    def capture_print(text):
-                        result.append(text)
-
-                    # 保存原始的print函数
-                    original_stdout = sys.stdout
-                    # 创建一个StringIO对象来捕获输出
-                    from io import StringIO
-
-                    sys.stdout = StringIO()
-
-                    try:
-                        # 调用占卜函数
-                        Tarot(query, need_return=False, need_print=True)
-                        # 获取捕获的输出
-                        result_output = sys.stdout.getvalue()
-                        result = result_output.strip().split("\n")
-                    finally:
-                        # 恢复原始的stdout
-                        sys.stdout = original_stdout
-
-                    # 构建返回结果
-                    response = {
-                        "success": True,
-                        "query": query,
-                        "type": div_type,
-                        "result": "\n".join(result),
-                    }
-
-                    # 如果需要使用LLM生成哲理回复
-                    if use_llm:
-                        try:
-                            philosophical_reply = (
-                                llm_integrator.generate_philosophical_reply(
-                                    query, "\n".join(result), div_type
-                                )
-                            )
-                            response["philosophical_reply"] = philosophical_reply
-                        except Exception as llm_error:
-                            print(f"生成哲理回复时出错: {str(llm_error)}")
-                            # 出错时不影响原始占卜结果的返回
-                            response["philosophical_reply_error"] = str(llm_error)
-                else:
-                    response = {"success": False, "error": "未知的占卜类型"}
-
-                # 发送JSON响应
-                self.wfile.write(
-                    json.dumps(response, ensure_ascii=False).encode("utf-8")
-                )
-
-            except Exception as e:
-                self.send_response(500)
-                self.send_header("Content-type", "application/json; charset=utf-8")
-                self.send_header("Access-Control-Allow-Origin", "*")
-                self.end_headers()
-                response = {"success": False, "error": str(e)}
-                self.wfile.write(
-                    json.dumps(response, ensure_ascii=False).encode("utf-8")
-                )
-        else:
-            # 其他请求返回404
-            self.send_response(404)
+    def send_json(self, status, payload):
+        body = json.dumps(payload, ensure_ascii=False).encode('utf-8')
+        try:
+            self.send_response(status)
+            self.send_header('Content-Type', 'application/json; charset=utf-8')
+            self.send_header('Content-Length', str(len(body)))
+            self.send_header('Cache-Control', 'no-store')
+            self.send_header('Access-Control-Allow-Origin', '*')
+            self.send_header('Access-Control-Allow-Methods', 'GET, OPTIONS')
+            self.send_header('Access-Control-Allow-Headers', 'Content-Type')
             self.end_headers()
-            self.wfile.write(b"Not Found")
+            self.wfile.write(body)
+        except (BrokenPipeError, ConnectionResetError):
+            pass  # Closing a browser panel is not an application error.
 
-    # 处理OPTIONS请求，用于CORS预检
+    def do_GET(self):
+        path = urllib.parse.urlparse(self.path)
+        if path.path == '/health':
+            self.send_json(200, {'success': True, 'status': 'ok'})
+            return
+        if path.path != '/divine':
+            self.send_json(404, {'success': False, 'error': 'Not found'})
+            return
+        params = urllib.parse.parse_qs(path.query, keep_blank_values=True)
+        query = params.get('query', ['今日运势'])[0].strip()
+        div_type = params.get('type', ['JiuGongLiuRen'])[0]
+        if not query or len(query) > 1000 or div_type not in {'JiuGongLiuRen', 'LiuYaoQiGua', 'Tarot'}:
+            self.send_json(400, {'success': False, 'error': '问题不能为空、不能超过 1000 字，且必须选择有效的占卜方式。'})
+            return
+        try:
+            result = build_result(query, div_type)
+            response = {'success': True, 'query': query, 'type': div_type, 'result': result}
+            if params.get('use_llm', ['false'])[0].lower() == 'true':
+                if llm_slots.acquire(blocking=False):
+                    try:
+                        response['philosophical_reply'] = generate_reply(query, result, div_type)
+                    except Exception:
+                        # Keep the useful base result without leaking provider details.
+                        response['philosophical_reply_error'] = 'AI 解读暂时不可用'
+                    finally:
+                        llm_slots.release()
+                else:
+                    response['philosophical_reply_error'] = 'AI 解读繁忙'
+            self.send_json(200, response)
+        except Exception:
+            logger.exception('Divination calculation failed for %s', div_type)
+            self.send_json(500, {'success': False, 'error': '占卜计算暂时失败，请稍后重试。'})
+
     def do_OPTIONS(self):
-        self.send_response(200)
-        self.send_header("Access-Control-Allow-Origin", "*")
-        self.send_header("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
-        self.send_header(
-            "Access-Control-Allow-Headers", "X-Requested-With, Content-Type"
-        )
-        self.end_headers()
+        self.send_json(200, {'success': True})
+
+    def log_message(self, format, *args):
+        # Do not put the visitor's question (query string) into access logs.
+        logger.info('%s %s', self.command, urllib.parse.urlparse(self.path).path)
+
+
+class DivineServer(http.server.ThreadingHTTPServer):
+    daemon_threads = True
+    allow_reuse_address = True
 
 
 def run_server(port=8000):
-    # 获取本机IP地址
-    import socket
-
-    try:
-        # 创建一个socket连接来获取本机IP
-        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        s.connect(("8.8.8.8", 80))  # 连接到公共DNS服务器
-        local_ip = s.getsockname()[0]
-        s.close()
-    except Exception:
-        local_ip = "127.0.0.1"  # 如果无法获取，默认为localhost
-
-    print(f"启动占卜API服务器，监听端口：{port}")
-    print(f"本地访问地址：http://{local_ip}:{port}")
-    print(f"localhost访问地址：http://localhost:{port}")
-    print("请在浏览器中打开页面，并确保本服务器保持运行状态")
-    print("使用方法：")
-    print(f"  1. 运行此脚本")
-    print(f"  2. 在浏览器中打开您的网页")
-    print(f"  3. 点击占卜小人进行占卜")
-    print(" ")
-    print("如需停止服务器，请按 Ctrl+C")
-
-    with socketserver.TCPServer(("", port), DivineHandler) as httpd:
+    logging.basicConfig(level=logging.INFO)
+    with DivineServer(('', port), DivineHandler) as server:
+        print(f'启动占卜API服务器，监听端口：{port}', flush=True)
         try:
-            httpd.serve_forever()
+            server.serve_forever()
         except KeyboardInterrupt:
-            print("\n服务器已停止")
-            httpd.server_close()
+            print('服务器已停止', flush=True)
 
 
-if __name__ == "__main__":
-    # 允许通过环境变量PORT指定端口（适应Render等平台）
-    # 优先使用环境变量PORT，然后是命令行参数，最后是默认端口
-    import os
-
-    port = 8000
-
-    # 首先检查环境变量PORT
-    if "PORT" in os.environ:
-        try:
-            port = int(os.environ["PORT"])
-            print(f"使用环境变量PORT指定的端口: {port}")
-        except ValueError:
-            print(
-                f"环境变量PORT的值 '{os.environ['PORT']}' 不是有效的端口号，使用默认端口8000"
-            )
-
-    # 然后检查命令行参数
-    elif len(sys.argv) > 1:
-        try:
-            port = int(sys.argv[1])
-        except ValueError:
-            print("端口号必须是数字，使用默认端口8000")
-
-    run_server(port)
+if __name__ == '__main__':
+    run_server(int(os.environ.get('PORT', sys.argv[1] if len(sys.argv) > 1 else 8000)))

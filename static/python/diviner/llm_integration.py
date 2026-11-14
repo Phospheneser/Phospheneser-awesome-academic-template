@@ -9,7 +9,7 @@ class LLMIntegration:
         self.api_base = os.environ.get(
             "LLM_API_BASE", "https://api.chatanywhere.tech/v1"
         )
-        self.api_key = os.environ.get("LLM_API_KEY", "free")  # 默认API密钥
+        self.api_key = os.environ.get("LLM_API_KEY", "")
         self.model = os.environ.get("LLM_MODEL", "gpt-3.5-turbo")
 
         # 可以根据需要切换到其他免费API服务，如以下配置：
@@ -36,16 +36,9 @@ class LLMIntegration:
         # 构建提示词
         prompt = self._build_prompt(query, divine_result, divination_type)
 
-        try:
-            # 调用LLM API
-            response = self._call_llm_api(prompt)
-            return response
-        except Exception as e:
-            # 出错时返回原始占卜结果，并记录详细错误
-            error_msg = f"LLM API调用失败: {str(e)}"
-            print(error_msg)
-            # 返回带有错误提示的结果，指导用户如何配置API密钥
-            return f"{divine_result}\n\n[提示：LLM哲理回复无法生成，因为API调用失败。如需启用此功能，请配置有效的API密钥或使用本地部署的LLM服务。]"
+        if not self.api_key:
+            raise RuntimeError('LLM is not configured')
+        return self._call_llm_api(prompt)
 
     def _build_prompt(self, query, divine_result, divination_type):
         """构建发送给LLM的提示词"""
@@ -93,7 +86,7 @@ class LLMIntegration:
                 f"{self.api_base}/chat/completions",
                 headers=headers,
                 data=json.dumps(data),
-                timeout=30,  # 设置30秒超时
+                timeout=(3, 12),  # Separate connect/read deadlines; optional work stays bounded.
             )
 
             # 检查响应状态

@@ -5,6 +5,14 @@ import json
 import hashlib
 import datetime
 import random
+from functools import lru_cache
+from pathlib import Path
+
+
+@lru_cache(maxsize=2)
+def load_info(name):
+    with (Path(__file__).resolve().parent / 'info' / name).open(encoding='utf-8') as source:
+        return json.load(source)
 
 
 def get_seed_from_query(query: str, granularity="day") -> int:
@@ -95,7 +103,6 @@ def random_get_liu_yao(Divintype="three_coin"):
         raise NotImplementedError("type must be 'total_random' or 'three_coin'")
 
 
-@with_seed
 def getGuaYaoCiFromYaoListGot(yaoListGot):
     guaMapping = {
         "阳阳阳": "天",
@@ -160,7 +167,7 @@ def getGuaYaoCiFromYaoListGot(yaoListGot):
         guaName = fanguaMapping[guaName[0]] + fanguaMapping[guaName[1]] + "卦"
         if guaName == "地地卦":
             ciName = "用六"
-        if guaName == "天天卦":
+        elif guaName == "天天卦":
             ciName = "用九"
         else:
             ciName = "卦辞"
@@ -180,8 +187,7 @@ def LiuYaoQiGua(query, Divintype="three_coin", need_return=False, need_print=Tru
         "风": "巽",
         "雷": "震",
     }
-    with open("./info/64gua.json", "r") as f:
-        guaciInfo = json.load(f)
+    guaciInfo = load_info('64gua.json')
     # print(guaciInfo.keys())
     yaoListGot = random_get_liu_yao(Divintype)
     guaName, ciName = getGuaYaoCiFromYaoListGot(yaoListGot)
@@ -208,7 +214,12 @@ def LiuYaoQiGua(query, Divintype="three_coin", need_return=False, need_print=Tru
             + guaciInfo[guakey]["卦名直解"]
             + ")】"
         )
-        if ciName != "卦辞":
+        # The dataset has no 用九/用六 records. Keep the special line in the
+        # returned metadata, but display the available 卦辞 rather than crash.
+        display_ci = ciName if ciName in guaciInfo[guakey] else '卦辞'
+        if display_ci != ciName:
+            print(f"资料未收录{ciName}，以下展示卦辞。")
+        if display_ci != "卦辞":
             print(
                 ciName
                 + "爻变，爻辞为：【"
@@ -241,8 +252,7 @@ def LiuYaoQiGua(query, Divintype="three_coin", need_return=False, need_print=Tru
 def Tarot(
     query, Divintype="three_card", need_return=False, need_print=True, useRNR=False
 ):
-    with open("./info/MergedTarot.json", "r") as f:
-        tarotInfo = json.load(f)
+    tarotInfo = load_info('MergedTarot.json')
     card_mean = []
     if Divintype == "three_card":
         card_num = 3
