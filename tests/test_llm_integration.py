@@ -32,6 +32,19 @@ class ProviderFailureTests(unittest.TestCase):
             response.json.return_value = payload
             self.assertEqual(llm.provider_failure_reason(response), 'unclassified_provider_error')
 
+    def test_unknown_explanation_redacts_keys_questions_and_email(self):
+        response = Mock(status_code=403)
+        response.json.return_value = {'error': {'message': 'Policy error: private-secret sk-another-key test@example.com private-question'}}
+        client = llm.LLMIntegration()
+        client.api_key = 'private-secret'
+        with patch.object(llm.requests, 'post', return_value=response), self.assertLogs(llm.logger, level='WARNING') as logs:
+            with self.assertRaises(Exception):
+                client._call_llm_api({'system': 'system', 'user': '用户的问题是：private-question\n占卜结果'})
+        output = str(logs.output)
+        self.assertIn('Policy error:', output)
+        for private in ('private-secret', 'sk-another-key', 'test@example.com', 'private-question'):
+            self.assertNotIn(private, output)
+
     def test_logs_and_exceptions_never_include_provider_message_or_prompt(self):
         response = Mock(status_code=403)
         response.json.return_value = {'error': {'message': '余额不足 key=private-secret query=private-question'}}

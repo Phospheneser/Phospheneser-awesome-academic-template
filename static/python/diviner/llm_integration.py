@@ -2,8 +2,30 @@ import json
 import requests
 import os
 import logging
+import re
 
 logger = logging.getLogger(__name__)
+
+
+def provider_error_excerpt(response, api_key, prompt):
+    """Keep only an error explanation, removing credentials and prompt lines."""
+    try:
+        payload = response.json()
+    except ValueError:
+        return ''
+    error = payload.get('error', {}) if isinstance(payload, dict) else {}
+    message = error.get('message', '') if isinstance(error, dict) else ''
+    if not isinstance(message, str):
+        return ''
+    private = [api_key, *prompt.values()]
+    for value in prompt.values():
+        private.extend(value.splitlines())
+        if value.startswith('用户的问题是：'):
+            private.append(value.splitlines()[0].removeprefix('用户的问题是：'))
+    for value in sorted(filter(None, private), key=len, reverse=True):
+        message = message.replace(value, '[redacted]')
+    message = re.sub(r'(?i)(?:sk-[\w-]+|bearer\s+\S+|[\w.+-]+@[\w.-]+\.[a-z]{2,})', '[redacted]', message)
+    return ' '.join(message.split())[:400]
 
 
 def provider_failure_reason(response):
@@ -124,6 +146,8 @@ class LLMIntegration:
             else:
                 reason = provider_failure_reason(response)
                 logger.warning('AI provider rejected request: HTTP %s reason=%s', response.status_code, reason)
+                if reason == 'unclassified_provider_error':
+                    logger.warning('AI provider explanation: %s', provider_error_excerpt(response, self.api_key, prompt))
                 raise RuntimeError(f'AI provider HTTP {response.status_code}: {reason}')
         except requests.exceptions.RequestException as e:
             # Log only the exception class; messages can contain secrets or input.
