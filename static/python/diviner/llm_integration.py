@@ -6,6 +6,30 @@ import logging
 logger = logging.getLogger(__name__)
 
 
+def provider_failure_reason(response):
+    """Classify upstream failures without exposing response text or credentials."""
+    try:
+        payload = response.json()
+    except ValueError:
+        return 'non_json_response'
+    error = payload.get('error', {}) if isinstance(payload, dict) else {}
+    # Only inspect error metadata, never choices or the echoed request.
+    details = ' '.join(str(error.get(key, '')) for key in ('code', 'type', 'message')) if isinstance(error, dict) else str(error)
+    details = details.lower()
+    categories = (
+        ('insufficient_quota', ('insufficient_quota', 'insufficient_balance', 'insufficient balance', '余额不足', 'quota exceeded', 'quota_exceeded', '额度不足', '配额不足', '积分不足', 'exceeded your current quota', 'credit balance is too low')),
+        ('account_disabled', ('account_deactivated', 'account disabled', 'account banned', '封禁', '已禁用')),
+        ('invalid_api_key', ('invalid_api_key', 'invalid api key', 'incorrect api key', '无效的令牌', '无效的密钥')),
+        ('model_unavailable', ('model_not_found', 'model not found', 'model_not_supported', '不支持此模型', '模型不存在')),
+        ('rate_limited', ('rate_limit', 'rate limit', '请求次数', '请求频率')),
+        ('access_denied', ('permission_denied', 'access denied', 'ip not allowed', '地区限制', '无权访问')),
+    )
+    for reason, markers in categories:
+        if any(marker in details for marker in markers):
+            return reason
+    return 'unclassified_provider_error'
+
+
 class LLMIntegration:
     def __init__(self):
         # 默认配置，可通过环境变量覆盖
@@ -98,17 +122,9 @@ class LLMIntegration:
                 result = response.json()
                 return result["choices"][0]["message"]["content"]
             else:
-                logger.warning('AI provider rejected request: HTTP %s', response.status_code)
-                # 尝试解析错误信息
-                try:
-                    error_data = response.json()
-                    error_msg = error_data.get("error", {}).get(
-                        "message", f"API调用失败，状态码: {response.status_code}"
-                    )
-                except:
-                    error_msg = f"API调用失败，状态码: {response.status_code}"
-
-                raise Exception(error_msg)
+                reason = provider_failure_reason(response)
+                logger.warning('AI provider rejected request: HTTP %s reason=%s', response.status_code, reason)
+                raise RuntimeError(f'AI provider HTTP {response.status_code}: {reason}')
         except requests.exceptions.RequestException as e:
             # Log only the exception class; messages can contain secrets or input.
             logger.warning('AI provider network failure: %s', type(e).__name__)
