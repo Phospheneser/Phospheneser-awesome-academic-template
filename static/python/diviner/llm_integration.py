@@ -1,6 +1,9 @@
 import json
 import requests
 import os
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 class LLMIntegration:
@@ -37,6 +40,7 @@ class LLMIntegration:
         prompt = self._build_prompt(query, divine_result, divination_type)
 
         if not self.api_key:
+            logger.warning('AI interpretation unavailable: missing_api_key')
             raise RuntimeError('LLM is not configured')
         return self._call_llm_api(prompt)
 
@@ -94,6 +98,7 @@ class LLMIntegration:
                 result = response.json()
                 return result["choices"][0]["message"]["content"]
             else:
+                logger.warning('AI provider rejected request: HTTP %s', response.status_code)
                 # 尝试解析错误信息
                 try:
                     error_data = response.json()
@@ -105,7 +110,8 @@ class LLMIntegration:
 
                 raise Exception(error_msg)
         except requests.exceptions.RequestException as e:
-            # 网络错误处理
+            # Log only the exception class; messages can contain secrets or input.
+            logger.warning('AI provider network failure: %s', type(e).__name__)
             raise Exception(f"网络请求错误: {str(e)}")
         except Exception as e:
             # 其他错误处理

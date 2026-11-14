@@ -86,7 +86,8 @@ class DivineHandler(http.server.BaseHTTPRequestHandler):
                 if llm_slots.acquire(blocking=False):
                     try:
                         response['philosophical_reply'] = generate_reply(query, result, div_type)
-                    except Exception:
+                    except Exception as error:
+                        logger.warning('AI interpretation failed: %s', type(error).__name__)
                         # Keep the useful base result without leaking provider details.
                         response['philosophical_reply_error'] = 'AI 解读暂时不可用'
                     finally:
